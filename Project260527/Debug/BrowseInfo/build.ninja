@@ -1,0 +1,28 @@
+##IAR Ninja build file
+
+
+#Rules
+rule COMPDB_GEN
+  command = D$:\IARforARM\common\bin\ClangdCompDbGenerator.exe $gencommand -f "$rspfile_name"
+  description = Building $out...
+  rspfile = $rspfile_name
+  rspfile_content = $flags
+
+rule COMPDB_LINK
+  command = D$:\IARforARM\common\bin\ClangdCompDbLinker.exe -f "$rspfile_name"
+  description = Building $out...
+  rspfile = $rspfile_name
+  rspfile_content = $flags
+
+
+
+#Build steps
+build D$:\STM32_ARM_IAR\Project260527\Debug\BrowseInfo\main.c.json : COMPDB_GEN 
+    flags = D$:\IARforARM\arm\bin\iccarm.exe D$:\STM32_ARM_IAR\Project260527\main.c -o D$:\STM32_ARM_IAR\Project260527\Debug\Obj\ --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug --endian=little --cpu=Cortex-M4 --fpu=VFPv4_sp --dlib_config D$:\IARforARM\arm\inc\c\DLib_Config_Normal.h -On -e
+    gencommand = -output_file D$:\STM32_ARM_IAR\Project260527\Debug\BrowseInfo\main.c.json -icc_path D$:\IARforARM\arm\bin\iccarm.exe -source_file D$:\STM32_ARM_IAR\Project260527\main.c -work_dir D$:\STM32_ARM_IAR\Project260527 -keyword_map_path D$:\IARforARM\common\config\ClangdConfig.json -object_file D$:\STM32_ARM_IAR\Project260527\Debug\Obj\main.o
+    rspfile_name = D$:\STM32_ARM_IAR\Project260527\Debug\BrowseInfo\main.c.json.rsp
+
+build D$:\STM32_ARM_IAR\Project260527\Debug\compile_commands.json : COMPDB_LINK D$:\STM32_ARM_IAR\Project260527\Debug\BrowseInfo\main.c.json
+    flags = -o D$:\STM32_ARM_IAR\Project260527\Debug\compile_commands.json D$:\STM32_ARM_IAR\Project260527\Debug\BrowseInfo\main.c.json
+    rspfile_name = D$:\STM32_ARM_IAR\Project260527\Debug\compile_commands.json.rsp
+

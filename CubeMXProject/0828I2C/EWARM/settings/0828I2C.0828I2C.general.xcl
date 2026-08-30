@@ -1,0 +1,15 @@
+D:\IARforARM\arm\bin\armproc.dll
+
+ D:\IARforARM\arm\bin\armstlink.dll
+
+ D:\STM32_ARM_IAR\CubeMXProject\0828I2C\EWARM\0828I2C\Exe\0828I2C.out
+
+ --plugin=D:\IARforARM\arm\bin\armLibSupportUniversal.dll
+
+ --device_macro=D:\IARforARM\arm/config/debugger/ST/STM32G4xx.dmac
+
+ --flash_loader=D:\IARforARM\arm/config/flashloader/ST/FlashSTM32G43xxB.board
+
+ 
+
+

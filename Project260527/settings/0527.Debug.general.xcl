@@ -1,0 +1,13 @@
+D:\IARforARM\arm\bin\armproc.dll
+
+ D:\IARforARM\arm\bin\armsim2.dll
+
+ D:\STM32_ARM_IAR\Project260527\Debug\Exe\0527.out
+
+ --plugin=D:\IARforARM\arm\bin\armLibSupportUniversal.dll
+
+ --device_macro=D:\IARforARM\arm/config/debugger/ST/STM32G4xx.dmac
+
+ 
+
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspace>
+    <project>
+        <path>$WS_DIR$\..\..\..\..\114-2IAR\0330.ewp</path>
+    </project>
+    <project>
+        <path>$WS_DIR$\..\..\..\..\114-2IAR\0608\0608.ewp</path>
+    </project>
+    <project>
+        <path>$WS_DIR$\..\..\..\..\114-2IAR\0609\0609DS18b20.ewp</path>
+    </project>
+    <project>
+        <path>$WS_DIR$\..\..\..\..\114-2IAR\0616\0616.ewp</path>
+    </project>
+    <project>
+        <path>$WS_DIR$\..\..\..\..\114-2IAR\0701\0701.ewp</path>
+    </project>
+    <project>
+        <path>$WS_DIR$\..\..\..\..\114-2IAR\0816\0816.ewp</path>
+    </project>
+    <batchBuild />
+</workspace>
