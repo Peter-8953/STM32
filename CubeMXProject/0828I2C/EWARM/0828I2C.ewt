@@ -1733,6 +1733,21 @@
                     <name>$PROJ_DIR$\..\Core\Src\stm32g4xx_it.c</name>
                 </file>
             </group>
+            <group>
+                <name>Protocol</name>
+                <file>
+                    <name>$PROJ_DIR$\..\Core\Protocol\frame_parser.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Core\Protocol\frame_parser.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Core\Protocol\rtc_driver.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Core\Protocol\rtc_driver.h</name>
+                </file>
+            </group>
         </group>
     </group>
     <group>

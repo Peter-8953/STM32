@@ -16,6 +16,8 @@
 		"-isystem",
 		"D:\\IARforARM\\arm\\inc\\c",
 		"-I",
+		"D:\\STM32_ARM_IAR\\CubeMXProject\\0828I2C\\Core\\Protocol\\",
+		"-I",
 		"D:\\STM32_ARM_IAR\\CubeMXProject\\0828I2C\\Core\\Inc\\",
 		"-I",
 		"D:\\STM32_ARM_IAR\\CubeMXProject\\0828I2C\\Drivers\\STM32G4xx_HAL_Driver\\Inc\\",

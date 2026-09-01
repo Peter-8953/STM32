@@ -1,0 +1,133 @@
+"""runner.py: 背景執行緒每秒執行一次指令，區分可重試錯誤與致命錯誤
+（對應文件 6.1 節）。
+
+錯誤處理策略：
+    CrcError / RtcTimeoutError  -- 暫時性錯誤，重試最多 MAX_RETRY 次
+    其他 Exception              -- 不明錯誤，直接停止，不亂重試
+    連續失敗達上限               -- 自動停止迴圈，回到 prompt
+"""
+
+import threading
+import time
+from datetime import datetime
+
+from rtc3231.exceptions import CrcError, RtcTimeoutError
+
+
+def _ts() -> str:
+    """時間戳記字串，用來讓使用者自己判斷：訊息之間的實際間隔，
+    到底是程式邏輯真的每秒才重試一次，還是終端機顯示被延遲、
+    畫面看起來擠在一起但背後其實有照間隔執行。"""
+    return datetime.now().strftime("%H:%M:%S.%f")[:-3]
+
+
+def run_once(command: dict, db, rtc, max_retry: int = 3, reconnect_fn=None) -> bool:
+    """執行一次指令（含重試），不進入每秒輪詢迴圈。
+
+    給像 `sync` 這種「做一次就該結束」的指令用，跟 LoopRunner 的差別
+    只在於：成功一次就直接回傳，不會像 temp/time 那樣持續每秒重跑。
+
+    reconnect_fn：連續失敗達 max_retry 次時嘗試重連一次（通常是
+    `rtc.reconnect`），成功的話再給一次機會完整跑到底；失敗或沒
+    提供 reconnect_fn，就直接回傳 False。
+
+    回傳 True 表示成功，False 表示重試達上限或遇到不明錯誤而放棄。
+    """
+    fail_count = 0
+    reconnected_once = False
+    while True:
+        try:
+            value = command["func"](rtc)
+            command["on_result"](db, rtc, value)
+            print(command["format"](value))
+            return True
+        except (CrcError, RtcTimeoutError) as e:
+            fail_count += 1
+            print(f"[{_ts()}] [retry {fail_count}/{max_retry}] {e}", flush=True)
+            if fail_count >= max_retry:
+                if reconnect_fn is not None and not reconnected_once:
+                    print(f"[{_ts()}] 連續失敗 {max_retry} 次，嘗試重新連線...", flush=True)
+                    try:
+                        reconnect_fn()
+                    except Exception as reconnect_err:
+                        print(f"[{_ts()}] 重新連線失敗：{reconnect_err}", flush=True)
+                        return False
+                    print(f"[{_ts()}] 重新連線成功，繼續執行", flush=True)
+                    fail_count = 0
+                    reconnected_once = True   # 只給一次重連機會，避免無窮迴圈
+                    continue
+                print(f"[{_ts()}] 連續失敗 {max_retry} 次，已放棄", flush=True)
+                return False
+        except Exception as e:
+            print(f"[{_ts()}] 未預期錯誤：{e}", flush=True)
+            return False
+
+
+class LoopRunner:
+    MAX_RETRY = 3
+
+    def __init__(self):
+        self._thread = None
+        self._stop_event = threading.Event()
+
+    def start(self, command: dict, db, rtc, reconnect_fn=None) -> None:
+        """啟動背景執行緒，跑 COMMANDS 字典裡的一個項目。
+
+        reconnect_fn：連續失敗達 MAX_RETRY 次時會呼叫這個函式嘗試
+        重新連線（通常是 `rtc.reconnect`）。成功的話 fail_count 歸零、
+        繼續迴圈；失敗或沒提供 reconnect_fn，才真的停止。
+
+        如果已經有執行緒在跑，呼叫端應該先 stop() 再 start()，
+        這裡不做自動處理，避免同時有兩條執行緒搶同一個 transport。
+        """
+        self._stop_event.clear()
+        self._thread = threading.Thread(
+            target=self._loop,
+            args=(command["func"], command["format"], command["on_result"], db, rtc, reconnect_fn),
+            daemon=True,
+        )
+        self._thread.start()
+
+    def stop(self) -> None:
+        """要求背景執行緒停止，並等待它真的結束再回傳。"""
+        self._stop_event.set()
+        if self._thread is not None:
+            self._thread.join(timeout=5)
+
+    def is_running(self) -> bool:
+        return self._thread is not None and self._thread.is_alive()
+
+    def _loop(self, func, format_fn, on_result, db, rtc, reconnect_fn=None):
+        fail_count = 0
+        while not self._stop_event.is_set():
+            try:
+                value = func(rtc)           # 回傳 dataclass
+                on_result(db, rtc, value)   # 直接傳 dataclass，用欄位名稱取值
+                print(f"\r{format_fn(value)}", end="", flush=True)
+                # 修改後可以換行print(format_fn(value), flush=True)
+                fail_count = 0
+            except (CrcError, RtcTimeoutError) as e:
+                fail_count += 1
+                # 改用 \n（獨立成行）而非 \r（互相覆蓋），這樣才看得到
+                # 逐次重試的過程；加時間戳記方便你自己核對實際間隔。
+                print(f"[{_ts()}] [retry {fail_count}/{self.MAX_RETRY}] {e}", flush=True)
+                if fail_count >= self.MAX_RETRY:
+                    if reconnect_fn is not None:
+                        print(f"[{_ts()}] 連續失敗 {self.MAX_RETRY} 次，嘗試重新連線...", flush=True)
+                        try:
+                            reconnect_fn()
+                        except Exception as reconnect_err:
+                            print(f"[{_ts()}] 重新連線失敗：{reconnect_err}", flush=True)
+                            print(f"[{_ts()}] 已停止", flush=True)
+                            break
+                        print(f"[{_ts()}] 重新連線成功，繼續執行", flush=True)
+                        fail_count = 0
+                        # 這次不 sleep，立刻重試一次，讓使用者馬上看到恢復正常
+                        continue
+                    else:
+                        print(f"[{_ts()}] 連續失敗 {self.MAX_RETRY} 次，已停止", flush=True)
+                        break
+            except Exception as e:
+                print(f"[{_ts()}] 未預期錯誤：{e}", flush=True)
+                break
+            time.sleep(0.5)

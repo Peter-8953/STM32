@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <settings>
     <StLinkDriver>
-        <stlinkserialNo>0038000F544B500420343637</stlinkserialNo>
-        <stlinkfoundProbes />
-        <stlinkResetStyle>0</stlinkResetStyle>
-        <stlinkResetStrategy>2</stlinkResetStrategy>
         <LeaveTargetRunning>_ 0</LeaveTargetRunning>
         <CStepIntDis>_ 0</CStepIntDis>
+        <stlinkResetStyle>0</stlinkResetStyle>
+        <stlinkResetStrategy>2</stlinkResetStrategy>
+        <stlinkserialNo>0038000F544B500420343637</stlinkserialNo>
+        <stlinkfoundProbes />
     </StLinkDriver>
     <PlDriver>
-        <FirstRun>0</FirstRun>
         <MemConfigValue>D:\IARforARM\arm\config\debugger\ST\STM32G431RB.ddf</MemConfigValue>
+        <FirstRun>0</FirstRun>
     </PlDriver>
     <DebugChecksum>
-        <Checksum>4087880446</Checksum>
+        <Checksum>1862471495</Checksum>
     </DebugChecksum>
     <Exceptions>
-        <StopOnUncaught>_ 0</StopOnUncaught>
         <StopOnThrow>_ 0</StopOnThrow>
+        <StopOnUncaught>_ 0</StopOnUncaught>
     </Exceptions>
     <Disassembly>
         <MixedMode>0</MixedMode>
@@ -117,6 +117,17 @@
         <ShowTimeSum>1</ShowTimeSum>
         <SumSortOrder>0</SumSortOrder>
     </EventLog>
+    <TermIOLog>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ ""</LogFile>
+    </TermIOLog>
+    <DisassembleMode>
+        <mode>0</mode>
+    </DisassembleMode>
+    <Breakpoints2>
+        <Bp0>_ 0 "EMUL_CODE" "0x800'02cc" 0 0 1 "" 0 "" 0</Bp0>
+        <Count>1</Count>
+    </Breakpoints2>
     <DriverProfiling>
         <Enabled>0</Enabled>
         <Mode>3</Mode>
@@ -129,17 +140,4 @@
         <SuppressDialog>0</SuppressDialog>
         <SuppressResolveSourcesForDebugTarget>1</SuppressResolveSourcesForDebugTarget>
     </Aliases>
-    <TermIOLog>
-        <LoggingEnabled>_ 0</LoggingEnabled>
-        <LogFile>_ ""</LogFile>
-    </TermIOLog>
-    <DisassembleMode>
-        <mode>0</mode>
-    </DisassembleMode>
-    <Breakpoints2>
-        <Bp0>_ 0 "EMUL_CODE" "0x800'02cc" 0 0 1 "" 0 "" 0</Bp0>
-        <Bp1>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Core\Src\main.c}.8.5" 0 0 1 "" 0 "" 0</Bp1>
-        <Bp2>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Core\Src\main.c}.126.5" 0 0 1 "" 0 "" 0</Bp2>
-        <Count>3</Count>
-    </Breakpoints2>
 </settings>
