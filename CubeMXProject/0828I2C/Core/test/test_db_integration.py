@@ -45,7 +45,7 @@ def main():
 
     print("[5] insert_reading：寫入溫度紀錄...")
     now_utc = datetime.now(timezone.utc)
-    repository.insert_reading(conn, device_id=2, read_at=now_utc, temperature=27.25)
+    repository.insert_reading(conn, device_id=2, seq=65535, read_at=now_utc, temperature=27.25)
     print("    OK")
 
     print("[6] insert_command_log：寫入指令紀錄，seq 用 uint16 上限附近的值...")
@@ -64,10 +64,11 @@ def main():
 
     print("[8] 直接查表，驗證資料真的寫進去、型別跟數值都正確...")
     with conn.cursor() as cur:
-        cur.execute("SELECT temperature, read_at FROM readings WHERE device_id = 2 ORDER BY id DESC LIMIT 1")
+        cur.execute("SELECT temperature, read_at, seq FROM readings WHERE device_id = 2 ORDER BY id DESC LIMIT 1")
         row = cur.fetchone()
         assert float(row[0]) == 27.25
-        print(f"    readings 最新一筆 -> temperature={row[0]}, read_at={row[1]}")
+        assert row[2] == 65535, f"readings.seq 型別可能選錯了：預期 65535，讀出 {row[2]}"
+        print(f"    readings 最新一筆 -> temperature={row[0]}, read_at={row[1]}, seq={row[2]}")
 
         cur.execute("SELECT seq, command FROM command_logs WHERE device_id = 2 ORDER BY id DESC LIMIT 1")
         row = cur.fetchone()
