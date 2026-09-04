@@ -15,6 +15,17 @@ SOF = b'\xAA\x55'           # Start-of-frame marker
 VERSION = 0x01               # Protocol version, currently fixed
 FRAME_OVERHEAD = 12          # SOF+VER+SRC+DST+CMD+SEQ+LEN+FLAGS+CRC (payload not included)
 
+# Matches FRAME_PAYLOAD_MAX in frame_parser.h. The firmware's rx_buf is a
+# fixed FRAME_MIN_LEN(12) + FRAME_PAYLOAD_MAX(32) = 44 bytes -- the LEN
+# byte alone would technically allow payloads up to 255, but anything over
+# 32 bytes built from this end would just get silently dropped by the
+# firmware's recv_frame() (total > out_buf_size -> returns 0, frame never
+# even reaches frame_parse()). From the PC side that looks exactly like an
+# unexplained timeout with no indication of what actually went wrong, so
+# build_frame() below fails fast instead, at the point the oversized frame
+# is constructed.
+FRAME_PAYLOAD_MAX = 32
+
 # --- ID allocation -----------------------------------------------------------
 
 ID_BROADCAST = 0x00
@@ -76,8 +87,8 @@ def build_frame(src: int, dst: int, cmd: int, seq: int, payload: bytes, flags: i
     """Build a complete binary frame ready to write to the serial port.
 
     Raises ValueError if any field doesn't fit its byte width, if the
-    payload exceeds the LEN field's 255-byte range, or if dst is the
-    reserved value 0xFF.
+    payload exceeds FRAME_PAYLOAD_MAX, or if dst is the reserved value
+    0xFF.
     """
     for name, value in (("src", src), ("dst", dst), ("cmd", cmd), ("flags", flags)):
         if not (0 <= value <= 0xFF):
@@ -86,8 +97,13 @@ def build_frame(src: int, dst: int, cmd: int, seq: int, payload: bytes, flags: i
         raise ValueError(f"dst must not be {ID_RESERVED:#04x} (reserved, forbidden for DST)")
     if not (0 <= seq <= 0xFFFF):
         raise ValueError(f"seq out of range (0-65535): {seq}")
-    if len(payload) > 0xFF:
-        raise ValueError(f"payload too long (max 255 bytes): {len(payload)}")
+    if len(payload) > FRAME_PAYLOAD_MAX:
+        raise ValueError(
+            f"payload too long: {len(payload)} bytes (firmware's rx_buf only has "
+            f"room for FRAME_PAYLOAD_MAX={FRAME_PAYLOAD_MAX} bytes of payload -- "
+            f"see frame_parser.h; a bigger payload would just look like an "
+            f"unexplained timeout on the firmware side, not a clear error)"
+        )
 
     body = bytes((
         VERSION,

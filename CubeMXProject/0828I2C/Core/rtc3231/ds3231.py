@@ -6,6 +6,11 @@ Python 端不維護對照表）。
 F3：所有時間一律 UTC（datetime.now(timezone.utc)），DS3231 存 UTC。
 F4：sync_from_pc() 確認回應 CMD 是 ACK，不是丟棄回傳值。
 F5：所有方法回傳 dataclass，不用裸 tuple。
+
+2026-09-04：所有讀回應的地方一律先過 _recv_matching()，核對 SEQ 跟這次
+請求送出的值一致才採信，避免上一次逾時重試留下的過期回應被誤當成這次
+的答案（見 _recv_matching() docstring）。這裡沒有沿用 F1/F2... 的編號，
+因為不確定 F6、F7 是不是已經在你其他文件裡用掉了，怕跟既有編號撞在一起。
 """
 
 from datetime import datetime, timezone
@@ -21,7 +26,7 @@ from .protocol import (
     FLAG_NEED_ACK, FLAG_IS_ERROR, ERR_UNKNOWN_CMD, ERR_PAYLOAD_TOO_SHORT,
 )
 from .detect import auto_detect, auto_detect_all
-from .exceptions import FrameError, DeviceError
+from .exceptions import FrameError, DeviceError, StaleResponseError
 from .models import TempReading, TimeReading, SyncResult
 
 
@@ -75,6 +80,13 @@ def _check_error(flags: int, payload: bytes, context: str) -> None:
 
 
 class DS3231:
+    # _recv_matching() 見下方說明：連續收到這麼多個 SEQ 不符的過期回應
+    # 都放棄之後，才真的當成錯誤拋出。跟 runner.py 的 MAX_RETRY 是兩個
+    # 不同層級的概念（那個是「送出請求後完全沒回應」要不要重送整個請求；
+    # 這個是「已經收到回應了，但不是這次要的那個」要丟棄幾次），只是
+    # 剛好都選了 3 這個量級。
+    _MAX_STALE_RESPONSES = 3
+
     def __init__(self, port: str = None):
         resolved = port or auto_detect()
         self._port = resolved
@@ -87,11 +99,47 @@ class DS3231:
     def __exit__(self, *_):
         self._transport.close()
 
+    def _recv_matching(self, expected_seq: int, context: str):
+        """讀一個回應封包，並確保 SEQ 真的等於 expected_seq（這次請求
+        送出的 seq）才回傳；SEQ 對不上就視為過期回應，直接丟棄、繼續
+        讀下一個。
+
+        背景：在這個修改之前，這裡從來沒有核對過這件事，完全是靠
+        「transport.recv() 讀到的下一個封包，就一定是這次請求的答案」
+        這個假設——多數時候成立，但有一個具體會出事的情境：上一次
+        請求逾時（RtcTimeoutError），runner.py 的重試邏輯送出了新的
+        請求（新的 seq），但上一次真正的、遲來的回應這時候才姍姍來遲，
+        排在這次 transport.recv() 讀取結果的最前面。沒有這層檢查的話，
+        程式會直接把這個過期回應的內容（舊的溫度/時間值、舊的 seq）
+        當成這次請求的答案，錯的資料就這樣寫進資料庫，而且完全不會
+        有任何錯誤訊息——因為從封包格式、CRC 的角度看，這個過期回應
+        本身完全合法，只是不是「這次」要的那個。
+
+        處理方式：SEQ 對不上就丟棄、繼續讀下一個，最多丟棄
+        _MAX_STALE_RESPONSES 次；連續這麼多次都對不上，才真的放棄，
+        拋出 StaleResponseError（避免序列埠一直收到過期資料時無窮迴圈；
+        這個例外刻意不在 runner.py 的重試清單裡，理由見
+        exceptions.StaleResponseError 的 docstring）。
+
+        回傳 parse_frame() 的四元組 (cmd, seq, payload, flags)，這裡的
+        seq 保證等於 expected_seq，呼叫端不用再自己核對一次。
+        """
+        for _ in range(self._MAX_STALE_RESPONSES + 1):
+            cmd, recv_seq, payload, flags = parse_frame(self._transport.recv())
+            if recv_seq == expected_seq:
+                return cmd, recv_seq, payload, flags
+            # SEQ 不符：這是某次舊請求的過期回應，丟棄，不當成這次的答案，
+            # 繼續讀下一個封包（迴圈自然繼續）。
+        raise StaleResponseError(
+            f"{context}：連續收到 {self._MAX_STALE_RESPONSES} 個 SEQ 不符的過期回應"
+            f"（預期 {expected_seq}），放棄"
+        )
+
     def _fetch_device_id(self) -> int:
         seq = self._transport.next_seq()
         frame = build_frame(ID_PC, ID_BROADCAST, CMD_GET_ID, seq, b'', FLAG_NEED_ACK)
         self._transport.send(frame)
-        cmd, _, payload, flags = parse_frame(self._transport.recv())
+        cmd, _, payload, flags = self._recv_matching(seq, "GET_ID")
         _check_error(flags, payload, "GET_ID")
         if cmd != CMD_DATA_ID:
             raise FrameError(f"預期 CMD_DATA_ID(0x13)，收到 {cmd:#04x}")
@@ -180,7 +228,7 @@ class DS3231:
         seq = self._transport.next_seq()
         frame = build_frame(ID_PC, self._device_id, CMD_GET_TIME, seq, b'', FLAG_NEED_ACK)
         self._transport.send(frame)
-        cmd, recv_seq, payload, flags = parse_frame(self._transport.recv())
+        cmd, recv_seq, payload, flags = self._recv_matching(seq, "GET_TIME")
         _check_error(flags, payload, "GET_TIME")
         if cmd != CMD_DATA_TIME:
             raise FrameError(f"預期 CMD_DATA_TIME(0x11)，收到 {cmd:#04x}")
@@ -194,7 +242,7 @@ class DS3231:
         seq = self._transport.next_seq()
         frame = build_frame(ID_PC, self._device_id, CMD_GET_TEMP, seq, b'', FLAG_NEED_ACK)
         self._transport.send(frame)
-        cmd, recv_seq, payload, flags = parse_frame(self._transport.recv())
+        cmd, recv_seq, payload, flags = self._recv_matching(seq, "GET_TEMP")
         _check_error(flags, payload, "GET_TEMP")
         if cmd != CMD_DATA_TEMP:
             raise FrameError(f"預期 CMD_DATA_TEMP(0x12)，收到 {cmd:#04x}")
@@ -213,7 +261,7 @@ class DS3231:
             seq, _datetime_to_payload(now), FLAG_NEED_ACK,
         )
         self._transport.send(frame)
-        cmd, recv_seq, payload, flags = parse_frame(self._transport.recv())
+        cmd, recv_seq, payload, flags = self._recv_matching(seq, "SET_TIME")
         _check_error(flags, payload, "SET_TIME")
         if cmd != CMD_ACK:              # F4：驗 ACK CMD
             raise FrameError(f"校時失敗，預期 ACK(0x10)，收到 {cmd:#04x}")

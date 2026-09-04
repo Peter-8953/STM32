@@ -46,3 +46,24 @@ class DeviceError(RtcError):
     even on CMD_ERR, so this is never raised against older boards --
     callers fall through to the pre-existing FrameError check instead.
     """
+
+
+class StaleResponseError(RtcError):
+    """Raised by DS3231._recv_matching() when repeated responses don't
+    match the SEQ of the request that was just sent, even after
+    discarding a bounded number of stale frames first.
+
+    Most likely cause: a previous request timed out (RtcTimeoutError),
+    runner.py's retry sent a brand new request with a new SEQ, but the
+    late response to the OLD request arrives on the wire first and gets
+    read before the real answer to the new one. Without this check, that
+    stale frame would silently be accepted as the answer to the current
+    request -- wrong data written to the DB, no error raised anywhere.
+
+    Deliberately NOT added to runner.py's ``except (CrcError,
+    RtcTimeoutError)`` retry clause: _recv_matching() already discards a
+    few stale frames internally before giving up, so by the time this is
+    raised, retrying blindly again at the runner level risks masking a
+    more persistent problem rather than fixing a one-off timing glitch --
+    same reasoning as why FrameError isn't retried there either.
+    """
