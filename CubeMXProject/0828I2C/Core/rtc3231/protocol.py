@@ -59,6 +59,12 @@ FLAG_IS_ERROR = 0x02   # bit 1: this frame is an error response
 
 ERR_UNKNOWN_CMD = 0x01         # unrecognized CMD value
 ERR_PAYLOAD_TOO_SHORT = 0x02   # payload shorter than the command requires (currently only CMD_SET_TIME)
+ERR_I2C_FAILURE = 0x03         # firmware's I2C read/write to the DS3231 itself failed (bus error,
+                                # DS3231 unresponsive, etc.) -- distinct from the two codes above,
+                                # which mean the request itself was malformed and retrying the same
+                                # request is pointless. An I2C bus glitch is plausibly transient, so
+                                # this maps to DeviceI2CError on the Python side, not plain DeviceError
+                                # -- see ds3231.py's _check_error() and exceptions.DeviceI2CError.
 
 
 # --- CRC16 -------------------------------------------------------------------------

@@ -11,6 +11,11 @@ F5：所有方法回傳 dataclass，不用裸 tuple。
 請求送出的值一致才採信，避免上一次逾時重試留下的過期回應被誤當成這次
 的答案（見 _recv_matching() docstring）。這裡沒有沿用 F1/F2... 的編號，
 因為不確定 F6、F7 是不是已經在你其他文件裡用掉了，怕跟既有編號撞在一起。
+
+2026-09-04：_check_error() 新增 ERR_I2C_FAILURE 的特殊處理，丟可重試的
+DeviceI2CError 而不是一般的 DeviceError（見 _check_error() 和
+exceptions.DeviceI2CError 的說明）。對應韌體端 main.c 三個 handler
+新增的 else 分支。
 """
 
 from datetime import datetime, timezone
@@ -23,10 +28,11 @@ from .protocol import (
     CMD_GET_TEMP, CMD_DATA_TEMP,
     CMD_SET_TIME, CMD_ACK,
     ID_PC, ID_BROADCAST,
-    FLAG_NEED_ACK, FLAG_IS_ERROR, ERR_UNKNOWN_CMD, ERR_PAYLOAD_TOO_SHORT,
+    FLAG_NEED_ACK, FLAG_IS_ERROR,
+    ERR_UNKNOWN_CMD, ERR_PAYLOAD_TOO_SHORT, ERR_I2C_FAILURE,
 )
 from .detect import auto_detect, auto_detect_all
-from .exceptions import FrameError, DeviceError, StaleResponseError
+from .exceptions import FrameError, DeviceError, DeviceI2CError, StaleResponseError
 from .models import TempReading, TimeReading, SyncResult
 
 
@@ -53,6 +59,7 @@ def _datetime_to_payload(dt: datetime) -> bytes:
 _ERR_MESSAGES = {
     ERR_UNKNOWN_CMD: "未知指令",
     ERR_PAYLOAD_TOO_SHORT: "payload 長度不足",
+    ERR_I2C_FAILURE: "I2C 讀寫失敗（DS3231 可能斷線、接觸不良，或匯流排異常）",
 }
 
 
@@ -68,15 +75,27 @@ def _decode_error_code(payload: bytes) -> str:
 
 def _check_error(flags: int, payload: bytes, context: str) -> None:
     """如果回應的 FLAGS 有設 FLAG_IS_ERROR，代表 Arduino 明確、合法地
-    回報這次請求失敗（不是封包本身有問題），丟出 DeviceError。
+    回報這次請求失敗（不是封包本身有問題），依錯誤碼丟出對應的例外。
 
     這個檢查刻意放在每個方法『判斷 cmd 是否為預期值』之前：舊韌體
     （還沒補這次 FLAG_IS_ERROR 修改的板子）送 CMD_ERR 時 flags 仍是
     0x00，這裡會直接跳過、自然落到後面既有的『cmd 不符預期』檢查，
     行為跟修改前一致，新舊韌體都能正確處理，不用同時燒錄。
+
+    2026-09-04：ERR_I2C_FAILURE 特別拆出來丟 DeviceI2CError（見該
+    class 的 docstring）而不是一般的 DeviceError——這個錯誤碼語意跟
+    其他兩個（ERR_UNKNOWN_CMD／ERR_PAYLOAD_TOO_SHORT）不一樣：那兩個
+    是請求封包本身有問題，確定性的，重試沒有意義；I2C 失敗有可能只是
+    暫時性的匯流排雜訊，值得讓 runner.py 重試。DeviceI2CError 繼承自
+    DeviceError，所以既有『except DeviceError』的地方不用改也還是抓
+    得到，只有 runner.py 需要額外把 DeviceI2CError 加進可重試清單。
     """
     if flags & FLAG_IS_ERROR:
-        raise DeviceError(f"Arduino 回報錯誤（{context}）：{_decode_error_code(payload)}")
+        code = payload[0] if payload else None
+        message = f"Arduino 回報錯誤（{context}）：{_decode_error_code(payload)}"
+        if code == ERR_I2C_FAILURE:
+            raise DeviceI2CError(message)
+        raise DeviceError(message)
 
 
 class DS3231:

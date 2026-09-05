@@ -41,6 +41,17 @@
    （例如 0x03），不能兩片板子共用同一個 ID。 */
 #define MY_DEVICE_ID    0x02u
 
+/* 2026-09-04 新增：recv_frame() 底下三個 HAL_UART_Receive 原本都用
+   HAL_MAX_DELAY（永遠等）。跟 I2C 那個問題同一類：如果 main loop 一直
+   卡在等 UART（例如 PC 端很久沒送指令），底下要加的 IWDG 沒辦法定期
+   被餵食，會被誤判成當機而重置。改成有限 timeout，讓 recv_frame() 就算
+   沒等到完整封包也會定期返回 0、讓 while(1) 迴圈繞回來一次——這樣不管
+   是「單純沒事做在等指令」還是「真的卡住」，都能讓 main loop 定期回到
+   迴圈開頭去餵狗，只有真正卡住（例如 I2C SCL 斷線那種問題）才會觸發
+   IWDG 重置。1000ms 對「等 PC 下一個指令」來說很短、幾乎無感；對「一個
+   完整封包最多 44 bytes、115200 baud 傳輸時間不到 4ms」來說非常寬鬆。 */
+#define UART_RX_TIMEOUT_MS    1000u
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -56,6 +67,13 @@ I2C_HandleTypeDef hi2c1;
 
 /* USER CODE BEGIN PV */
 
+/* 2026-09-04 新增：獨立看門狗（IWDG）的 handle。跟 hi2c1 不同，這個是
+   我手動加的，不是 CubeMX 產生的，所以放在 USER CODE 區塊裡而不是跟
+   hi2c1 放一起——這樣以後如果重新用 CubeMX 產生程式碼，這行不會被
+   覆蓋掉。用途見 MX_IWDG_Init() 跟 while(1) 迴圈裡 HAL_IWDG_Refresh()
+   那行的說明。 */
+IWDG_HandleTypeDef hiwdg;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -63,7 +81,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
-
+static void MX_IWDG_Init(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -111,18 +129,21 @@ static void send_error(uint8_t dst, uint16_t seq, uint8_t err_code)
     send_frame(MY_DEVICE_ID, dst, CMD_ERR, seq, payload, 1u, FLAG_IS_ERROR);
 }
 /**
- * @brief 阻塞式讀出一個完整 frame（先不做 timeout，對齊第2階 checklist
- *        的 MVP 範圍）。讀法對齊 Python 端 transport.py 的
+ * @brief 讀出一個完整 frame。讀法對齊 Python 端 transport.py 的
  *        SerialTransport.recv()：
  *          (1) 逐 byte 找 SOF（只留最後兩個 byte，不累積垃圾，天然免疫
  *              payload 裡剛好出現 0xAA 0x55 的情況——理由跟 transport.py
  *              的 _wait_sof() 完全一樣）
  *          (2) 讀固定長度 header（VER+SRC+DST+CMD+SEQ(2)+LEN = 7 bytes）
  *          (3) 依 LEN 讀 PAYLOAD + FLAGS(1) + CRC(2)
+ *
+ *        2026-09-04：三個步驟原本都用 HAL_MAX_DELAY（永遠等），改成
+ *        UART_RX_TIMEOUT_MS——單純沒收到新指令時也會定期返回 0，讓
+ *        while(1) 迴圈繞回去餵 IWDG，不會被誤判成當機（見該常數的說明）。
  * @param out_buf      輸出緩衝區，呼叫端要保證至少 FRAME_MAX_LEN bytes
  * @param out_buf_size 緩衝區容量
- * @retval 實際收到的 byte 數（含 SOF）；0 表示 HAL 讀取失敗，或是 LEN
- *         聲稱的長度放不進緩衝區（正常合法封包不會發生，見下面註解）
+ * @retval 實際收到的 byte 數（含 SOF）；0 表示逾時、HAL 讀取失敗，或是
+ *         LEN 聲稱的長度放不進緩衝區（正常合法封包不會發生，見下面註解）
  */
 static uint16_t recv_frame(uint8_t *out_buf, uint16_t out_buf_size)
 {
@@ -135,7 +156,7 @@ static uint16_t recv_frame(uint8_t *out_buf, uint16_t out_buf_size)
     /* (1) 找 SOF */
     for (;;)
     {
-        if (HAL_UART_Receive(&hcom_uart[COM1], &cur, 1, HAL_MAX_DELAY) != HAL_OK)
+        if (HAL_UART_Receive(&hcom_uart[COM1], &cur, 1, UART_RX_TIMEOUT_MS) != HAL_OK)
         {
             return 0u;
         }
@@ -147,7 +168,7 @@ static uint16_t recv_frame(uint8_t *out_buf, uint16_t out_buf_size)
     }
 
     /* (2) 讀固定長度 header */
-    if (HAL_UART_Receive(&hcom_uart[COM1], header, sizeof(header), HAL_MAX_DELAY) != HAL_OK)
+    if (HAL_UART_Receive(&hcom_uart[COM1], header, sizeof(header), UART_RX_TIMEOUT_MS) != HAL_OK)
     {
         return 0u;
     }
@@ -171,7 +192,7 @@ static uint16_t recv_frame(uint8_t *out_buf, uint16_t out_buf_size)
 
     /* (3) 依 LEN 讀 PAYLOAD + FLAGS + CRC */
     if (HAL_UART_Receive(&hcom_uart[COM1], &out_buf[2 + sizeof(header)],
-                          (uint16_t)(payload_len + 3u), HAL_MAX_DELAY) != HAL_OK)
+                          (uint16_t)(payload_len + 3u), UART_RX_TIMEOUT_MS) != HAL_OK)
     {
         return 0u;
     }
@@ -206,8 +227,24 @@ static void handle_get_time(const Frame *req)
         payload[6] = dt.second;
         send_frame(MY_DEVICE_ID, req->src, CMD_DATA_TIME, req->seq, payload, 7u, 0u);
     }
-    /* I2C 讀取失敗時的 CMD_ERR 回應留到第4階；第2階先只處理成功路徑，
-       失敗就不回應（PC 端會 timeout，照 runner.py 既有的重試機制處理）。 */
+    else
+    {
+        /* 2026-09-04 新增：I2C 讀取失敗時，明確回 CMD_ERR + ERR_I2C_FAILURE，
+           不再安靜不回應。安靜不回應時 PC 端只會看到逾時，沒辦法判斷是
+           「硬體真的壞了」還是「這次封包剛好在路上弄丟」；現在能明確
+           分辨，PC 端也能對這兩種情況做不同處理（見 rtc3231/ds3231.py
+           的 DeviceI2CError，跟一般協定錯誤的 DeviceError 分開重試）。
+
+           實測發現只回錯誤碼還不夠：I2C 線路中途斷開很容易讓 STM32 的
+           I2C 週邊卡進內部 BUSY 狀態，下一次 transaction 會撞上同一個
+           卡住的狀態、一路卡到 HAL_MAX_DELAY（已經改成有限 timeout，
+           見 rtc_driver.h）。這裡先呼叫 rtc_i2c_recover() 重置週邊，
+           下一次（PC 端 DeviceI2CError 現在會自動重試）才比較有機會
+           撞上一個乾淨的週邊而不是重複同一個卡住狀態。回傳值故意忽略：
+           就算重置本身失敗，還是要把這次的 ERR_I2C_FAILURE 回給 PC。 */
+        (void)rtc_i2c_recover(&hi2c1);
+        send_error(req->src, req->seq, ERR_I2C_FAILURE);
+    }
 }
 
 static void handle_set_time(const Frame *req)
@@ -217,7 +254,7 @@ static void handle_set_time(const Frame *req)
     if (req->len != 7u)
     {
         send_error(req->src, req->seq, ERR_PAYLOAD_TOO_SHORT);
-        return;   /* payload 長度不對，先靜默忽略，ERR_PAYLOAD_TOO_SHORT 留給第4階 */
+        return;   /* payload 長度不對，已經回過 ERR_PAYLOAD_TOO_SHORT，不用再往下處理 */
     }
 
     dt.year   = (uint16_t)(((uint16_t)req->payload[0] << 8) | req->payload[1]);
@@ -231,7 +268,13 @@ static void handle_set_time(const Frame *req)
     {
         send_frame(MY_DEVICE_ID, req->src, CMD_ACK, req->seq, NULL, 0u, 0u);
     }
-    /* 寫入失敗不回應，CMD_ERR 留給第4階 */
+    else
+    {
+        /* I2C 寫入失敗，先重置週邊再回 ERR_I2C_FAILURE（理由同
+           handle_get_time() 的說明） */
+        (void)rtc_i2c_recover(&hi2c1);
+        send_error(req->src, req->seq, ERR_I2C_FAILURE);
+    }
 }
 
 static void handle_get_temp(const Frame *req)
@@ -253,6 +296,13 @@ static void handle_get_temp(const Frame *req)
         payload[8] = dt.second;
         send_frame(MY_DEVICE_ID, req->src, CMD_DATA_TEMP, req->seq, payload, 9u, 0u);
     }
+    else
+    {
+        /* I2C 失敗（讀時間或讀溫度任一失敗都算），先重置週邊再回
+           ERR_I2C_FAILURE（理由同 handle_get_time() 的說明） */
+        (void)rtc_i2c_recover(&hi2c1);
+        send_error(req->src, req->seq, ERR_I2C_FAILURE);
+    }
 }
 
 static void handle_get_id(const Frame *req)
@@ -260,6 +310,41 @@ static void handle_get_id(const Frame *req)
     uint8_t payload[1];
     payload[0] = MY_DEVICE_ID;
     send_frame(MY_DEVICE_ID, req->src, CMD_DATA_ID, req->seq, payload, 1u, 0u);
+}
+
+/**
+ * @brief  初始化獨立看門狗（IWDG）。
+ *
+ * 2026-09-04 新增：實測發現 SCL 斷開時，STM32 的 I2C 週邊會卡在等待
+ * clock stretching 結束（硬體層級的等待，不受 rtc_driver.c 那個
+ * DS3231_I2C_TIMEOUT_MS 保護），main loop 完全卡死，只有拔 USB 觸發
+ * DTR 重置才能恢復。IWDG 是最後一道防線：不管卡在哪裡、什麼原因，
+ * 只要 while(1) 超過這裡設定的時間沒有繞回去呼叫 HAL_IWDG_Refresh()，
+ * 硬體會自動把整顆 MCU 重置，不需要人去拔 USB。
+ *
+ * Prescaler=IWDG_PRESCALER_64、Reload=1999，算出來大約 4 秒
+ * （(1999+1)*64/32000 ? 4.0s，LSI 標稱頻率 32kHz——IWDG 走內部 LSI
+ * 振盪器，出廠公差通常有 ±不小的百分比，實際時間可能跟 4 秒有一些
+ * 落差，這裡只是抓一個「遠比正常操作久、但又不會讓使用者等太久」的
+ * 量級，不需要精準）。
+ *
+ * !! 重要 !!：這個函式需要 stm32g4xx_hal_conf.h 裡的
+ * `#define HAL_IWDG_MODULE_ENABLED` 沒有被註解掉，這個專案原本應該
+ * 沒有用過 IWDG，那一行很可能還是註解狀態，需要手動打開，不然這裡
+ * 會編譯失敗（找不到 HAL_IWDG_xxx 相關符號）。這個檔案沒有在你原本
+ * 給我的檔案清單裡，我沒辦法直接幫你改，需要你自己去 Inc/ 底下開
+ * 那個檔案手動取消註解那一行。
+ */
+static void MX_IWDG_Init(void)
+{
+    hiwdg.Instance = IWDG;
+    hiwdg.Init.Prescaler = IWDG_PRESCALER_64;
+    hiwdg.Init.Reload = 1999u;
+    hiwdg.Init.Window = IWDG_WINDOW_DISABLE;
+    if (HAL_IWDG_Init(&hiwdg) != HAL_OK)
+    {
+        Error_Handler();
+    }
 }
 /* USER CODE END 0 */
 
@@ -294,7 +379,7 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-
+  MX_IWDG_Init();
   /* USER CODE END 2 */
 
   /* Initialize leds */
@@ -346,11 +431,20 @@ int main(void)
     uint16_t rx_len;
     Frame req;
 
+    /* 2026-09-04 新增：每輪迴圈開頭先餵狗。這裡是整個 main loop
+       唯一保證「不管上一輪發生什麼事都會執行到」的位置——只要這裡
+       在 IWDG 設定的時間內沒有被執行到（不管是卡在 recv_frame() 裡
+       某個 HAL_UART_Receive，還是卡在某個 handle_xxx() 呼叫的
+       rtc_get_time/rtc_set_time/rtc_get_temp 裡），就代表真的卡死了，
+       讓硬體自動重置。 */
+    HAL_IWDG_Refresh(&hiwdg);
+
     rx_len = recv_frame(rx_buf, sizeof(rx_buf));
     if (rx_len == 0u)
     {
-      /* HAL 讀取失敗（例如 USB 瞬斷），跳過這輪，回去等下一次 SOF。
-         要不要加重連/重置邏輯是之後的事，第2階先不處理。 */
+      /* recv_frame() 逾時（單純沒收到新指令，UART_RX_TIMEOUT_MS 到了，
+         這是正常情況，不是錯誤）或讀取失敗，跳過這輪、回去等下一次
+         SOF，順便讓迴圈繞回上面去餵狗。 */
       continue;
     }
 

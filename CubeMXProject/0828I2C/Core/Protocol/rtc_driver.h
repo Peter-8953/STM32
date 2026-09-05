@@ -23,6 +23,17 @@ extern "C" {
    （main.c 裡 HAL_I2C_IsDeviceReady/Mem_Read 現有呼叫都是這樣用的）。 */
 #define DS3231_I2C_ADDR       0x68u
 
+/* 2026-09-04 新增：三個 HAL_I2C_Mem_Read/Write 呼叫原本都用 HAL_MAX_DELAY
+   （永遠等），實測發現這是個嚴重問題——I2C 線路（例如 SCL）中途斷開時，
+   STM32 的 I2C 週邊很容易卡進內部 BUSY 狀態，HAL_MAX_DELAY 會讓呼叫永遠
+   不返回，整個 main() 的 while(1) 跟著卡死，連 UART 都沒人理，只有拔
+   USB 觸發 DTR 重置、整顆 MCU 重開機才能恢復。改成有限 timeout 之後，
+   卡住的 I2C transaction 最多等這麼久就會確定放棄，回傳非 HAL_OK，讓
+   main loop 能繼續跑、正常回應 CMD_ERR/ERR_I2C_FAILURE。
+   100ms 對 DS3231 這種簡單週邊的正常 transaction（通常幾百微秒內完成）
+   來說非常寬鬆，不會誤傷正常情況。 */
+#define DS3231_I2C_TIMEOUT_MS 100u
+
 /* 暫存器位址（計畫書 4.4 節） */
 #define DS3231_REG_SECONDS    0x00u
 #define DS3231_REG_MINUTES    0x01u
@@ -91,6 +102,34 @@ typedef struct {
  * @retval HAL_OK 成功；其餘為 HAL_I2C_Mem_Read 回傳的錯誤碼
  */
 HAL_StatusTypeDef rtc_get_temp(I2C_HandleTypeDef *hi2c, RtcTemperature *out);
+
+/**
+ * @brief  重新初始化 I2C 週邊，嘗試清掉可能卡住的內部狀態
+ *
+ * 2026-09-04 新增，搭配上面 DS3231_I2C_TIMEOUT_MS 一起看：光是把
+ * HAL_MAX_DELAY 換成有限 timeout，只保證「不會永遠卡住」，不保證
+ * 「下一次 transaction 就會成功」——如果卡住的原因是 STM32 這一側
+ * I2C 週邊的內部狀態（例如 BUSY flag 因為上一次通訊中斷、沒收到
+ * 正常的 STOP condition 而卡住），單純重新 HAL_I2C_Init() 通常就能
+ * 清掉，不需要重開機。
+ *
+ * 呼叫端（main.c 的三個 handler）建議在 rtc_get_time/rtc_set_time/
+ * rtc_get_temp 回傳非 HAL_OK 時呼叫這個函式一次，再回 CMD_ERR——這樣
+ * PC 端下一次重試（見 rtc3231/exceptions.py 的 DeviceI2CError，現在
+ * 會自動重試）比較有機會撞上一個已經重置過、乾淨的 I2C 週邊。
+ *
+ * !! 已知限制 !!：這裡只重置 STM32 這一側的 I2C 週邊暫存器，沒有做
+ * 真正的「I2C bus recovery」（手動把 SCL/SDA 切成 GPIO、打 clock 把
+ * 卡住的從機/DS3231 逼出來、再切回 I2C 功能）。如果卡住的原因是
+ * DS3231 那一端把 SDA 拉住不放（比較少見，通常要滿特殊的中斷時機才
+ * 會發生），這個函式不會有效果，需要更完整的 bus recovery，那個要
+ * 知道 SCL/SDA 實際接在哪個 GPIO port/pin 才能寫（通常在
+ * stm32g4xx_hal_msp.c 或 CubeMX 的 .ioc 設定裡），這裡先不做。
+ *
+ * @param  hi2c 已初始化過的 I2C handle（main.c 裡的 &hi2c1）
+ * @retval HAL_OK 成功；其餘為重新初始化失敗的錯誤碼
+ */
+HAL_StatusTypeDef rtc_i2c_recover(I2C_HandleTypeDef *hi2c);
 
 #ifdef __cplusplus
 }

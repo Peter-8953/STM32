@@ -66,6 +66,13 @@ extern "C" {
 /* ==== 錯誤碼（CMD_ERR 的 payload） ==== */
 #define ERR_UNKNOWN_CMD               0x01u
 #define ERR_PAYLOAD_TOO_SHORT         0x02u
+/* 2026-09-04 新增：I2C 讀寫 DS3231 本身失敗（匯流排錯誤、DS3231 沒回應等），
+   跟前兩個「請求封包本身有問題」性質不同——那兩個是確定性的，同一個請求
+   重送結果永遠一樣；這個有可能只是暫時性的匯流排雜訊，PC 端重試很可能
+   就成功了。對應 Python 端 rtc3231/exceptions.py 的 DeviceI2CError，
+   跟一般 DeviceError 分開處理（runner.py 會重試 DeviceI2CError，不會
+   重試其他 DeviceError）。 */
+#define ERR_I2C_FAILURE                0x03u
 
 /* ==== frame_parse() 回傳狀態 ==== */
 typedef enum

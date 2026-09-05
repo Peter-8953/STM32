@@ -1,4 +1,4 @@
-"""test_protocol_robustness.py -- 驗證三個協定/重連相關的修改，全部用
+"""test_protocol_robustness.py -- 驗證協定/重連相關的修改，全部用
 模擬的 transport／函式，不需要真的接 STM32：
 
     1. SEQ 對不上的過期回應會被 _recv_matching() 丟棄，不會被誤當成
@@ -13,6 +13,10 @@
        還沒插回去）時，一樣會重試到 MAX_RECONNECTS 次才放棄，不會像
        2026-09-04 修正前那樣丟一次例外就整個死掉——這是實際拔 USB 測試
        才踩到的 bug，第一版的測試沒有涵蓋到這個情境
+    6. ERR_I2C_FAILURE 正確對應到可重試的 DeviceI2CError，其他錯誤碼
+       （ERR_UNKNOWN_CMD 等）維持不可重試的 DeviceError
+    7. LoopRunner／run_once 都把 DeviceI2CError 當成可重試錯誤，跟
+       CrcError/RtcTimeoutError 一樣不會一次失敗就整個放棄
 
 用法：
     python test_protocol_robustness.py
@@ -26,9 +30,13 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from rtc3231.protocol import (
     build_frame, CMD_DATA_TIME, ID_PC, FRAME_PAYLOAD_MAX,
+    FLAG_IS_ERROR, ERR_I2C_FAILURE, ERR_UNKNOWN_CMD,
 )
-from rtc3231.ds3231 import DS3231
-from rtc3231.exceptions import StaleResponseError, RtcTimeoutError, FrameError
+from rtc3231.ds3231 import DS3231, _check_error
+from rtc3231.exceptions import (
+    StaleResponseError, RtcTimeoutError, FrameError,
+    DeviceError, DeviceI2CError,
+)
 
 import runner as runner_module
 
@@ -207,6 +215,86 @@ def test_loop_runner_retries_reconnect_on_exception():
           f"（不是像修正前那樣試一次就死）\n")
 
 
+def test_i2c_error_maps_to_retryable_exception():
+    print("[6] ERR_I2C_FAILURE 應該對應到可重試的 DeviceI2CError，"
+          "其他錯誤碼維持不可重試的 DeviceError...")
+
+    try:
+        _check_error(FLAG_IS_ERROR, bytes([ERR_I2C_FAILURE]), "GET_TEMP")
+        raise AssertionError("應該要拋出例外，但沒有")
+    except DeviceI2CError:
+        pass   # 正確：I2C 失敗對應到可重試的子類別
+    except DeviceError:
+        raise AssertionError(
+            "拋出了普通 DeviceError，但 ERR_I2C_FAILURE 應該要拋更具體的 DeviceI2CError"
+        )
+
+    try:
+        _check_error(FLAG_IS_ERROR, bytes([ERR_UNKNOWN_CMD]), "GET_TEMP")
+        raise AssertionError("應該要拋出例外，但沒有")
+    except DeviceI2CError:
+        raise AssertionError("ERR_UNKNOWN_CMD 不應該被誤判成 DeviceI2CError")
+    except DeviceError:
+        pass   # 正確：其他錯誤碼維持不可重試的基礎類別
+
+    print("    PASS -- ERR_I2C_FAILURE -> DeviceI2CError（可重試），"
+          "ERR_UNKNOWN_CMD -> DeviceError（不重試），兩者正確分開\n")
+
+
+def test_loop_runner_retries_on_i2c_error():
+    print("[7] LoopRunner 應該把 DeviceI2CError 當成可重試錯誤，"
+          "不會像不明例外那樣一次就整個放棄...")
+    runner_module.time.sleep = lambda _: None
+
+    call_count = {"n": 0}
+
+    def i2c_then_succeed(rtc):
+        call_count["n"] += 1
+        if call_count["n"] <= 2:
+            raise DeviceI2CError("模擬 I2C 暫時性失敗")
+        return object()   # 第3次成功，模擬 I2C 問題只是暫時性的雜訊
+
+    lr = runner_module.LoopRunner()
+    lr._stop_event = threading.Event()
+    results = []
+
+    def on_result(db, rtc, v):
+        results.append(v)
+        lr._stop_event.set()   # 成功一次就結束測試
+
+    lr._loop(i2c_then_succeed, lambda v: "", on_result, None, None, reconnect_fn=None)
+
+    assert call_count["n"] == 3, f"應該重試2次後第3次成功，實際呼叫了 {call_count['n']} 次"
+    assert len(results) == 1
+    print(f"    PASS -- DeviceI2CError 被正確當成可重試錯誤，"
+          f"重試2次後第3次成功，沒有因為第一次I2C失敗就直接放棄\n")
+
+
+def test_run_once_retries_on_i2c_error():
+    print("[8] run_once()（sync 用的）也應該把 DeviceI2CError 當成可重試錯誤...")
+
+    call_count = {"n": 0}
+
+    class FakeResult:
+        seq = 1
+
+    def func(rtc):
+        call_count["n"] += 1
+        if call_count["n"] <= 2:
+            raise DeviceI2CError("模擬 I2C 暫時性失敗")
+        return FakeResult()
+
+    command = {
+        "func": func,
+        "format": lambda v: "OK",
+        "on_result": lambda db, rtc, v: None,
+    }
+    ok = runner_module.run_once(command, db=None, rtc=None, max_retry=3)
+    assert ok is True, "應該要在第3次成功"
+    assert call_count["n"] == 3
+    print(f"    PASS -- run_once() 也正確重試了 DeviceI2CError，第3次成功\n")
+
+
 if __name__ == "__main__":
     test_seq_matching_discards_stale()
     test_seq_matching_gives_up_after_max_stale()
@@ -214,4 +302,7 @@ if __name__ == "__main__":
     test_loop_runner_reconnect_cap_gives_up()
     test_loop_runner_reconnect_cap_resets_on_success()
     test_loop_runner_retries_reconnect_on_exception()
+    test_i2c_error_maps_to_retryable_exception()
+    test_loop_runner_retries_on_i2c_error()
+    test_run_once_retries_on_i2c_error()
     print("=== 全部驗證通過 ===")

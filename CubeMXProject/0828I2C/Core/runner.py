@@ -2,21 +2,29 @@
 （對應文件 6.1 節）。
 
 錯誤處理策略：
-    CrcError / RtcTimeoutError  -- 暫時性錯誤，重試最多 MAX_RETRY 次
-    其他 Exception              -- 不明錯誤，直接停止，不亂重試
-    連續失敗達上限               -- 自動停止迴圈，回到 prompt
+    CrcError / RtcTimeoutError / DeviceI2CError  -- 暫時性錯誤，重試最多 MAX_RETRY 次
+    其他 Exception                                -- 不明錯誤，直接停止，不亂重試
+    連續失敗達上限                                  -- 自動停止迴圈，回到 prompt
 
 2026-09-04：LoopRunner 新增 MAX_RECONNECTS，見 _loop() 說明——原本
 「連續失敗滿 MAX_RETRY 次就重連一次」這件事本身沒有總次數上限，USB
 如果持續不穩定，理論上會無限重連下去；run_once() 不需要對應的修改，
 因為它本來就已經用 reconnected_once 限制整個呼叫最多重連一次。
+
+2026-09-04：DeviceI2CError（韌體回報 ERR_I2C_FAILURE）加進兩個函式的
+可重試清單。跟 CrcError/RtcTimeoutError 一樣，這通常代表暫時性的硬體
+問題（I2C 匯流排雜訊、DS3231 接觸不良瞬斷），重試很可能就成功；跟其他
+DeviceError（韌體回報 ERR_UNKNOWN_CMD/ERR_PAYLOAD_TOO_SHORT）不同，
+那兩個是請求本身就有問題，是確定性的，重試沒有意義，所以刻意不放進
+這個清單——DeviceI2CError 雖然繼承自 DeviceError，但這裡是明確指名
+DeviceI2CError，不會不小心連其他 DeviceError 也一起變成可重試。
 """
 
 import threading
 import time
 from datetime import datetime
 
-from rtc3231.exceptions import CrcError, RtcTimeoutError
+from rtc3231.exceptions import CrcError, RtcTimeoutError, DeviceI2CError
 
 
 def _ts() -> str:
@@ -46,7 +54,7 @@ def run_once(command: dict, db, rtc, max_retry: int = 3, reconnect_fn=None) -> b
             command["on_result"](db, rtc, value)
             print(command["format"](value))
             return True
-        except (CrcError, RtcTimeoutError) as e:
+        except (CrcError, RtcTimeoutError, DeviceI2CError) as e:
             fail_count += 1
             print(f"[{_ts()}] [retry {fail_count}/{max_retry}] {e}", flush=True)
             if fail_count >= max_retry:
@@ -171,7 +179,7 @@ class LoopRunner:
                 # 修改後可以換行print(format_fn(value), flush=True)
                 fail_count = 0
                 reconnect_count = 0   # 這次成功了，代表連線目前是健康的，重連 counter 歸零重算
-            except (CrcError, RtcTimeoutError) as e:
+            except (CrcError, RtcTimeoutError, DeviceI2CError) as e:
                 fail_count += 1
                 # 改用 \n（獨立成行）而非 \r（互相覆蓋），這樣才看得到
                 # 逐次重試的過程；加時間戳記方便你自己核對實際間隔。

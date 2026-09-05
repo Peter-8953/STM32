@@ -48,6 +48,30 @@ class DeviceError(RtcError):
     """
 
 
+class DeviceI2CError(DeviceError):
+    """Raised specifically when the Arduino reports ERR_I2C_FAILURE via
+    CMD_ERR: it tried to talk to the DS3231 over I2C for this request and
+    that specific transaction failed (bus contention, DS3231 momentarily
+    unresponsive, a loose wire, etc.).
+
+    A DeviceError, but semantically different from the base class's other
+    codes (ERR_UNKNOWN_CMD / ERR_PAYLOAD_TOO_SHORT): those mean the
+    request itself was malformed, and retrying the identical request
+    always fails the same way. An I2C bus error is plausibly transient --
+    retrying the same request a moment later might just succeed. So
+    unlike plain DeviceError, this IS added to runner.py's ``except
+    (CrcError, RtcTimeoutError, DeviceI2CError)`` retry clause.
+
+    (Note: retrying only re-sends the request over the existing USB/serial
+    link -- it doesn't reset the STM32's I2C peripheral or power-cycle the
+    DS3231. If the I2C bus is genuinely, persistently stuck rather than
+    just glitching, retries will keep failing the same way and this will
+    still correctly run out MAX_RETRY/MAX_RECONNECTS and stop, same as
+    any other persistent failure -- it just won't fix a truly broken I2C
+    connection by itself.)
+    """
+
+
 class StaleResponseError(RtcError):
     """Raised by DS3231._recv_matching() when repeated responses don't
     match the SEQ of the request that was just sent, even after
