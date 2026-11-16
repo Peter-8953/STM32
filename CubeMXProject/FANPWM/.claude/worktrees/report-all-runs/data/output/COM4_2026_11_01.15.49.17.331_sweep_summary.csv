@@ -1,4 +1,0 @@
-target_rpm,num_dwells,mean_stable_rpm,mean_ripple_std,mean_duty,mean_steady_state_error_rpm,mean_steady_state_error_pct,worst_abs_error_pct,all_within_5pct
-1044.2,3,1040.6,7.34,19.07,-3.6,-0.345,0.475,PASS
-2088.3,3,2103.21,5.51,37.27,14.91,0.714,0.83,PASS
-3132.5,3,3124.85,3.88,64.41,-7.65,-0.244,0.405,PASS

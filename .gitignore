@@ -26,3 +26,6 @@ __pycache__/
 .venv/
 venv/
 .env
+
+# AI Agent Worktrees & Cache
+.claude/

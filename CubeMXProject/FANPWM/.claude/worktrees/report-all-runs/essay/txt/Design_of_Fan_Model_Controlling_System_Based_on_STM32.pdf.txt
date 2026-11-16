@@ -1,513 +1,0 @@
-
-===== PAGE 1 =====
-ISBN 978-1-7281-8609-2/21/$31.00 ©2021 IEEE 
-De
-sign of Fan Model Controlling System  
-Based on STM32 
- 
-Jolana Škutová, Jan Šídlo  
-Department of Control Systems and Instrumentation 
-Faculty of Mechanical Engineering, VSB- Technical University of Ostrava 
-Ostrava, Czech Republic 
-jolana.skutova@vsb.cz 
- 
-Abstract—The paper describes the implementation of a control 
-system based on STM32 microcontroller, which was selected to 
-control the laboratory model of the fan. First, a mathematical 
-model was identified and then the design of the parameters of the 
-digital PID controller was tuned using the desired model method. 
-In the KEIL µVision environment, program functions for this 
-control process were created and tested in real time. 
-Keywords—PID controller, laboratory fan model, KEIL, 
-microcontroller, process control, STM32 
-I. INTRODUCTION 
-The development of microelectronics and the efforts of 
-miniaturization offer microcontrollers with minimal 
-dimensions, which thus become much more interesting for use 
-in practice.  In addition to digital or analog inputs and outputs, 
-microcontrollers also include many variants of interfaces and 
-auxiliary processors, such as CAN, I2C, SPIO, Bluetooth, 
-Ethernet, Wi-Fi, etc. [1] In the case of peripherals, counters, 
-timers and DMA are also important parts. [2] Besides, they 
-contain a specialized mathematical coprocessor, which is 
-designed to calculate floating point operations. 
-STMicroelectronics microcontrollers become quite famous 
-among engineers for their low power consumption and sheer 
-computational power [3]. They are manufactured in several 
-levels of equipment and thus it is possible to choose the most 
-suitable model for a specific real deployment. 
-The advantage of using microcontrollers is, among other 
-things, their implementation in close proximity to the sensor and 
-thus guarantees less signal disturbance when obtaining a signal 
-from these technical means than when transmitting an analog 
-signal to a remote computer for further processing. [4] 
-The application areas of microcontrollers currently represent 
-embedded systems, e.g. for mobile devices [5], self-care 
-systems, smart home systems [6]. In the field of artificial 
-intelligence, the STM32 series microcontrollers also have 
-support in the specific model STM32Cube.AI [7], which is 
-being developed to create and map of the neural networks for 
-person presence detection, safe driving systems [8] and many 
-other useful applications. 
-The intention was to use the microcontroller of the STM32 
-series for the regulation of the laboratory model and to compare 
-it with the existing solution of the control system inside 
-the computer using the National Instrument measuring card. 
-The goal is to implement algorithms of a digital PID controller 
-into an STM32 microcontroller. In the future, adaptive control 
-algorithms are applied in the next work, or adaptive control is 
-implemented using an orthogonal neural network, assuming 
-the type of selected microcontroller and limiting the size of its 
-memory. [3] 
-II. MICROCONTROLLER SELECTION 
-Selecting suitable microcontrollers for control system 
-applications is often a crucial task. For most applications, 8-bit 
-microcomputers that are well documented are sufficient. Over 
-the years, a number of development tools and software have 
-emerged to help expand these microcomputers.  
-32-bit microcomputers are now increasingly used for their 
-computing capabilities and ever-decreasing cost, so they are 
-available to a wide range of end users. One of the groups  
-of 32-bit microcomputers are microcomputers based on 
-the STM32 architecture. [2] For the control of the laboratory fan 
-model, it would be possible to choose other microprocessors, but 
-the secondary interest was to gain experience with more 
-powerful microprocessors for the later application of more 
-complex control algorithms. Based on the requirements and 
-technical equipment, a microcontroller of the STM32 series was 
-selected. 
-The well-known type of laboratory model, namely the fan 
-model, was chosen by the controlled system. This lab model can 
-easily communicate with a computer using a National 
-Instrument USB-6009 14-bit multifunction data acquisition 
-USB device. [10] There is software support in the graphical user 
-application implemented in LabView, and applications 
-in the MATLAB environment have also been created before. 
-Now the fan model is controlled by a microcontroller and 
-the functions necessary for obtaining, adjusting and setting 
-the input-output parameters of the control process are 
-implemented.  
-A. Developlment Board with Microcontroller STM32 
-Due to the initial acquaintance with the type of STM32 series 
-microcontroller and its applicability in the field of control, 
-a development board offered directly by the microcontroller 
-manufacturer was used, which will allow easy application 
-development in a test environment and then possible further 
-seamless transition to production equipment. The STM32 
-Nucleo-144 series development board (Fig. 1) provides users 
-2021 22nd International Carpathian Control Conference (ICCC) | 978-1-7281-8609-2/20/$31.00 ©2021 IEEE | DOI: 10.1109/ICCC51557.2021.9454666
-Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:02:22 UTC from IEEE Xplore.  Restrictions apply. 
-
-===== PAGE 2 =====
-with a comfortable and flexible design and is equipped with one 
-o
-f the most powerful STM32F767ZIT6 microcontrollers, 
-integrated ST-LINK / V2-1 debugger/programmer, interface 
-with serial wire debugging (SWD) connector for debugging and 
-microcontroller programming, board power supply from USB or 
-external source, tricolour LED provides information about  
-ST-LINK communication status, USER and RESET button, 
-USB OTG (On The Go) interface and Ethernet interface. [1] 
- 
-Fig. 1. STM32 Nucleo-144 Developlment Board 
-The STM32F767ZIT6 device operating at up to 216 MHz 
-frequency, incorporates high-speed embedded memories with 
-Flash memory up to 2 Mbytes and 512 kb of SRAM memory. 
-This microcontroller offers three 12-bit analog to digital (AD) 
-converters and two digital to analog (DA) converters with 12-bit 
-resolution, it contains twelve general-purpose 32-bit timers and 
-a true random number generator. A number of different types 
-of interfaces are also sufficient: 8x USART / UART, four I2C, 
-six SPI, two SAI, SDMMC, camera, LCD-TFT display, 
-USB 2.0, three CAN 2.0 B bus. These features allow 
-the microcontroller to be widely used and used for various 
-applications. [1] 
-B. Developlment Environment for STM32 
-Support for Integrated Development Environments (IDEs) 
-for STM32 Microcontrollers is extensive. The basic division is 
-into freely available (free IDEs) or IDEs for commercial use. 
-Free IDEs include, for example, KEIL µVision, Atollic True 
-STUDIO, STM32Cube, System Workbench for STM32. [9] 
-The KEIL µVision environment was applied, which enables 
-overall project management, a source code editor and 
-a debugger. In particular, µVision Debugger provides a unified 
-environment for testing the developed application, debugging 
-possible errors and optimization. Controlled code execution is 
-a great support for program development, including 
-the possibility of a full view of the state of peripherals. The 
-freely available DK-Lite license is limited to the development of 
-the program up to 32 Kb. Also, the compiler and linker do not 
-generate independent code and data. The reason for choosing 
-IDEs KEIL is, in addition to the well-arranged development 
-environment, also a module for debugging with the ability to 
-connect the microcontroller using ST-LINK and the possibility 
-of using the basic structure of the program generated by the 
-STM32CubeMX utility with individual peripherals settings. [2] 
-Debugging the program in the KEIL µVision 5 environment 
-when communicating with the Nucleo board does not allow 
-displaying the content of variables, which is important for 
-monitoring partial variables and their course over time. 
-Therefore, the open-source software called STM Studio offered 
-by STMicroelectronics was used. STM Studio is designed for 
-debugging applications and provides various graphical views for 
-debugging and diagnostics. In the STM Studio environment, 
-users can monitor the content of variables in a defined list or it 
-is possible to display these variables in a graph depending on the 
-time, or it is possible to display both types of display.  
-III. LABORATORY MODEL FOR CONTROL SYSTEM 
-We applied the control process using the STM32 
-microcontroller to a laboratory model of a fan (Fig. 2), which 
-was constructed in a larger number of pieces in order to teach 
-students in the field of automation. 
-A. Description of Laboratory Fan Model 
-The construction of the laboratory model is simple and 
-robust so that the model is failure-free and easily portable within 
-the teaching. 
-The laboratory model of the fan represents a simple type of 
-controlled system, on which it is possible to test algorithms of 
-measurement, identification, various types of controls, 
-examination of other signals in the frequency domain, etc. 
-The basis of the model is a fan with a diameter of 11 cm, to 
-which an accelerometer and additional electronics are attached 
-to ensure the adjustment of the supply voltage to the range 0 to 
-12 V. Speed measurement can be detected by two sensors 
-reflection sensor or Hall probe integrated in the fan body. The 
-model is powered by voltage from the computer's USB port. [10] 
- 
-Fig. 2. Laboratory Fan Model for Control of Speed 
-B. Electronic Development Board of Laboratory Fan Model 
-An additional electronic development board mounted on top 
-of the centre of the fan rotation allows the electrical signals to 
-be adapted and adjusted between the laboratory model of the fan 
-and the National Instrument USB-6009 measuring card. For our 
-specific fan speed control purposes, we are interested in the 
-description of the analog input and analog output. The analog 
-output of the development board is a DA converter. The voltage 
-range of the measuring card 0 to 5 V is converted to the range 0 
-to 12 V and the fan is supplied with this voltage. 
-An analog input of the electronic development board, which 
-is output from the reflection sensor and indicates the voltage 
-from the reflection sensor measuring the distance of the blade 
-Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:02:22 UTC from IEEE Xplore.  Restrictions apply. 
-
-===== PAGE 3 =====
-surface from the sensor detector. The signal of this analog input 
-i
-s therefore a generated rectangular signal and from it we can 
-find out the fan speed. On the development board, this voltage 
-signal is converted to digital by an AD converter. [10] 
-C. Connection STM32 Nucleo-144 development board with 
-Laboratory Fan Model 
-The laboratory model of the fan, including the additional 
-electronic development board, is powered by the USB port with 
-a voltage in the range of 0 to 5 V. [10] The STM32 Nucleo-144 
-development board includes a DA converter whose output 
-voltage is in the range of 0 to 3.3 V. [1] Therefore, it was 
-necessary to adjust this range to the range of 0 to 5 V using 
-additional electronics that use an operational amplifier in a non-
-inverting circuit. 
-The original educational model of the fan communicates 
-with the computer using a NI USB-6009 measuring card, which 
-has a dead band in the range of supply voltage from 0 to 1.2 V, 
-which means that the fan has no speed. For better accuracy, 
-adjusting the signal to a range of 0 to 3.3 V (STM32 
-Nucleo-144) removes the dead band, so this range corresponds 
-to the original voltage range of 1.2 to 5 V (NI USB-6009). [10] 
-The fan speed are given by the width of the pulses that are 
-obtained from the reflection sensor. The reflex sensor provides 
-more accurate information about fan speed than the built-in Hall 
-sensor. It is also necessary to consider that the fan has 7 blades, 
-so it is necessary to take this circumstance into account when 
-recalculating its revolutions. The measurement signals of both 
-speed sensors from the oscilloscope are shown in Fig. 3, the 
-reflection sensor is shown by a yellow line, the Hall probe by a 
-blue line.  
- 
-Fig. 3. Measurement of speed using an oscilloscope. 
-Although a reflex sensor is more accurate for determining 
-fan speed, it is not obvious at first glance because the signal also 
-contains noise. The fan is composed of seven blades, so when 
-evaluating the periodic signal obtained from the reflection 
-sensor, it is necessary to correctly determine the resulting speed 
-of the laboratory fan model. 
-The signal of the measurement fan speed is rectangular in 
-shape with an amplitude of 5 V and its frequency ranges from 
-24 to 40 Hz. This signal does not correspond to the required 
-range of 0 to 3.3 V for the microcontroller, therefore the signal 
-was modified by the designed electronic circuit (Fig. 4). To the 
-left of this electronic circuit is a Schmitt flip-flop, which is an 
-inverting amplifier with hysteresis. In the middle part, an 
-inverting amplifier is included so that the output signal is not 
-inverted relative to the input, only its level is adjusted. 
-Furthermore, a transistor is included in the right part, which 
-switches the voltage to 3.3 V and thus adjusts the level to TTL. 
- 
-Fig. 4. Electronic circuit for signal processing from the reflection sensor. 
-The measurement of revolutions was provided by a interrupt 
-of the external counter. The signal from the reflection sensor is 
-between 50 and 170 mV and its frequency is from 80 to 140 Hz. 
-This signal also has modulated noise, so it is important to 
-evaluate it correctly. 
-In the program code, which was called by the interrupt signal 
-from the counter, the fan revolutions were determined from the 
-signal period of the reflection sensor. The sampling time was 
-2 ms. Adverse speed fluctuations at constant excitation voltage 
-were programmatically adjusted by averaging the previous 
-samples. 
-IV. IDENTIFICATION OF LABORATORY FAN MODEL 
-As follows from the above description of the laboratory fan 
-model, the desired output of closed-loop control is its speed. 
-To design the parameters of the PID controller, it is necessary to 
-model a controlled system by applying an identification 
-procedure using an experimentally obtained step response. 
-The experimentally measured step response is illustrated in 
-Fig. 5 as a response of the fan speed at time 1 second to an input 
-voltage of 2.46 V, which has been selected with respect to the 
-operating range of the speed control. 
- 
-Fig. 5. Experimental Step Response of Laboratory Fan Model. 
-The system was identified by a three-point approximation 
-method [11], which assumes the type of proportional system 
-Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:02:22 UTC from IEEE Xplore.  Restrictions apply. 
-
-===== PAGE 4 =====
-with 2nd order inertia according to the general form of transfer 
-f
-unction. 
- s =
-
-	
-	
- . (1) 
-First, we determined a steady state value of fan speed  
-∞= 1231  , from which we determine the gain factor of 
-transfer function 
-  =
-
-=
-
-
-. ! = 500.41 . (2) 
-Furthermore, the values %.& (70 % from ) as well as other 
-similar percentage values %.! and %.%' were subtracted from 
-the step response. [11] We then substitute the subtracted 
-percentage values into the definition equations of the three-point 
-approximation method and thus determine the time delay 
- () = 2 *%.%'−* %.! (3) 
-and the constants B and C [11] 
- , = 0.83 ∙ *%.&−0.24 ∙*%.!+0.48 ∙*%.%'−(), (4) 
- 0 = 4∙1*%,!−* %,%'3
-
-, (5) 
-from which the time constants of inertia are then calculated [11] 
- ( =
-454 ∙6
-  , ( 6) 
- ( =
-454 ∙6
-  . ( 7) 
-Substituting the partial parameters into equation (1), the 
-transfer function of the fan model is given by the relation 
- s =
-7%%. 
-.!7∙
-  %.  
-   %.'∙ . (8) 
-We will use the transfer function parameters for the design 
-of the digital controller in the following chapter. 
-V. ANALYSIS OF DISCRETE CONTROLLER 
-Control of the laboratory fan model using the STM32 
-microcontroller requires the implementation of a digital control 
-circuit (Fig. 6), in which the digital PID controller is given by 
- 
-Fig. 6. Closed Loop Control System 
- 8( =  9:(+
-
-;
-∑  =(
->?% +
-@
- ∇ ( B (9)  
-For the implementation of a digital PID controller, the 
-discrete-time equation (9) is most often applied in 
-microcontrollers. [12] The value of u(kT) is not calculated 
-directly, but only with respect to the incremental value  
-of u(k–1) according to 
- ∇8(=  9:∇(+
-
-;
- ( +
-@
- ∇ ( B, (10)  
-where 
- ∇ ( = ∇ (−∇C−1 (D 
- ∇ ( = (−2C−1 (D+ C−2 (D 11 
-after adjustments and establishing the substitutions 
- E% = 9F1+
-
-;
-+
-@
-G (12) 
- E = −9F1+2
-@
-G  (13) 
- E = 9
-@
- . ( 14) 
-gives the following equation, which represents a digital PID 
-controller output [12],  
- 8( =  8C−1 (D+E %(+EC−1 (D+
-                           +C−2 (D.  (15) 
-The parameters of the digital PID controller were tuned by 
-the desired model method. For the mathematical model of the 
-fan given by equation (8), a digital PID controller was chosen in 
-the general form 
- HI = 9F1+
-
-;
-J
-J
-+
-@
-
-J
-J G, (16) 
-with optimal integration time constant 
-(K
-∗ = (+(−( = 1.653+0.343−0.1 = 1.896 CD (17) 
-and optimal derivation time constant 
- (O
-∗ =
-∙
-
-−
-
- =
-
-.!7∙%. 
-.!7%. −
-%
-.
- = 0.259 CD. (18) 
-Under the conditions of the considered relative overshoot  
-κ = 0 %, the values of the coefficients α = 1.282 and β = 2.718 
-[12] were determined and the desired time constant of the 
-closed-loop control was determined as (P = 2 , then the optimal 
-gain of the controller is given by 
-9
-∗ =
-;
-∗
-QRS =
-
-.T'!
-7%%. ∙.T∙.&T∙%.'= 0.001467.  (19) 
-Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:02:22 UTC from IEEE Xplore.  Restrictions apply. 
-
-===== PAGE 5 =====
-Then the transfer function for digital PID controller can be 
-w
-ritten as follows 
- HI = 0.001467∙F1+
-%.
-.T'7'
-J
-J
-+
-%
-.7T&
-%.
-J
-J
-G. (20) 
-In the µVision environment of the STM32 microcontroller 
-in embedded C language, the PID_INIT() and PID-TICK() 
-functions have been implemented to perform the control 
-process. In these functions, the variables e[(k–2)T] and e[(k–1)T] 
-are set based on the values from the previous cycle of function 
-calls in time ( k–1)T and then the current value e[kT]  is 
-determined from the difference between the set point and the 
-output quantity in the current sample kT. Furthermore, the value 
-u[kT] is obtained by calculation according to relation (15), and 
-in the last part of the program function the output value of the 
-action intervention is treated so as to respect the voltage range 
-0 to 3.3 V. 
-Subsequently, the results of the fan model control using the 
-STM32 Nucleo-144 microcontroller when changing the set 
-point from 0 to 970 s-1 and the trajectories of the desired output 
-w(t), the measured output y(t) (both on the right axis) and the 
-controller output signal u(t) on the left axis and is shown 
-in Fig. 7. 
- 
-Fig. 7. Response of Laboratory Fan Model Using Digital PID Controller 
-VI. CONCLUSION 
-Thus, the digital PID controller implemented in the STM32 
-microcontroller provides a stable control of the physical model 
-by calculating a controller output signal that depends on present 
-and past errors in the closed loop control system. 
-During the implementation of the control process, it was 
-necessary establish the particular electronic circuit to adapt the 
-controller output signal from the Nucleo-144 development 
-board with STM32 series processor to the controlled laboratory 
-fan model, specifically to the input of its electronic circuit 
-providing the input-output communication. 
-In the KEIL µVision environment, a program function for 
-determining the fan speed from data obtained from the reflection 
-sensor and a function for controlling the fan speed were 
-compiled. By identifying the laboratory fan model by the three-
-point approximation method, the transfer function was 
-determined and then the parameters of the digital PID controller 
-were designed by the desired model method. The control system 
-was capable of react correctly to the change in the input voltage, 
-the course of the fan speed was achieved without overshoot. 
-Control of the laboratory model using STM32 
-microcontroller is an intermediate step for further research in the 
-field of microcontroller application to the adaptive control task 
-using neural networks. 
-ACKNOWLEDGMENT 
-This research has been elaborated in the framework of the 
-project SP2021/27 Advanced methods and technologies in the 
-field of machine and process control supported by the Ministry 
-of Education, Youth and Sports, Czech Republic.  
-REFERENCES 
- 
-[1] K. Watanabe, “Introduction to STM32 ARM Microcontroller with STM 
-HAL-Library & SW4STM32", 2017, pp. 99. 
-[2] T. Gao, J.-Y. Zou, D.-Q. Wang, J.-H.Ding, and Z.-Y. Si, "CDT 
-Communication Protocol Realization based on STM32, " International 
-Conference on Education, Management, Information and Medicine 
-(EMIM), 2015, pp. 100-106,  doi: 10.2991/emim-15.2015.20. 
-[3] “Most popular microcontrollers among engineers”, Gadgetronicx, April 
-22, 2020, https://www.gadgetronicx.com/most-popular-microcontrollers. 
-[4] "ARM KEIL. µVision® IDE", unpublished. 
-[5] D. Q. Huy, J. Leuchter, J. Buzek, V. Stekly and L. T. Bang, "Design and 
-implementation control of interfering mobile device with stepper motor 
-and microcontroller ATmega 16," 2017 International Conference on 
-Military Technologies (ICMT), Brno, Czech Republic, 2017, pp. 666-
-670, doi: 10.1109/MILTECHS.2017.7988841. 
-[6] Ruan, Yan. “Design and Realization of Smart Home System Based on 
-Wireless Sensor Networks.” Applied Mechanics and Materials, vol. 716–
-717, Trans Tech Publications, Ltd., Dec. 2014, pp. 1421–1424. Crossref, 
-doi:10.4028/www.scientific.net/amm.716-717.1421. 
-[7] “STM32Cube.AI.” https://www.st.com/en/embedded-software/STM32 
-Cube.AI.html. 
-[8] T. Chen and W. Shuqun, "A safe driving system based-on STM32," 2020 
-IEEE 4th Information Technology, Networking, Electronic and 
-Automation Control Conference (ITNEC), Chongqing, China, 2020, pp. 
-1761-1764, doi: 10.1109/ITNEC48623.2020.9085009. 
-[9] M. Dudka, "STM32: amateur-friendly microcontroller", https:// 
-www.root.cz/clanky/stm32-mikrokonroler-vstricny-k-amaterum.  (in 
-Czech) 
-[10] J. Kulhánek and J. Škuta, "Design of education model with NI LabView," 
-Proceedings of the 2015 16th International Carpathian Control 
-Conference (ICCC), Szilvasvarad, 2015, pp. 267-270, doi: 
-10.1109/CarpathianCC.2015.7145086. 
-[11] P. Noskievič, "Modelling and Identification of Systems,"  Ostrava: 
-Montanex, 1999. ISBN 80-7225-030-2. (in Czech) 
-[12] M. Viteckova and A. Vitecek, "Dominance of poles for desired model 
-method," Proceedings of the 2014 15th International Carpathian Control 
-Conference (ICCC), Velke Karlovice, Czech Republic, 2014, pp. 665-
-670, doi: 10.1109/CarpathianCC.2014.6843688. 
- 
-Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:02:22 UTC from IEEE Xplore.  Restrictions apply. 
