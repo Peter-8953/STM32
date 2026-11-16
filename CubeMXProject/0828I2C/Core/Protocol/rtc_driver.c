@@ -33,7 +33,7 @@ HAL_StatusTypeDef rtc_get_time(I2C_HandleTypeDef *hi2c, RtcDateTime *out)
        讀出來直接丟棄，不需要另外處理「中間欄位跳著讀」的問題，因為
        HAL_I2C_Mem_Read 本來就是連續讀完整個範圍）。 */
     status = HAL_I2C_Mem_Read(hi2c, (uint16_t)(DS3231_I2C_ADDR << 1), DS3231_REG_SECONDS,
-                               I2C_MEMADD_SIZE_8BIT, raw, (uint16_t)sizeof(raw), HAL_MAX_DELAY);
+                               I2C_MEMADD_SIZE_8BIT, raw, (uint16_t)sizeof(raw), DS3231_I2C_TIMEOUT_MS);
     if (status != HAL_OK)
     {
         return status;
@@ -94,7 +94,7 @@ HAL_StatusTypeDef rtc_set_time(I2C_HandleTypeDef *hi2c, const RtcDateTime *t)
 
     status = HAL_I2C_Mem_Write(hi2c, (uint16_t)(DS3231_I2C_ADDR << 1), DS3231_REG_SECONDS,
                                 I2C_MEMADD_SIZE_8BIT, time_regs, (uint16_t)sizeof(time_regs),
-                                HAL_MAX_DELAY);
+                                DS3231_I2C_TIMEOUT_MS);
     if (status != HAL_OK)
     {
         return status;
@@ -109,7 +109,7 @@ HAL_StatusTypeDef rtc_set_time(I2C_HandleTypeDef *hi2c, const RtcDateTime *t)
        這個欄位，沒資料可寫，跳過它比硬塞一個湊出來的值乾淨 */
     return HAL_I2C_Mem_Write(hi2c, (uint16_t)(DS3231_I2C_ADDR << 1), DS3231_REG_DATE,
                               I2C_MEMADD_SIZE_8BIT, date_regs, (uint16_t)sizeof(date_regs),
-                              HAL_MAX_DELAY);
+                              DS3231_I2C_TIMEOUT_MS);
 }
 
 HAL_StatusTypeDef rtc_get_temp(I2C_HandleTypeDef *hi2c, RtcTemperature *out)
@@ -125,7 +125,7 @@ HAL_StatusTypeDef rtc_get_temp(I2C_HandleTypeDef *hi2c, RtcTemperature *out)
     /* 直接定址讀 0x11-0x12，不經過 rtc_get_time()，也不用讀過
        0x00~0x10——跟 rtc_get_time() 是各自獨立的 I2C transaction */
     status = HAL_I2C_Mem_Read(hi2c, (uint16_t)(DS3231_I2C_ADDR << 1), DS3231_REG_TEMP_MSB,
-                               I2C_MEMADD_SIZE_8BIT, raw, (uint16_t)sizeof(raw), HAL_MAX_DELAY);
+                               I2C_MEMADD_SIZE_8BIT, raw, (uint16_t)sizeof(raw), DS3231_I2C_TIMEOUT_MS);
     if (status != HAL_OK)
     {
         return status;
@@ -135,4 +135,36 @@ HAL_StatusTypeDef rtc_get_temp(I2C_HandleTypeDef *hi2c, RtcTemperature *out)
     out->temp_frac = (uint8_t)((raw[1] >> 6) * 25u);   /* LSB 高2位：0/25/50/75 */
 
     return HAL_OK;
+}
+
+HAL_StatusTypeDef rtc_i2c_recover(I2C_HandleTypeDef *hi2c)
+{
+    HAL_StatusTypeDef status;
+
+    if (hi2c == NULL)
+    {
+        return HAL_ERROR;
+    }
+
+    /* 重新初始化週邊：HAL_I2C_DeInit 會呼叫 HAL_I2C_MspDeInit()（關閉
+       clock 等），HAL_I2C_Init 會呼叫 HAL_I2C_MspInit()（重新開啟）
+       ——這兩個 Msp 函式是 CubeMX 產生、main.c 沒有另外列出來的部分，
+       這裡直接沿用既有的，不需要知道實際接在哪個 GPIO pin。 */
+    (void)HAL_I2C_DeInit(hi2c);
+    status = HAL_I2C_Init(hi2c);
+    if (status != HAL_OK)
+    {
+        return status;
+    }
+
+    /* MX_I2C1_Init() 除了 HAL_I2C_Init 之外，另外設定了 Analog/Digital
+       filter；DeInit 會清掉這些設定，重新 Init 後要補回來，不然濾波器
+       設定會跟原本開機時的初始化不一致（兩個都用跟 MX_I2C1_Init() 一樣
+       的參數：ENABLE / 0）。 */
+    status = HAL_I2CEx_ConfigAnalogFilter(hi2c, I2C_ANALOGFILTER_ENABLE);
+    if (status != HAL_OK)
+    {
+        return status;
+    }
+    return HAL_I2CEx_ConfigDigitalFilter(hi2c, 0);
 }

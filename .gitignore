@@ -1,0 +1,28 @@
+# === IAR Embedded Workbench (IAR 9.x / Ninja / clangd) ===
+**/EWARM/*/Obj/
+**/EWARM/*/Exe/
+**/EWARM/*/List/
+**/EWARM/*/BrowseInfo/
+**/EWARM/*/.cache/
+**/EWARM/settings/
+**/EWARM/Backup*
+**/*.o
+**/*.out
+**/*.hex
+**/*.sim
+**/*.map
+**/*.dep
+**/.ninja_deps
+**/.ninja_log
+**/compile_commands.json
+
+# === STM32CubeMX ===
+**/.mxproject
+**/Backup/
+
+# === Python 與環境設定 ===
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env

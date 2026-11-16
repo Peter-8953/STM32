@@ -6,5 +6,8 @@
     <project>
         <path>$WS_DIR$\0828UART.ewp</path>
     </project>
+    <project>
+        <path>$WS_DIR$\..\..\FANPWM\EWARM\FANPWM.ewp</path>
+    </project>
     <batchBuild />
 </workspace>
