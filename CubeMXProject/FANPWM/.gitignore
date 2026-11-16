@@ -1,0 +1,26 @@
+# EWARM generated build artifacts
+EWARM/**/Obj/
+EWARM/**/Exe/
+EWARM/**/List/
+EWARM/**/.cache/
+EWARM/**/.ninja_deps
+EWARM/**/.ninja_log
+EWARM/**/build.ninja
+EWARM/**/*.dep
+EWARM/**/*.hex
+EWARM/**/*.out
+EWARM/**/*.sim
+EWARM/**/compile_commands.json
+EWARM/**/*.map
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.bak

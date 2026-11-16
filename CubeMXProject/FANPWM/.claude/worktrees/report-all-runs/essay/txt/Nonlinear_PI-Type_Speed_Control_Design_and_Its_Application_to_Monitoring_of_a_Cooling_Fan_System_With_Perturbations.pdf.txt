@@ -1,0 +1,1390 @@
+
+===== PAGE 1 =====
+IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS, VOL. 73, NO. 7, JUL Y2026 10693
+Nonlinear PI-Type Speed Control Design and
+Its Application to Monitoring of a Cooling Fan
+System With Perturbations
+Min-Che Tsai and Chao-Chung Peng , Member, IEEE
+Abstract—The increasing power density of modern elec-
+tronic systems has intensiﬁed the need for efﬁcient ther-
+mal management, where cooling fans play a pivotal role.
+However, fan performance is frequently compromised by
+external disturbances, aging effects, and sensor limitations.
+To address these challenges, this study presents a ro-
+bust nonlinear proportional-integral (PI)-type speed con-
+trol strategy. Unlike conventional PI or sliding mode-based
+designs, the proposed architecture integrates a nonlinear
+robustifying term within the integral path. This structural
+innovation ﬁlters the switching signal through the integra-
+tor and yields a continuous control input. Consequently, it
+effectively eliminates chattering while maintaining strong
+robustness against perturbations. Furthermore, a linear ma-
+trix inequality (LMI)-based design framework is established
+to handle system uncertainties. This systematic approach
+simultaneously guarantees global asymptotic stability and
+optimizes the control gain and convergence rate, even in
+the presence of bounded nonlinear aerodynamic uncer-
+tainties. Beyond robust control, the proposed method in-
+tegrates physical modeling and parameter identiﬁcation to
+enable sensorless real-time health monitoring via a digital
+twin. This facilitates early anomaly diagnosis without addi-
+tional hardware sensors. Extensive experimental validation
+across various commercial cooling fan types demonstrates
+the robust generalizability and superior tracking accuracy
+of the proposed method compared to linear benchmarks.
+The developed framework supports real-world deployment
+in intelligent thermal management, fault-tolerant fan array,
+and condition-based maintenance applications.
+Index Terms—Cooling fan system, external disturbance,
+intelligent thermal management, linear matrix inequality
+(LMI), real-time health monitoring, robust control.
+Received 16 August 2025; revised 16 December 2025; accepted 15
+January 2026. Date of publication 18 February 2026; date of current
+version 1 June 2026. This work was supported by the National Science
+Technology Council under Proj ect 112-2221-E-006-104-MY3. (Corre-
+sponding author: Chao-Chung Peng.)
+The authors are with the Department of Aeronautics and
+Astronautics, National Cheng Kung University, Tainan 70101, Taiwan
+(e-mail: p48104029@gs.ncku.edu.tw; ccpeng@mail.ncku.edu.tw).
+Digital Object Identiﬁer 10.1109/TIE.2026.3658635
+I. I NTRODUCTION
+T
+HE rapid advancement of artiﬁcial intelligence (AI), high-
+performance computing chips, data center servers, and
+automotive electronics has led to a dramatic increase in the
+power density of modern electronic devices [1], [2]. This surge
+in heat generation has heightened the need for efﬁcient thermal
+management in electronic system design [3], [4], [5]. Effec-
+tive thermal management is crucial for ensuring the long-term
+reliability, operational safety, and performance consistency of
+electronic components [6]. In high power density environments
+with ﬂuctuating thermal loads, fan-based active cooling meth-
+ods signiﬁcantly improve thermal management by providing
+more efﬁcient and ﬂexible heat dissipation control [7], [8].
+Cooling fans are essential in most active cooling systems to
+facilitate heat exchange. These fan-assisted cooling methods are
+widely applied across various domains, including server rack
+thermal management in data centers[9], thermal control in elec-
+tric vehicle battery management systems [10], communication
+cabinets [11], and industrial automation systems [12].
+As fans have become critical components in system op-
+erations, any failure or malfunction can lead to overheating
+of electronic products, potentially reducing their lifespan, de-
+grading system performance, and even causing catastrophic
+consequences. This can result in costly repairs and signiﬁ-
+cant downtime. Therefore, the development of effective real-
+time health monitoring, troubleshooting techniques, and robust
+speed control strategies is essen tial for ensuring the reliability
+and stability of fan operation [13], [14].
+In recent years, numerous studies have investigated health
+monitoring and fault diagnosis for cooling fans, aiming to
+enhance system reliab ility through intelligent and preventive
+techniques. Wang et al.[15] detected potential fan malfunctions
+in transformers by analyzing top-oil temperature trends without
+additional sensors. Nematirad et al.[16] achieved real-time fault
+detection using acoustic signals and learning-based classiﬁers
+in air-forced cooling systems. Yu et al. [17] monitored thermal
+degradation in traction inverter heatsinks using ANN models
+and temperature response analysis. Jin et al. [13] applied Ma-
+halanobis distance with mRMR feature selection to identify fan
+aging and anomalies under long-term operation. For small fan
+motors, Afshar et al. [18] used motor current signals to detect
+bearing faults with low computational cost. Kim et al. [19]
+1557-9948 © 2026 IEEE. All rights reserved, including rights for text and data mining, and training of artiﬁcial intelligence and similar technologies.
+Personal use is permitted, but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html
+for more information.
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:03:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+10694 IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS, VOL. 73, NO. 7, JUL Y2026
+proposed a self-powered triboelectric sensor to enable fan status
+monitoring without external power or disassembly.
+To facilitate the practical implementation of health monitor-
+ing in cooling fans, recent research has focused on several key
+technologies, including physical modeling, system identiﬁca-
+tion, and state estimation[20], [21], [22]. Advanced methodolo-
+gies have been proposed for modeling the dynamics of cooling
+fan systems, identifying system parameters, and predicting fan
+speed in real time [20], [21]. These approaches enable sen-
+sorless online monitoring by constructing virtual models of
+the fan system. Moreover, accurate measurement and robust
+signal processing are vital for reliable fan monitoring. However,
+in practical applications, measurement noise introduces uncer-
+tainty that degrades estimation accuracy, increases false alarms,
+and complicates diagnostics. To address this, speed estimation
+techniques incorporating parameter update mechanisms have
+been proposed to correct parameter errors and model uncer-
+tainties, thereby improving the robustness and precision of fan
+speed estimation [22].
+In addition to state monitoring, effective fan speed control
+plays a critical role in intelligent thermal management. Given
+the widespread deployment of cooling fans in engineering sys-
+tems, control strategies are required to be simple, reliable, and
+robust. Among them, proportional–integral–derivative (PID)
+control remains a mainstream solution due to its ease of im-
+plementation and broad applicability [23], [24].
+Given that modern high-performance cooling fans share the
+fundamental architecture of permanent magnet synchronous
+motors (PMSMs), sophisticated strategies developed for PMSM
+drives offer potential solutions. Recent studies include model
+predictive control utilizing ultralocal models [25] or cascaded
+extended Kalman ﬁlters [26] to handle system nonlinearities,
+data-driven neural network approaches for prescribed perfor-
+mance [27], and event-triggered sliding mode control (SMC)
+to enhance disturbance rejection [28]. However, practical de-
+ployment in mass-produced fan arrays is constrained by low-
+cost microcontrollers that preclude computationally intensive
+algorithms. Moreover, the lack of current sensors limits control
+bandwidth, and the discontinuous switching of sliding mode
+techniques risks violating strict acoustic noise regulations.
+To achieve robust stability under these hardware constraints,
+linear matrix inequality (LMI ) techniques have been widely
+employed in robust controller design and feas ibility analysis.
+Recent studies indicate that LMI-based formulations remain a
+powerful tool for controller parameter synthesis and stability as-
+sessment [29], [30]. In particular, recent works have addressed
+proportional-integral (PI) controller gain design under system
+uncertainties and external disturbances using LMI approaches,
+while satisfying time-domain performance speciﬁcations and
+maintaining robustness of the control system [31].
+However, in thermal management applications, cooling fans
+are subject not only to parametric uncertainties but also to sig-
+niﬁcant external disturbances. Typical disturbances include air-
+ﬂow ﬂuctuations due to duct pressure changes, supply voltage
+variations, and ambient temperature shifts. These factors can
+severely degrade fan efﬁciency. In this context, although LMI-
+based linear PI control guarantees stability, it may be inadequate
+to provide sufﬁcient disturbance rejection without aggressive
+gains that could compromise smoothness.
+To address this, inspired by [32], [33], and [34], a nonlinear
+PI-type speed controller with LMI-based gain optimization is
+proposed. Compared to recent work [31], the proposed method
+enhances disturbance rejection while preserving practical im-
+plementability.
+In summary, this study focuses on the robust controller design
+for cooling fan systems and integrates the proposed control
+strategy into a real-time speed monitoring framework to achieve
+accurate trajectory tracking and real-time health monitoring.
+The main contributions are as follows.
+1) A nonlinear PI-type speed controller is developed for
+robust tracking. Unlike conventional integral sliding mode
+control (ISMC), where the discontinuous switching gain
+acts directly on the control input, the proposed method
+places the switching term within the integral path. This
+structure ﬁlters the switching signal through the integrator,
+producing a continuous control input. This effectively
+eliminates chattering while maintaining robust perfor-
+mance against external disturbances.
+2) An LMI-based design framework is established to handle
+system uncertainties. This systematic approach guaran-
+tees global asymptotic st ability and optimizes both the
+control gain and convergence rate, even in the presence
+of bounded nonlinear aerodynamic uncertainties.
+3) A closed-loop real-time health monitoring system is de-
+veloped based on the proposed robust control framework,
+promoting its practical deploy ment in intelligent thermal
+management, fault-tolerant fan architectures, and predic-
+tive maintenance.
+4) Numerical simulations and experimental results validate
+the proposed methods effectiveness in disturbance rejec-
+tion and superior tracking accuracy compared to recent
+studies [31], conﬁrming theoretical and practical con-
+sistency. Moreover, extended experimental validation on
+various commercial cooling fan types demonstrates the
+robust generalizability of the proposed method.
+II. M
+ODELING AND CONTROLLER DESIGN FOR SPEED
+TRACKING OF A MOTOR-DRIVEN COOLING FAN
+A. Dynamic Modeling of a Motor-Driven Cooling Fan
+A general industrial cooling fan system consists of a driving
+circuit, a mechanical rotary structure, and a fan blade. When
+the driving system is approximated by a brushless DC (BLDC)
+motor, the overall conﬁguration can be represented as shown
+in Fig. 1, which includes the electrical driving circuit, the me-
+chanical rotor, and the external load.
+The governing equation of the el ectrical circuit is written as
+Ldi(t)
+dt +Ri(t)+ Vb(t)= Vin(t) (1)
+where L denotes the inductance, R the resistance, and i(t)
+the armature current. The applied input voltage is represented
+by Vin(t), and Vb(t) is the back electromotive force (EMF),
+which is proportional to the rotor angular velocityω(t) through
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:03:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+TSAI AND PENG: NONLINEAR PI-TYPE SPEED CONTROL DESIGN AND ITS APPLICATION TO MONITORING 10695
+Fig. 1. Industrial cooling fan driving system.
+the back-EMF constant Ke, i.e., Vb(t)= Keω(t).T h em o t o r
+mechanism can be expressed by
+Jm
+dω(t)
+dt +Bmω(t)= Tm(t)−TL(t) (2)
+in which Jm is the rotor inertia, Bm is the viscous friction
+coefﬁcient, and TL(t) is the external load torque. The motor
+develops an electromagnetic torque Tm(t) that is proportional
+to the armature current i(t), given by Tm(t)= Kti(t) with
+Kt denoting the torque constant. Since the electrical power is
+equivalent to the mechanical power, the following relationship
+holds:
+(Keω)·i=(Kti)·ω (3)
+where the left-hand side represents electrical power, and the
+right-hand side represents mechanical power, conﬁrming that
+K:= Ke =Kt.
+In most commercial cooling fans, current information is un-
+available, making it difﬁcult to fully identify the electrical dy-
+namics. However, since the mechanical dynamics evolve much
+more slowly than the electrical dynamics, the transient response
+of the armature circuit can be neglected. Under this assumption,
+the circuit equation simpliﬁes to
+V
+in ≈iR+Kω. (4)
+Combining (2)–(4), the overall system can be simpliﬁed as
+Jm
+dω
+dt = K
+RVin −
+( K2
+R +Bm
+)
+ω−TL. (5)
+According to the fan blade aerodynamics in[20], the external
+loadTL is mainly attributed to the drag force induced by airﬂow.
+This effect can be modeled as
+TL =Cdω2 (6)
+where Cd denotes the lumped aerodynamic drag coefﬁcient.
+Substituting (6)i n t o(5) and deﬁning the equivalent parameters,
+the reduced-order model of the cooling fan can be expressed as
+J ˙ω(t)+ αω(t)+ CDω2(t)= τ(t) (7)
+in which the equivalent coefﬁcients are deﬁned as follows:
+J =Jm
+R
+K,α =K + R
+KBm,C D = R
+KCd. (8)
+Equation (7) represents the complete cooling fan dynamics,
+whereτ(t)= Vin(t) stands for the applied voltage generated by
+the pulse-width modulated (PWM) input, J is the equivalent
+lumped moment of inertia, αis the equivalent viscous coefﬁ-
+cient, and CD is the equivalent aerodynamic drag coefﬁcient.
+For simplicity, (8) can be rewritten as
+˙ω(t)= −aω(t)−aNω2(t)+ bτ(t) (9)
+where the equivalent parameters are deﬁned as
+a= α
+J,a N = CD
+J ,b = 1
+J. (10)
+The system equivalent parameters,a, aN , and b can be iden-
+tiﬁed using the low-pass ﬁltering method proposed in [21].
+In view of parameter uncertainties, the parameters are parti-
+tioned into nominal and uncertain components
+a=a+˜a, aN =aN +˜aN,b =b+˜b (11)
+where a, aN , and b represent the nominal values, while ˜a, ˜aN ,
+and ˜b denote the uncertain parameter terms.
+In the presence of parameter uncertainties and external
+disturbances, the nonlinear cooling fan model ( 9) can be
+reformulated as
+˙ω(t)= −(a+˜a)ω(t)−(aN +˜aN)ω2(t)+( b+˜b)[τ(t)+ τd(t)]
+(12)
+where the disturbance term τd(t) is time-dependent and is as-
+sumed to satisfy
+|τd(t)|≤τ+
+d,1, |˙τd(t)|≤τ+
+d,2 (13)
+in which τ+
+d,1 and τ+
+d,2 are known positive upper bounds.
+B. Problem Formulation and Nonlinear PI-Type
+Controller Design
+System uncertainties and external disturbances often degrade
+control performance. To enhance robustness, a nonlinear PI-
+type controller is proposed.
+For motor-driven fan speed tracking, the control objective
+is to regulate the systems rotational speed to follow a given
+desired speedωd, which is a continuous and twice-differentiable
+function. Accordingly, the tracking error is deﬁned as
+e=ω−ωd. (14)
+The following proof demonstrates that the proposed con-
+troller ensures the asymptotic convergence of the tracking error,
+speciﬁcally:
+lim
+t→∞
+|e(t)|= lim
+t→∞
+|ω(t)−ωd(t)|→ 0. (15)
+Differentiating (14) yields
+˙e=˙ω−˙ωd =−aω−aNω2 +bτ+ ˜f(ω,t)+ d(t)−˙ωd
+(16)
+where ˜f represents the effect of model uncertainties, while d
+includes the external disturbance term, as follows:
+˜f(ω,t)= −˜aω−˜aNω2 +˜bτ, d(t)=( b+˜b)τd. (17)
+Inspired by [33] and [34], a nonlinear PI-type controller
+is introduced to achieve robustness against uncertainties and
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:03:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+10696 IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS, VOL. 73, NO. 7, JUL Y2026
+perturbations. Based on this, the control law for the fan speed
+tracking system is designed as follows:
+τ=τn +τPI (18)
+where
+{ τn = 1
+b(aω+aNω2 +˙ωd)
+τPI =−1
+b
+(
+kpe+ki
+∫t
+0 edτ′ +ξ
+∫t
+0 sign(e)dτ′
+)
+. (19)
+In this formulation,τn contains the nominal control term, which
+is designed to achieve feedback linearization. Meanwhile τPI
+consists of a general proportional term, an integral term, and an
+additional integral of sign function with a switching gainξ.T h i s
+additional term is introduced to mitigate the effects of external
+disturbances and uncertainties whileensuring the stability of the
+closed-loop system. Note that kp and ki are positive constants.
+Applying the control laws to the error dynamic in (16)g i v e s
+˙e=−kpe−ki
+∫ t
+0
+edτ′ −ξ
+∫ t
+0
+sign(e)dτ′ + ˜f +d. (20)
+Further taking time derivative of (20) again yields the following:
+¨e=−kp ˙e−kie−ξsign(e)+ ˙˜f + ˙d (21)
+where the time derivatives of the nonlinear uncertainty and
+external disturbance are expressed as follows:
+˙˜f =−˜a˙ω−2˜aNω˙ω+˜b˙τ (22)
+and
+˙d=(b+˜b)˙τd. (23)
+The differential term of the control law ˙τis introduced in (22),
+and the time derivatives of ( 19) are derived as
+{
+˙τn = 1
+b(a˙ω+ 2aNω˙ω+¨ωd)
+˙τPI =−1
+b[kp ˙e+kie+ξsign(e)]. (24)
+By substituting (24)i n t o(22) and utilizing the relationshipω=
+e+ωd and ˙ω=˙e+˙ωd, the nonlinear uncertainty term can be
+rewritten as
+˙˜f(e,t)=
+[˜b
+ba−˜a+ 2
+( ˜b
+baN −˜aN
+)
+ωd −
+˜b
+bkp
+]
+˙e
++
+[
+2
+(˜b
+baN −˜aN
+)
+˙ωd−
+˜b
+bki
+]
+e+2
+(˜b
+baN −˜aN
+)
+e˙e
+−
+˜b
+bξsign(e)+
+[˜b
+ba−˜a+ 2
+( ˜b
+baN −˜aN
+)
+ωd
+]
+˙ωd
++
+˜b
+b¨ωd. (25)
+Therefore, the error dynamic ( 21) can be further derived as
+¨e=
+[˜b
+ba−˜a+ 2
+( ˜b
+baN −˜aN
+)
+ωd −
+(
+1+
+˜b
+b
+)
+kp
+]
+˙e
++
+[
+2
+(˜b
+baN −˜aN
+)
+˙ωd−
+(
+1+
+˜b
+b
+)
+ki
+]
+e+2
+(˜b
+baN −˜aN
+)
+e˙e
+−
+(
+1+
+˜b
+b
+)
+ξsign(e)+
+[˜b
+ba−˜a+2
+( ˜b
+baN −˜aN
+)
+ωd
+]
+˙ωd
++
+˜b
+b¨ωd +(b+˜b)˙τd. (26)
+Deﬁning the state vector ase=[e ˙e]T ,( 26) can be rewritten
+in vector form as
+˙e=(Ac +ΔAc)e+F(e)+ D(e,t) (27)
+where Ac is the closed-loop matrix, and ΔAc contains the
+uncertain terms. To isolate the control gains kp and ki amidst
+model uncertainties, the closed-loop matrix Ac and uncertain-
+ties matrix ΔAc can be expressed as
+Ac =A+BK, ΔAc =ΔA+ΔBK (28)
+where K is the control gain matrix, and
+A=
+[
+01
+00
+]
+, B=
+[
+0
+1
+]
+, K=
+[
+−ki −kp
+]
+ΔA=
+[ 00
+2
+(˜b
+baN −˜aN
+)
+˙ωd
+˜b
+ba−˜a+ 2
+(˜b
+baN −˜aN
+)
+ωd
+]
+ΔB=
+[
+0
+˜b
+b
+]
+. (29)
+In (27), the detailed structure of nonlinear functions F(e) and
+D(e,t) is given as
+F(e)=
+[
+0
+2
+(˜b
+baN −˜aN
+)
+e˙e
+]
+, D(e,t)=
+[
+0
+δ(e,t)
+]
+(30)
+in which
+δ(e,t)= −
+(
+1+
+˜b
+b
+)
+ξsign(e)
++
+[˜b
+ba−˜a+2
+(˜b
+baN −˜aN
+)
+ωd
+]
+˙ωd+
+˜b
+b¨ωd+(b+˜b)˙τd.
+(31)
+Equation (31) can be further rewritten as follows:
+δ(e,t)= −b
+b[ξsign(e)−δ1(t)] (32)
+where
+δ1(t)=
+˜ba−b˜a
+b ˙ωd + 2
+( ˜baN −b˜aN
+b
+)
+ωd ˙ωd +
+˜b
+b¨ωd +b˙τd.
+(33)
+Remark 1: Unlike conventional SMC, the proposed switch-
+ing term is embedded within the integral path, causing the dis-
+continuous component to be ﬁltered by the integrator rather than
+directly injected into the control input as in ISMC. This struc-
+ture ensures a continuous control signal and signiﬁcantly miti-
+gates the chattering behavior typically associated with SMC.
+Remark 2: Given that the system includes bounded parameter
+uncertainties and external disturbances, it follows that|δ
+1(t)| is
+also bounded.
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:03:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+TSAI AND PENG: NONLINEAR PI-TYPE SPEED CONTROL DESIGN AND ITS APPLICATION TO MONITORING 10697
+Remark 3: The system uncertainties can be categorized into
+state-dependent and state-independent components. The state-
+dependent uncertainties, represented by ΔA and ΔB, can be
+mitigated by appropriately sel ecting the control gain matrix
+K. Meanwhile, the state-independent uncertainties and external
+disturbance terms in (32), denoted as δ
+1(t), must be eliminated
+through the design of the nonlinear switching gain ξ.
+Remark 4: In control system design, parameter uncertainties
+are typically assumed to be bounded. To express the structure of
+the uncertainty matrices more explicitly, the uncertainty matrix
+ΔA can be factorized as
+ΔA=CU (34)
+where
+C=
+[
+00
+−1 −1
+]
+U=
+⎡
+⎣2
+(
+˜aN −
+˜b
+baN
+)
+˙ωd 0
+0 ˜a−
+˜b
+ba+ 2
+(
+˜aN −
+˜b
+baN
+)
+˙ωd
+⎤
+⎦.
+(35)
+Since bothU andΔB are assumed to be bounded, the following
+norm constraints hold:
+UTU<μ1I, ΔBTΔB<μ2 (36)
+whereμ1 andμ2 are known positive constants. Their values can
+be determined through an evaluation of preliminary parameter
+identiﬁcation errors and the design of fan speed commands.
+III. LMI -BASED STABILITY ANALYSIS OF THE COOLING
+FAN CONTROL SYSTEM
+Through the derivation process, the speed tracking control of
+the industrial cooling fan system, achieved via the introduction
+of a nonlinear PI-type controller, ultimately leads to the error
+dynamic equation given in ( 17).
+By appropriately designing the control gains kp, ki and the
+switching gain ξ, the control problem is reformulated as an
+LMI feasibility problem. This formulation provides a system-
+atic approach to proving the stab ility of the system, ensuring
+that the error dynamics remain asymptotically stable despite the
+presence of parameter uncertainties and external disturbances,
+as described in Theorem 1.
+To further analyze the system’s stability, the following lem-
+mas, which are fundamental to the derivation process, are con-
+sidered.
+Lemma 1 (Switching gain analysis): In the nonlinear PI-type
+control framework, selecting the switching gain ξsuch that
+ξ≥ρ+sup(|δ1|) (37)
+with any ρ>0, ensures the existence of a positive constant
+ξ, allowing the disturbance term in ( 32) to be equivalently
+expressed as
+δ(e,t)= −ξsign(e) (38)
+where ξis strictly positive
+ξ≥b
+bρ>0. (39)
+Proof: Rewriting (32) and utilizing sgn(e)2 = 1g i v e s
+δ(e,t)= −b
+b[ξ−δ1sign(e)]sign(e). (40)
+Deﬁning
+ξ= b
+b[ξ−δ1sign(e)] (41)
+and substituting it into ( 40) yields the form in ( 38). Applying
+the gain condition ( 37) to the deﬁnition ( 41) leads to
+ξ= b
+b[ξ−δ1sign(e)]≥b
+b[ρ+sup(|δ1|)−δ1sign(e)]. (42)
+Since sup(|δ1|)≥δ1sign(e), the term inside the bracket is at
+least ρ.G i v e nb/b> 0, it follows that the strict positivity con-
+dition ξ≥b/b·ρ>0i n( 39) is always satisﬁed.
+Lemma 2 (Lipschitz condition): The nonlinear term F(e) in
+the error dynamics is Lipschitz continuous with constantκ, i.e.,
+∥F(e)∥≤κ∥e∥,κ >0. (43)
+Proof: From (30), the two-norm of F(e) is as follows:
+∥F(e)∥= 2
+⏐⏐
+⏐
+⏐
+⏐
+( ˜b
+baN −˜aN
+) ⏐⏐
+⏐
+⏐
+⏐|e˙e|. (44)
+Applying the arithmetic-geometric mean inequality to e˙e gives
+the following:
+∥F(e)∥≤
+⏐⏐
+⏐
+⏐⏐
+( ˜b
+baN −˜aN
+) ⏐⏐
+⏐
+⏐⏐∥e∥
+2. (45)
+If the control strategy ensures ∥e∥≤κ+, where κ+ > 0i st h e
+tracking error bound, then substituting this condition into ( 45)
+yields
+∥F(e)∥≤
+⏐⏐
+⏐
+⏐
+⏐
+( ˜b
+baN −˜aN
+) ⏐⏐
+⏐
+⏐
+⏐κ
++∥e∥. (46)
+Thus, F(e) satisﬁes the Lipschitz condition with
+κ=
+⏐⏐
+⏐
+⏐⏐
+( ˜b
+baN −˜aN
+) ⏐⏐
+⏐
+⏐⏐κ
++. (47)
+The main result of the stab ility analysis for the fan speed
+tracking error system is formulated in the following theorem.
+Theorem 1: Give η>0, κ>0, μ1 > 0, and μ2 > 0, if the
+following LMI holds:
+⎡
+⎢⎢⎣
+X(P,Q,L,ε1,ε2) μ1/2
+1 PL T κP
+μ1/2
+1 P −ε1I 00
+L 0 −ε2I 0
+κP 00 −I
+⎤
+⎥⎥⎦< 0 (48)
+then the closed-loop system is asymptotically stable, ensuring
+that the tracking error satisﬁes: e(t)→ 0a s t→∞ . Further-
+more, the derivative of the Lyapunov function becomes
+˙V(e)+ 2ηV(e)<−eTQe−2ξp2|e|. (49)
+The remaining variables in ( 44) are deﬁned as
+X(P,Q,L,ε1,ε2)= PAT +AP+LTBT +BL+I2
++Q+ 2ηP+ε1CCT +ε2μ2I2 (50)
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:03:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+10698 IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS, VOL. 73, NO. 7, JUL Y2026
+where P=P−1 > 0, Q=P−1QP−1 > 0, L=KP−1, ε1 =
+ε−1
+1 , and ε2 =ε−1
+2 are the decision variables.
+Proof: Consider the following Lyapunov candidate func-
+tion:
+V(e)= eTPe+ 2p3ξ|e| (51)
+where P=PT > 0 is a symmetric positive deﬁnite matrix
+P=
+[
+p1 p2
+p2 p3
+]
+(52)
+with p1 > 0, p2 > 0, and p3 > 0. Taking the derivative of ( 51)
+along the error dynamics and applying Lemma 1 gives
+˙V(e)= eT(AT
+c P+PAc +ΔAT
+c P+PΔAc)e+ 2eTPF(e)
+−2ξp2|e|. (53)
+Using Lemma 2, the following bound can be established:
+2eTPF(e)≤2∥Pe∥∥F(e)∥≤ 2κ∥Pe∥∥e∥. (54)
+Applying the arithmetic–geometric mean inequality yields the
+following:
+2κ∥Pe∥∥e∥= 2κ
+√
+eTPPe
+√
+eTe≤eTPPe+κ2eTe. (55)
+Thus, combining (54) and (55) yields the following:
+2eTPF(e)≤eTPPe+κ2eTe. (56)
+Substituting (56)i n t o(53) to obtain
+˙V(e)≤eT(AT
+c P+PAc +ΔAT
+c P+PΔAc +PP+κ2I)e
+−2ξp2|e|. (57)
+To ensure the prescribed robust performance in the presence
+of model uncertainty, the follo wing inequality is designed as
+part of the control strategy:
+AT
+c P+PAc +ΔAT
+c P+PΔAc +PP+κ2I<−Q−2ηP
+(58)
+where η>0 speciﬁes the desired convergence rate, and Q=
+QT > 0 is introduced to enhance performance. Under this con-
+dition, the Lyapunov derivative satisﬁes
+˙V(e)+ 2ηV(e)<−eTQe−2ξp2|e|. (59)
+Then, robust asymptotic stability can be guaranteed.
+Expanding (58)g i v e s
+ATP+PA+KTBTP+PBK+ΔATP+PΔA
++KTΔBTP+PΔBK+PP+κ2I2 +Q+ 2ηP< 0.
+(60)
+To handle the uncertainty terms, standard bounding techniques
+are applied, resulting in
+ΔATP+PΔA≤ε1μ1I2 + 1
+ε1
+PCCTP
+KTΔBTP+PΔBK≤ε2KTK+ 1
+ε2
+μ2PP (61)
+where ε1 and ε2 are positive real constants to be determined.
+By substituting these bounds into (60) and pre- and postmul-
+tiplying by P−1, the following inequality is obtained:
+P−1AT +AP−1 +P−1KTBT +BKP−1 +ε1μ1P−1P−1
++ 1
+ε1
+CCT +ε2P−1KTKP−1 + 1
+ε2
+μ2I2 +I2 +κ2P−1P−1
++ P−1QP−1 + 2ηP−1 < 0 (62)
+to solve this inequality, let
+P=P−1, L=KP−1, Q=P−1QP−1, ε1 = 1
+ε1
+, ε2 = 1
+ε2
+(63)
+the inequality can be re represented by
+PAT +AP+LTBT +BL+I2 +κ2PP+Q+ 2ηP
++ 1
+ε1
+μ1PP+ε1CCT + 1
+ε2
+LTL+ε2μ2I2 < 0. (64)
+Finally, using Schur’s inequality[35],( 64) can be further trans-
+lated into the standard LMI form as ( 48). Q.E.D
+Remark 5: In (58), the design of ηensures that the desired
+convergence rate of the closed-loop system is achieved. Speciﬁ-
+cally, it restricts all eigenvaluesλof the closed-loop matrixAc
+to satisfy Re(λ)<−η, even in the presence of uncertainties.
+Furthermore, through LMI feasibility solving, the control gain
+of the PI-type controller can be calculated by K=LP
+−1
+.
+Remark 6: To avoid high gain control as much as possible
+under the speciﬁed η, minimize the size of the control gain
+matrix ∥K∥ as an objective, which can be done by considering
+the following inequality:
+∥L∥<l, l> 0 (65)
+where the variable l stands for a norm bound of gain L, which
+should be minimized [36]. The problem of nonlinear matrix
+inequalities (65) can be equivalent to the LMI
+[
+−lIL T
+L −lI
+]
+< 0. (66)
+By deﬁnition L=KP, to guarantee that the minimization of
+L is equivalent to the minimization of the control gain K,t h e
+condition P>I is further imposed in the LMI framework.
+IV. NUMERICAL SIMULATION
+In the simulation, the rotational dynamics of the industrial
+cooling fan were modeled using MATLAB’s Runge–Kutta 4
+solver with a time step of 0.0001 s. The system was initialized
+at rest with ω(0)= 0. The exact parameters were a= 0.63,
+a
+N = 0.0013, and b= 1.96, while the nominal parameters, in-
+corporating 10% uncertainty, were a= 0.5670, aN = 0.0012,
+and b= 2.1560.
+The disturbance in system ( 12) is set as
+τd(t)= −5e−0.01t sin(0.018πt)+ 8sin(0.096πt)cos(πt)
+(67)
+where τd(t) and ˙τd(t) are bounded. For speed tracking, a har-
+monic desired trajectory is given by
+ωd(t)= −30cos(0.1πt)−50cos(0.04πt)+ 90. (68)
+The ﬁrst and second derivatives, ˙ωd(t) and ¨ωd(t), can be di-
+rectly obtained from ( 68). Using the desired trajectory, the
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:03:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 7 =====
+TSAI AND PENG: NONLINEAR PI-TYPE SPEED CONTROL DESIGN AND ITS APPLICATION TO MONITORING 10699
+Fig. 2. Speed trajectory tracking results of cooling fan system.
+disturbance bound, and the parameter uncertainty range, the
+upper bound of |δ1(t)| in ( 33) can be evaluated. Meanwhile,
+based on (37), the switching gain is designed as ξ= 57.
+As described in ( 36), the system uncertainty matrix is
+bounded above. Under 10% parameter uncertainty and the given
+trajectory, the uncertainty bounds are μ
+1 = 0.1 and μ2 = 0.01.
+Using a rough estimation of parameter uncertainty, the Lips-
+chitz constant is set as κ= 2.836× 10−3.
+In the pole assignment of the closed-loop system, the eigen-
+values are constrained asRe(λ)<−η, where η= 1. Consider-
+ing parameter uncertainties and disturbances, the control prob-
+lem is formulated by combining the LMI problem, as given
+in ( 48), with the control gain minimization LMI framework
+in (66). The optimization problem is then solved using MAT-
+LAB’s LMI solver, yielding the following matrix variables:
+P=
+[
+2.6770 −3.8223
+−3.8223 9 .7119
+]
+Q= 10−4
+[ 0.0297 −0.0060
+−0.0060 0 .2101
+]
+L=[ −0.9826 −18.1037]
+ε1 = 3.4888, ε2 = 65.1403. (69)
+By utilizing L and P, the control gain matrix is further
+computed as
+K=[−6.9138 −4.5851]. (70)
+Thus, the gains of the PI controller are obtained aski = 6.9138
+andkp = 4.5851. Substituting the computedcontrol gain matrix
+K into the error tracking system ( 27), the eigenvalues of the
+closed-loop matrix Ac =A+BK are veriﬁed as
+λ(Ac)= −2.2925±j1.2875. (71)
+Two speed tracking scenarios are compared: 1) a feedback-
+linearization PI controller with gains from the previous LMI-
+based design [31]; and 2) the proposed nonlinear PI-type con-
+troller, which incorporates an additional switching term.
+In the presence of external disturbances, the tracking re-
+sponse in Fig. 2 shows that the conventional PI controller
+cannot achieve perfect tracking, while the proposed method
+does. Fig. 3 illustrates the tracking er ror convergence, where
+the PI controller only guarantees BIBO stability, and the pro-
+posed method ensures asymptotic stability. Furthermore, the
+two control strategies are evaluated using standard performance
+indices, including the integral of the squared error (ISE) and the
+Fig. 3. Speed trajectory tracking error of cooling fan system.
+TABLE I
+COMPARISON OF DIFFERENT TRACKING PERFORMANCE
+USING ERROR METRICS (ISE, IAE)
+Control Algorithm ISE IAE
+Sim. Exp. Sim. Exp.
+LMI-based PI 181.27 349.34 75.98 174.48
+Nonlinear PI-type 15.49 40.29 15.61 51.75
+Fig. 4. PWM control input for cooling fan system.
+Fig. 5. Prototype of the developed cooling fan system.
+integral of the absolute error (IAE). The comparison results,
+as summarized in Table I, clearly demonstrate the superior
+tracking performance of the proposed method. Fig. 4 shows
+the PWM-based control input obtained from the LMI-designed
+gains.
+V. EXPERIMENTAL VALIDATIONS
+A cooling fan embedded platform was developed, as shown
+in Fig. 5. Detailed information about the experimental setup is
+available in [22]. The proposed control algorithms were imple-
+mented on this platform to validate their effectiveness.
+For detailed system identiﬁcation of the cooling fan, the low-
+pass ﬁltering method is applied, as described in recent research
+[21]. Accordingly, the equivalent model parameters in ( 9)a r e
+identiﬁed as a= 0.7612, aN = 0.0022, and b= 2.5393.
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:03:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 8 =====
+10700 IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS, VOL. 73, NO. 7, JUL Y2026
+Fig. 6. Open-loop model prediction of the cooling fan system.
+Fig. 7. Open-loop prediction error of the cooling fan system.
+Fig. 8. External disturbance signal and its ﬁrst-order derivative gener-
+ated by the embedded microcontroller.
+Figs. 6 and 7 show the open-loop prediction and error ob-
+tained by substituting the identiﬁed parameters into (9), result-
+ing in a root mean square error of 2.3902.
+The fan speed feedback was obtained using the real-time
+online estimation method in [22], which effectively ﬁlters out
+measurement noise. This approach ensures highly reliable state
+information for control and contributes to smoother control
+signal generation.
+A. Implementation of Fan Speed Tracking Control
+As illustrated in Fig. 8, the input disturbance applied to the
+system is generated by an embedded microcontroller (Teensy
+4.0) and is deﬁned as
+τd = 16/πarcsin(sin(0.04π(t−5))). (72)
+The desired fan speed is set to 80 (rps). As previously dis-
+cussed, the reference trajectory must be at least twice contin-
+uously differentiable to ensure that a properly designed ξcan
+consistently satisfy condition (37). To meet this requirement, a
+command preﬁlter is introduced to smooth the reference tra-
+jectory. As described in [31], this preﬁlter is constructed by
+cascading multiple ﬁrst-order lo w-pass ﬁlters (LPFs). In this
+study, the order of the cascaded LPFs is set to 3, and the cutoff
+frequency fc is chosen as 0.2 (Hz). The initial value of the
+desired speed trajectory is set to 30 (rps).
+Fig. 9. Experimental tracking response of fan speed control.
+Fig. 10. Experimental tracking error of fan speed control.
+Fig. 11. Comparison of control inputs under different control algorithms.
+Based on preliminary evaluation of the system model, the
+uncertainty conditions includi ng the uncertainty range, upper
+bound matrix, and Lipschitz gain are deﬁned as described in the
+simulation section. A conservative design strategy is adopted to
+ensure implementability and to avoid excessive control effort
+caused by modeling inaccuracies. As part of this strategy, the
+closed-loop time-domain speciﬁcation is set to η= 0.2. The
+optimal PI gains are obtained via an LMI-based approach, yield-
+ingk
+i = 0.8276 andkp = 1.5233. Additionally, considering the
+reference trajectory and parameter uncertainty, the switching
+gain is set to ξ= 5.2. The control law ( 18) is discretized via
+difference approximations and implemented at 100 Hz.
+It is worth noting that both the LMI-based conventional PI
+controller and the proposed nonlinear PI-type controller use
+identical gain values derived from the LMI-based optimal de-
+sign. This ensures a fair comparison focused on control struc-
+ture rather than gain tuning. The fan speed tracking performance
+under both control schemes is summarized in TableI.A ss h o w n ,
+the proposed method consistently outperforms the LMI-based
+conventional PI controller across all performance indices in
+both simulation and experiment.
+Fig. 9 shows the experimental tracking results, where the
+red line indicates the reference trajectory, the green line cor-
+responds to the conventional PI controller, and the blue line
+represents the proposed nonlinear PI-type controller. It can be
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:03:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 9 =====
+TSAI AND PENG: NONLINEAR PI-TYPE SPEED CONTROL DESIGN AND ITS APPLICATION TO MONITORING 10701
+Fig. 12. Overall ﬂow chart of robust speed tracking control with real-time health monitoring in a cooling fan system.
+observed that the nonlinear PI-type controller achieves near-
+perfect tracking performance even in the presence of external
+disturbances, whereas the conventional PI controller only con-
+verges to a bounded region under the same conditions.
+Furthermore, Fig. 10 presents the tracking error responses.
+The proposed method maintains a small, bounded error under
+persistent disturbances, demonstrating superior robustness.
+Finally, Fig. 11 compares the control inputs (PWM signals)
+of both controllers during implementation. The main difference
+lies in the proposed nonlinear PI-type controller, which incor-
+porates the integral of the sign of the tracking error, leading to
+enhanced robustness.
+Remark 7: To verify the applicability of the proposed method
+to different fan types, additi onal experimental studies were
+conducted on ﬁve commercial cooling fans with varying di-
+ameters, inertias, and aerodynamic characteristics. As shown in
+Section A of the Appendix, the fan model accurately captures
+the dominant speed dynamics in all cases, indicating strong
+generalizability and the potential f or extension to various fan
+control designs.
+Remark 8: To address the unavail ability of current mea-
+surements for full model identiﬁcation in commercial cooling
+fans, this study exploits the time-scale separation between the
+electrical and mechanical subsystems to derive a reduced-order
+fan model, which is applicable to most commercial cooling
+fans. However, as shown in Fig. 7, spike-like transient predic-
+tion errors may occur under fast reference changes, revealing a
+local limitation of the reduced-order approximation in capturing
+rapid transient dynamics. Further details are provided in Section
+B of the Appendix.
+B. Robust Fan Speed Tracking with Real-Time Health
+Monitoring
+In addition to robust fan speed tracking control, this study
+builds upon the foundation of [20], [21], and [22] to further
+develop a closed-loop real-time health monitoring application.
+The overall closed-loop monito ring process is illustrated in
+Fig. 12. Building on prior work, a digital model of the cooling
+fan was established along with key parameter identiﬁcation,
+enabling accurate system representation. A robust controller
+was then designed based on this model to ensure strong dis-
+turbance rejection performance. By applying the same control
+input to both the physical system and the digital model, system
+health is evaluated through the deviation between the actual and
+expected responses. Fig. 13(a) shows the external disturbance
+signal injected into the physical system via the embedded mi-
+crocontroller. Under such disturbance, the control response is
+presented in Fig. 13(b).
+Fig. 13(b) illustrates the robust tracking performance of the
+proposed control algorithm, as well as the corresponding pre-
+diction from the digital model. In this ﬁgure, the blue line
+represents the actual fan speed, the red line indicates the de-
+sired speed, and the dark green line corresponds to the model
+prediction. Additional elements include the predeﬁned upper
+and lower bounds, deﬁning the acceptable operating range for
+health assessment.
+It can be clearly observed that the fan accurately follows the
+desired trajectory despite the presence of disturbances. How-
+ever, the deviation between the actual and predicted speeds re-
+veals a system anomaly, namely the occurrence of disturbance.
+Notably, due to the robustness of the control algorithm, system
+response alone may not directly reﬂect the presence of a fault,
+emphasizing the importance of accurate model-based prediction
+in health monitoring.
+Fig. 13(c) further presents the tracking error of the fan speed.
+Fig. 13(d) depicts the actual control input (blue line) and the
+model-predicted input (red line). As shown, the actual control
+input actively responds to reject the disturbance, resulting in
+a deviation from the ideal input. This discrepancy can also be
+used as an indicator for system anomaly detection.
+Fig. 14 illustrates a disturbance test in which the fans air inlet
+is intentionally blocked. Real-time data from the embedded
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:03:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 10 =====
+10702 IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS, VOL. 73, NO. 7, JUL Y2026
+(a)
+(b)
+(d)
+(c)
+Fig. 13. Robust closed-loop fan speed control with real-time health
+monitoring. (a) External disturbance signal generated by the embedded
+microcontroller. (b) System response and corresponding model predic-
+tion. (c) Speed tracking error. (d) Actual control input versus model-
+predicted input.
+control system are visualized using Serial Studio. As shown,
+although the fan maintains accurate speed tracking under the
+intentional disturbance, a signiﬁcant deviation occurs between
+the actual speed and the model prediction. Once this deviation
+exceeds the predeﬁned error threshold of 6 (rps), the system
+triggers an anomaly warning, indicating abnormal operation.
+Remark 9: The proposed health monitoring relies solely
+on speed feedback due to the absence of current sensors in
+standard cost-effective fan drivers. This precludes the detection
+of speciﬁc electrical faults (e.g., winding short circuits) that do
+not immediately manifest as speed deviations. Future work will
+investigate observer-based techniques to reconstruct current dy-
+namics for enhanced fault diagnosis.
+Fig. 14. Fan speed control with real-time health monitoring under inten-
+tional disturbance.
+VI. C ONCLUSION
+This article proposes a nonlinear PI-type controller for robust
+speed tracking of a cooling fan system under model uncertain-
+ties and external disturbances. By incorporating a switching
+gain, the controller effectively mitigates the effects of both
+parametric uncertainties and external perturbations. Theoretical
+analysis based on Lyapunov stability and LMIs feasibility con-
+ditions conﬁrms that the closed-loop system achieves asymp-
+totic stability under the proposed cont rol strategy. To validate
+the effectiveness of the method, both numerical simulations
+and real-time experiments were conducted on an embedded
+cooling fan platform. The results consistently demonstrate that
+the proposed controller achieves accurate and robust track-
+ing performance, signiﬁcantly outperforming the LMI-based PI
+controller. These ﬁndings verify the practical applicability of
+the proposed approach and conﬁrm its robustness in uncertain
+operating environments. In addition, the proposed control tech-
+nique is further integrated with the existing fan digital model
+to enable real-time closed-loop health monitoring. Through
+intentional disturbance experiments, the system demonstrates
+the ability to detect anomalies effectively during the robust
+speed tracking process. This extension not only enhances the
+diagnostic capability of the fan systembut also highlights its po-
+tential for deployment in intelligent thermal management, fault-
+tolerant fan arrays, and condition-based maintenance of cooling
+units in industrial environments. Given the limitations of the
+reduced-order model, future work will investigate observer-
+based techniques for drive current estimation. Incorporating the
+full second-order model for system identiﬁcation will further
+enhance model prediction accuracy and overall control perfor-
+mance.
+A
+PPENDIX
+A. Extended Validation Demonstrating the Generality
+Across Different Cooling Fan Types
+To assess the generalizab ility of the proposed method,
+additional experiments were conducted on ﬁve cooling fan
+types with distinct geometric, inertial, and aerodynamic
+characteristics (Fig. 15). The ﬁltering-based identiﬁcation
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:03:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 11 =====
+TSAI AND PENG: NONLINEAR PI-TYPE SPEED CONTROL DESIGN AND ITS APPLICATION TO MONITORING 10703
+Fig. 15. Prototype of the multiple-fan-type fan tray system.
+TABLE II
+IDENTIFIED MODEL PARAMETERS FOR DIFFERENT FAN TYPES
+Parameter Fan 1 Fan 2 Fan 3 Fan 4 Fan 5
+a 1.1219 1.2732 1.2295 0.5942 0.5022
+aN 0.0021 0.0061 0.0291 0.0045 0.0048
+b 2.7939 2.7065 0.2395 0.7832 0.4865
+Fig.16. Open-loop model output prediction errors for different fan types.
+approach in [37] was applied to obtain the nominal parameters
+of the equivalent model in ( 9), which are summarized in
+Table II. These parameters were then used for open-loop
+prediction error validation, as shown in Fig. 16.
+The results conﬁrm that the proposed fan model and identi-
+ﬁcation method remain valid across different fan types. Phys-
+ically, the variation among fans is captured primarily through
+parameter differences, while the model structure remains con-
+sistent. This ﬁnding further supports the feasibility of extending
+the proposed methodology to control applications involving
+different cooling fans.
+B. Limitation Analysis of Reduced-Order Modeling
+The spike-like transient errors in Figs. 7 and 16 originate
+from neglecting electrical dynamics, assuming the electrical
+time constant (L/R) is negligible compared to the mechanical
+one (J
+m/Bm). However, the electrical response is not instan-
+taneous. This mismatch is demonstrated in Fig. 17(a), where
+the full second-order electrical-derived models (1)–(2) exhibit a
+smooth inductive lag, while the reduced-order model (9) reacts
+immediately.
+This behavior is experimentally validated in Fig. 17(b),
+where the measured output lags behind the prediction. This
+conﬁrms that the observed “spikes” represent modeling
+(a) (b)
+Fig. 17. Transient response comparison: full second-order versus
+reduced-order dynamics. (a) Simulation showing inductive lag. (b) Ex-
+perimental validation of the mismatch.
+discrepancies arising from the reduced-order approximation’s
+omission of noninstantaneous electrical dynamics under
+abrupt excitation. The reduced-order model currently provides
+robust performance for general applications. To further reﬁne
+transient tracking, future research will extend this framework
+by incorporating observer-based current estimation to restore
+full second-order dynamics.
+A
+CKNOWLEDGMENT
+The authors would like to expr ess their deepest gratitude to
+the National Science Technology Council for their ﬁnancial
+support in carrying out this research project.
+REFERENCES
+[1] H. B. Ghadim, A. Godin, A. Veillere, M. Duquesne, and D. Haillot,
+“Review of thermal management of electronics and phase change
+materials,” Renewable Sustain. Energy Rev. , vol. 208, Feb. 2025, Art.
+no. 115039, doi: 10.1016/j.rser.2024.115039.
+[2] I. Latif et al., “Single-node power demand during AI training: Measure-
+ments on an 8-GPU NVIDIA H100 system,” IEEE Access, vol. 13, pp.
+61740–61747, 2025, doi: 10.1109/ACCESS.2025.3554728.
+[3] A. R. Dhumal, A. P. Kulkarni, and N. H. Ambhore, “A compre-
+hensive review on thermal management of electronic devices,” J.
+Eng. Appl. Sci. , vol. 70, no. 1, Nov. 2023, Art. no. 140, doi:
+10.1186/s44147-023-00309-2.
+[4] S. M. I. Rahman et al., “Emerging trends and challenges in thermal
+management of power electronic converters: A state of the art review,”
+IEEE Access , vol. 12, pp. 50633–50672, 2024, doi: 10.1109/AC-
+CESS.2024.3385429.
+[5] H. Chen, T. Zhang, Q. Gao, J. Lv, H. Chen, and H. Huang, “Ther-
+mal management enhancement of electronic chips based on novel
+technologies,” Energy, vol. 316, Feb. 2025, Art. no. 134575. doi:
+10.1016/j.energy.2025.134575.
+[6] Y . Ortiz, P. Arévalo, D. Peña, and F. Jurado, “Recent advances in ther-
+mal management str ategies for lithium-ion ba tteries: A comprehensive
+review,”Batteries, vol. 10, no. 3, 2024, Art. no. 83. [Online]. Available:
+https://www.mdpi.com/2313-0105/10/3/83
+[7] T. Zhang, L. Qibo, S. Gokul, and P. Amleshi, “Fan cooling investigation
+for high-speed electronic interconnect,” Heat Transfer Eng., vol. 44, no.
+9, pp. 767–784, May 2023, doi: 10.1080/01457632.2022.2093530.
+[8] B. D. Niculina, S. Paul, and M. Cristina, “Fan vs. passive heat sinks
+for cooling high power COB-type LEDs,” in Proc. 9th Int. Conf.
+Electron., Comput. Artif. Intell. (ECAI) , Jun. 29–Jul. 1, 2017, pp. 1–
+4, doi: 10.1109/ECAI.2017.8166477.
+[ 9 ] A .A .A l k r u s h ,M .S .S a l e m ,O .A b d e l r e h i m ,a n dA .A .H e g a z i ,“ D a t a
+centers cooling: A critical review of techniques, challenges, and energy
+saving solutions,” Int. J. Refrig., vol. 160, pp. 246–262, Apr. 2024, doi:
+10.1016/j.ijrefrig.2024.02.007.
+[10] A. Gharehghani et al., “Progress in battery thermal management systems
+technologies for electric vehicles,” Renewable Sustain. Energy Rev.,v o l .
+202, Sep. 2024, Art. no. 114654, doi: 10.1016/j.rser.2024.114654.
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:03:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 12 =====
+10704 IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS, VOL. 73, NO. 7, JUL Y2026
+[11] W. Yang, L. Yang, J. Ou, Z. Lin, and X. Zhao, “Investigation of
+heat management in high thermal density communication cabinet by
+a rear door liquid cooling system,” Energies, vol. 12, no. 22, 2019, Art.
+no. 4385. [Online]. Available: https://www.mdpi.com/1996-1073/12/22/
+4385.
+[12] P. Castro, J. L. Afonso, and J. A. Afonso, “A low-cost ZigBee-
+based wireless industrial automation system,” in Proc. CONTROLO:
+Proc. 12th Portuguese Conf. Autom. Control, 2016, Cham, Switzerland:
+Springer, pp. 739–749.
+[13] X. Jin, E. W. M. Ma, L. L. Cheng, and M. Pecht, “Health monitoring
+of cooling fans based on Mahalanobis distance with mRMR feature
+selection,” IEEE Trans. Instrum. Meas. , vol. 61, no. 8, pp. 2222–2229,
+2012, doi: 10.1109/TIM.2012.2187240.
+[14] C. Li, M. Afshar, and B. Akin, “Fault detection in small fan motors using
+MCSA,” in Proc. IEEE Int. Electric Machines & Drives Conf. (IEMDC),
+May 15–18, 2023, pp. 1–7, doi: 10.1109/IEMDC55163.2023.10238848.
+[15] L. Wang, W. Zuo, Z. X. Yang, J. Zhang, and Z. Cai, “A method for
+fans’ potential malfunction detection of ONAF transformer using top-
+oil temperature monitoring,” IEEE Access, vol. 9, pp. 129881–129889,
+2021, doi: 10.1109/ACCESS.2021.3114301.
+[16] R. Nematirad, M. Behrang, and A. Pahwa, “Acoustic-based online
+monitoring of cooling fan malfunctio n in air-forced transformers using
+learning techniques,” IEEE Access , vol. 12, pp. 26384–26400, 2024,
+doi: 10.1109/ACCESS.2024.3366807.
+[17] Y . Yu, X. Du, J. Zhou, and H. Ren, “Condition monitoring method
+for heatsink of traction inverter using ANN and OWD,” IEEE Trans.
+Power Electron. , vol. 38, no. 2, pp. 2552–2564, Feb. 2023, doi:
+10.1109/TPEL.2022.3217044.
+[18] M. Afshar, C. Li, and B. Akin, “Real-time current-based distributed
+bearing faults det ection in small cooling fan motors,” IEEE Trans.
+Ind. Appl. , vol. 60, no. 2, pp. 3188–3199, Mar./Apr. 2024, doi:
+10.1109/TIA.2023.3338595.
+[19] H. Kim et al., “Self-powered triboelectric sensor for cooling fan mon-
+itoring,” Funct. Compos. Struct. , vol. 4, Aug. 2022, Art. no. 035003,
+doi: 10.1088/2631-6331/ac871b.
+[20] C. C. Peng and C. Y . Su, “Modeling and parameter identiﬁcation of a
+cooling fan for on line monitoring,” IEEE Trans. Instrum. Meas. ,v o l .
+70, pp. 1–14, 2021, doi: 10.1109/TIM.2021.3104375.
+[21] C.-C. Peng and T.-Y . Chen, “A recu rsive low-pass ﬁltering method for
+a commercial cooling fan tray para meter online estimation with mea-
+surement noise,” Measurement, vol. 205, Dec. 2022, Art. no. 112193,
+doi: 10.1016/j.measurement.2022.112193.
+[22] C.-C. Peng, M.-C. Tsai, and T.-Y . Chen, “Nonlinearity modeling for
+online estimation of industrial cooling fan speed subject to model
+uncertainties and state-dependent measurement noise,” Nonlinear Eng.,
+vol. 13, no. 1, 2024, Art. no. 20240049, doi: 10.1515/nleng-2024-0049.
+[23] N. Che et al., “OS-level PMC-based runtime thermal control for
+ARM mobile CPUs,” IEEE Trans. Comput.-Aided Des. Integr.
+Circuits Syst. , vol. 43, no. 7, pp. 2023–2036, Jul. 2024, doi:
+10.1109/TCAD.2024.3360319.
+[24] J. Kim, M. M. Sabry, D. Atienza, K. Vaidyanathan, and K.
+Gross, “Global fan speed control considering non-ideal tempera-
+ture measurements in enterprise servers,” in Proc. Des., Automat.
+Test Europe Conf. Exhib. (DATE) , Mar. 24–28, 2014, pp. 1–6, doi:
+10.7873/DATE.2014.289.
+[25] X. Lin, J. Liu, Z. Liu, Y . Gao, L . Peretti, and L. Wu, “Model-free
+current predictive control for PMSMs with ultralocal model employ-
+ing ﬁxed-time observer and extremum-seeking method,” IEEE Trans.
+Power Electron. , vol. 40, no. 8, pp. 10682–10693, Aug. 2025, doi:
+10.1109/TPEL.2025.3553685.
+[26] R. Xu, X. Shen, X. Lin, Z. Liu, D. Xu, and J. Liu, “Robust model
+predictive control of position sensorless-driven IPMSM based on cas-
+caded EKF-LESO,” IEEE Trans. Transport. Electriﬁc. , vol. 11, no. 4,
+pp. 8824–8832, Aug. 2025, doi: 10.1109/TTE.2025.3547259.
+[27] X. Lin et al., “Observer-based prescribed performance speed control
+for PMSMs: A data-driven RBF neural network approach,” IEEE
+Trans. Ind. Informat. , vol. 20, no. 5, pp. 7502–7512, May 2024, doi:
+10.1109/TII.2024.3357194.
+[28] Z. Kang, X. Lin, X. Shen, Z. Liu, Y . G ao, and J. Liu, “Event-triggered
+generalized super-twisting sliding mode control f or position tracking of
+PMSMs,” IEEE Trans. Ind. Informat. , vol. 21, no. 7, pp. 5701–5711,
+Jul. 2025, doi: 10.1109/TII.2025.3556086.
+[29] S. Mobayen, K. A. Alattas, A. Fekih, F. F. M. El-Sousy, and M. Bakouri,
+“Barrier function-based adaptive nonsingular sliding mode control of
+disturbed nonlinear systems: A lin ear matrix inequality approach,”
+Chaos, Solitons Fractals , vol. 157, Apr. 2022, Art. no. 111918, doi:
+10.1016/j.chaos.2022.111918.
+[30] R. Rahimpour et al., “An LMI adaptive-barrier function global sliding
+mode control of uncertain nonlinear systems with input saturation,”
+Ain Shams Eng. J. , vol. 15, no. 2, Feb. 2024, Art. no. 102460, doi:
+10.1016/j.asej.2023.102460.
+[31] C. C. Peng and M. C. Tsai, “Analysis of an electronic heating
+device: System modeling, identiﬁcation and control,” IEEE Trans.
+Ind. Electron. , vol. 71, no. 12, pp. 16463–16472, Dec. 2024, doi:
+10.1109/TIE.2024.3390709.
+[32] C.-C. Peng, “Nonlinear integral type observer design for state estimation
+and unknown input reconstruction,” Appl. Sci., vol. 7, no. 1, 2017, Art.
+no. 67. [Online]. Available: https://www.mdpi.com/2076-3417/7/1/67
+[33] C.-C. Peng, Y .-Z. Li, and C.-L. Chen, “A robust integral type back-
+stepping controller design for control of uncertain nonlinear systems
+subject to disturbance,” Int. J. Innovative Comput., Inf. Control ,v o l .7 ,
+May 2011.
+[34] C. C. Peng and Y . T. Su, “Sliding controller design for servo drive
+systems subject to mechanical an d electrical perturbations,” in Proc.
+IEEE Int. Conf. Ind. Technol. (ICIT) , Mar. 14–17, 2016, pp. 107–112,
+doi: 10.1109/ICIT.2016.7474734.
+[35] G. Phanomchoeng and R. Rajamani, “Observer design for Lipschitz
+nonlinear systems using Riccati equations,” in Proc. Am. Control Conf.,
+Jun. 30–Jul. 2, 2010, pp. 6060–6065, doi: 10.1109/ACC.2010.5531294.
+[36] C. Edwards, A. Akoachere, and S. K. Spurgeon, “Sliding-mode out-
+put feedback controller design u sing linear matrix inequalities,” IEEE
+Trans. Autom. Control , vol. 46, no. 1, pp. 115–119, Jan. 2001, doi:
+10.1109/9.898702.
+[37] M. C. Tsai and C. C. Peng, “Model- based particle swarm optimization
+ﬁltering algorithm for Mecanum Wheel car parameter identiﬁcation with
+measurement noise,” IEEE Trans. Instrum. Meas.
+, vol. 74, pp. 1–12,
+2025, doi: 10.1109/TIM.2025.3604934.
+Min-Che Tsai was born in Changhua, Taiwan,
+in 1995. He received the B.S. degree in me-
+chanical and computer-aided engineering from
+Feng Chia University (FCU), Taichung, Taiwan,
+in 2018, and the M.S. and Ph.D. degrees in
+aeronautics and astronautics from the National
+Cheng Kung University (NCKU), Tainan, Tai-
+wan, in 2021 and 2026, respectively.
+His research interests include system mod-
+eling and identiﬁcation, intelligent control tech-
+niques, robust controller and observer design,
+system analysis, and their practical applications in robotics and intelli-
+gent manufacturing systems.
+Chao-Chung Peng (Member, IEEE) was born
+in Kaohsiung, Taiwan, in 1980. He received the
+B.S. and Ph.D. degrees in aeronautics and as-
+tronautics from the National Cheng Kung Uni-
+versity (NCKU), Tainan, Taiwan, in 2003 and
+2009, respectively.
+Since 2016, he has been with the Department
+of Aeronautics and Astronautics, NCKU, where
+he was appointed as an Assistant Professor in
+2016, promoted to an Associate Professor in
+2020, and to a Full Professor in 2023. In 2024,
+he was the Director of the Advanced Intelligent Unmanned Aerial Vehicle
+Research and Development Center, NCKU. From 2008 to 2009, he was
+a Research Assistant with the Department of Engineering, University
+of Leicester, Leicester, U.K. He was a Postdoctoral Fellow with the
+Department of Mechanical Engineering, NCKU, from 2010 to 2012.
+In 2012, he joined as a Senior Engineer with the Embedded Sys-
+tem Development Section, Measurement and Automation Department,
+ADLINK Technology Inc., Taipei, Taiwan. From 2014 to 2016, he was
+with the Automation and Instrumentation System Development Section
+of the Iron & Steel Research and Development Department, China Steel
+Corporation (CSC), Kaohsiung, Taiwan. His research interests include
+high-performance motion control, unmanned vehicle system design,
+advanced ﬂight control, autonomous robotics, intelligent simultaneous
+localization and mapping (SLAM), system modeling, and real-time diag-
+nostic technologies.
+Dr. Peng was elected to the Phi Tau Phi Scholastic Honor Society in
+2009. He received the Excellent Y oung Engineering Professor Award
+from the Chinese Society of Mechanical Engineers (CSME) in 2019 and
+the Rising Star Award from the College of Engineering, NCKU, in 2023.
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:03:41 UTC from IEEE Xplore.  Restrictions apply. 

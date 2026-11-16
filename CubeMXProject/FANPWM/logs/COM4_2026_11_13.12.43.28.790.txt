@@ -1,0 +1,15 @@
+0.006 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.006 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.006 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.006 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.006 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.006 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.006 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.006 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.006 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.007 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.007 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.006 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.006 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.007 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.007 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW

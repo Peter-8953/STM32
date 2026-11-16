@@ -1,0 +1,688 @@
+
+===== PAGE 1 =====
+ 
+ 
+RESEARCH ON SPEED-SENSORLESS 
+INDUCTION MOTOR CONTROL SYSTEM 
+BASED ON AMESIM-SIMULINK SIMULATION 
+ 
+JIA Xiaoyan 
+State Key Laboratory of Automobile Simulation and Control  
+Department of Control Science and Engineering,Jilin 
+University 
+ Changchun, PR China 
+E-mail: jiaxy09@mails.jlu.edu.cn 
+WANG Xue 
+State Key Laboratory of Automobile Simulation and Control  
+Department of Control Science and Engineering,Jilin 
+University 
+ Changchun, PR China 
+E-mail: xuew11@mails.jlu.edu.cn 
+XIE Xiaohua 
+State Key Laboratory of Automobile Simulation and Control  
+Department of Control Science and Engineering,Jilin 
+University 
+ Changchun, PR China 
+E-mail: xiexh@jlu.edu.cn 
+CHEN Hong 
+China First Automobile Works Group 
+ Research and Development Center 
+Changchun, PR China 
+E-mail: chenhong1@rdc.faw.com.cn 
+ 
+ 
+Abstract—This paper will establish the simulation model and the 
+inverter model of induction motor based on the multi function 
+simulation software AMESim. Considering the influence on the 
+motor from the temperature and other complex factors, and 
+Using Matlab / Simulink software to establish a simulation model 
+of direct torque control system, then we go on combined 
+simulation through the combination of the two aspects. The 
+simulation result shows that the controller make the speed faster 
+and the robustness stronger of the motor control system, but at 
+the same time it exposes the shortcoming that torque pulsing will 
+enlarge at the low speed. Pointing at the shortcoming, this article 
+starts with the principle of extended kalman filtering algorithm, 
+uses of measuring current, voltage on the pattern of stator, 
+deduces from a new motor speed, flux state observer model 
+without speed sensor, and estimates the rotor speed and stator 
+flux. The simulation result shows that this method can solve the 
+problem of flux and torque pulsing effectively. 
+Keywords- Extended Kalman filter;  direct torque control; the 
+simulation software AMESim;  torque ripple 
+I.  INTRODUCTION (HEADING 1) 
+The full name of AMESim is LMS Imagine.Lab AMESim, 
+that is complex system modeling and simulation platform of 
+the interdisciplinary field. It provides a complete platform of 
+system project design, this makes it possible that the user can 
+build complex model of multidisciplinary field system on a 
+platform. By using of various components provided by system, 
+the user can using the physical model to build the simulation 
+platform, and this improved the difficulties that general 
+modeling software to do it by using of complicated 
+mathematical model. AMESim model is more close to the 
+reality. 
+Direct torque control is a new type of high performanced 
+AC adjustable-speed transmission control technique. It 
+abandonees the decoupling control theory in vector control. By 
+using of the stator flux orientation and instantaneous space 
+vector theory, and detecting the stator voltages and currents, 
+this control method observes flux and torque of motor in the 
+stator coordinate, then compares the observation value with the 
+given one. By hysteresis controller regulating the error value 
+gets corresponding control signal. To control motor, through 
+synthesizing flux and torque signal to select the corresponding 
+voltage space vector. The advantage of direct torque control is 
+that the torque has faster dynamic response, and the rotor 
+parameters change has certain robustness. The defect of this 
+control method is that torque and flux pulsing is strong 
+especially in the low speed. 
+The motor speed and flux observer given in this paper 
+check the feasibility of the algorithm, by computer simulation 
+and the comparison between the actual rotor speed and stator 
+flux. The simulation results show that the design of new state 
+observer can reduce the motor flux and torque pulsing 
+effectively, and improve the motor torque performance. And it 
+make high performance motor control possible. 
+ 
+II. 
+THE INDUCTION MOTOR STATE ESTIMATION BASED ON 
+THE EXTENDED KALMAN FILTER 
+The object of this paper is the AC induction motor, which is 
+a typical nonlinear system. Under normal circumstances, the 
+Kalman filter is used for state estimation of linear systems, if it 
+is used in the state estimation of nonlinear systems, you must 
+consider to use the extended Kalman filter (Extended Kalman 
+375
+UKACC International Conference on Control 2012 
+Cardiff, UK, 3-5 September 2012 
+978-1-4673-1560-9/12/$31.00 ©2012 IEEE
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 06:58:12 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+ 
+ 
+Filter, EKF). The largest difference between the general 
+Kalman filter and EKF is attempting to make the nonlinear 
+systems linearization [3-7]. After the Jacobian matrix 
+linearization, there is little difference with the general Kalman 
+filter in form. 
+A. The Extended Kalman Filter Design Based On AC 
+Induction Motor 
+In two-phase stationary coordinate, in order to use EKF to 
+predict the rotor speed, we need to add to a new state variable 
+[8] [9]. The block diagram of the direct torque control system 
+based on the extended Kalman filter is shown in figure 1. That 
+is where we use voltage and current value which is easy to 
+measure to estimate the value of the stator flux and achieve the 
+speed identification based on the extended Kalman filter 
+algorithm. So as to improve the performance of induction 
+motor direct torque control system [10] [11]. 
+ 
+Figure 1 the system block diagram of EKF-DTC 
+Under the conditions that the sampling period is very short, 
+we can think that the change is zero. Rewriting of the induction 
+motor state-space model: 
+               
+() ()
+() ()
+=⋅ +⋅
+=⋅
+xA x t B u t
+yt C xt                                  (1) 
+Among the formula: 
+ State variable T[]αβ α β ψψω= ss r rrxi i , measurement 
+variable T[]αβ= ssyi i , input variable T[] αβ= ssuu u , 
+22
+22 2
+22
+22 2
+00
+00
+00
+00
+00 0 0 0
+ω
+σσ σ
+ω
+σσ σ
+ω
+ω
+⎡⎤ +−⎢⎥
+⎢⎥
+⎢⎥ +⎢⎥ −
+⎢⎥
+⎢⎥= ⎢⎥ −−⎢⎥
+⎢⎥
+⎢⎥ −⎢⎥
+⎢⎥
+⎣⎦
+pm rmr rs mr
+sr sr sr
+pm rmr rs mr
+sr sr sr
+rm r
+pr
+rr
+rm r
+pr
+rr
+nLLR L R LR
+LL LL LL
+nLLR L R LR
+LL LL LL
+A RL R nLL
+RL RnLL
+ 
+1 0
+10
+00
+00
+00
+σ
+σ
+⎡ ⎤
+⎢ ⎥
+⎢ ⎥
+⎢ ⎥
+⎢ ⎥= ⎢ ⎥
+⎢ ⎥
+⎢ ⎥
+⎢ ⎥
+⎢ ⎥⎣ ⎦
+s
+s
+L
+LB             10000
+01000
+⎡⎤= ⎢⎥⎣⎦
+C  
+Where sR is the stator winding resistance, rR is the rotor 
+winding resistance, sL is the stator cyclic inductance, rL is the 
+rotor cyclic inductances, mL is mutual cyclic inductance, 
+2
+1σ τσ=− m
+sr
+L
+L , pn is the number of pairs. ω r  is the rotor 
+speed. It can be seen from the above state equation expression, 
+in addition to the speed, the rest of the amount are all the stator 
+side variables or motor constants, but also it shows the system 
+is a nonlinear system. In other words we can use the extended 
+Kalman filter algorithm. The actual system contains the system 
+and measurement noise inevitably, so we add the noise matrix 
+to the fifth-order model of the AC induction motor. It 
+constitutes the following stochastic nonlinear control system: 
+                           
+() ( () ) ()
+() ( () ) ()
+=+
+=+
+xt f xt W t
+yt hxt Vt                            (2) 
+Among the formula:  
+( () ) () ()=⋅ +⋅f xt A xt B ut ,( ( ) ) ( )=⋅hxt C xt ,( )Wt  is the 
+system noise matrix, ( )Vt  is the process noise matrix. So the 
+space state equation of an AC induction motor conforms the 
+form of general nonlinear systems state equation in 2.1 section. 
+So this paper may be using extended Kalman filter algorithm to 
+research the AC induction motor. Firstly we should linear and 
+discrete the state space model (1) and (2) of the AC induction 
+motor. Specific process is as follows: we can expand the model 
+using of the Taylor series mentioned in the previous section, 
+and then ignore the higher order terms and retain only first 
+order, get the approximation linear model. Assuming that the 
+state equation of the discrete system is as follows: 
+             () () ()
+() ()
+=++
+=+
+
+kk
+k
+xA x k B u kW k
+yC x k V k                             (3) 
+The dispersion coefficient is : 
+=≈ +AT
+kA eI A T ,
+0
+ξ ξ=≈∫
+T
+A
+kB eB d B T , =kCC . 
+We substitute A, B, C into the above equation to get: 
+376
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 06:58:12 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+ 
+ 
+22
+22 2
+22
+22 2
+00
+00
+00
+00
+00 0 0 0
+ω
+σσ σ
+ω
+σσ σ
+ω
+ω
+⎡⎤ +−⎢⎥
+⎢⎥
+⎢⎥ +⎢⎥ −
+⎢⎥
+⎢⎥= ⎢⎥ −−⎢⎥
+⎢⎥
+⎢⎥ −⎢⎥
+⎢⎥
+⎣⎦
+pm rmr rs mr
+ss s
+sr sr sr
+pm rmr rs mr
+ss s
+sr sr sr
+k rm r
+ss p r s
+rr
+rm r
+sp r s s
+rr
+nLLR L R LR TT TLL LL LL
+nLLR L R LR TT TLL LL LL
+A RL R TT n TLL
+RL R Tn T TLL
+ 
+1 0
+10
+00
+00
+00
+σ
+σ
+⎡⎤
+⎢⎥
+⎢⎥
+⎢⎥
+⎢⎥= ⎢⎥
+⎢⎥
+⎢⎥
+⎢⎥
+⎢⎥⎣⎦
+s
+sk
+L
+LB
+                  10000
+01000
+⎡⎤= ⎢⎥⎣⎦
+kC  
+Known by the five formulas of the extended Kalman filter, 
+we must also know the nonlinear state matrix f , output matrix 
+h  and vector partial differential matrix F 、 H . The F  is 
+called the Jacobian matrix, and the H is called the transfer 
+matrix. 
+We can get =⋅ +⋅kkf AxBu from the formula 
+( () ) () ()=⋅ +⋅f xt A xt B ut , and get ( ( )) ( ) =⋅hxt C xt  
+from =⋅ khCx . So  
+ˆ() ()
+22 2 2
+(( ) )ˆ(( ) ) ()
+() 1 () () ()
+() 1 () () ()
+00 0 0
+00 0 0
+( ) () ()( ) 0
+ββ
+αα
+βα β α
+σσ ω ω σ ψ σ
+ωσ σ ω σ ψ σ
+ψψ
+=
+∂= ∂
+⎡⎤−− − − +
+⎢⎥ −−− −⎢⎥
+⎢⎥=−⎢⎥ −⎢⎥
+⎢⎥ −−⎣⎦
+xt xt
+s s rrr r r s s r s
+rs s r r s r r s r s
+s
+s
+pr pr p s p s
+fx tFxt xt
+RL T R L L i L
+RL T L R L i L
+R
+R
+nJ nJ nJ i nJ i
+ 
+ˆ() ()
+10000
+01000()
+=
+⎡⎤∂== ⎢⎥∂ ⎣⎦
+xt xt
+CH xt
+ 
+After calculating the above functions and the corresponding 
+matrix, we can apply the five steps of the Extended Kalman 
+Filter. Substituting into the following recursive formula: 
+    ( 1 / ) () (() ,() )+=+ ∗xk k xk T f xk uk                             (4) 
+    1/ ( (() ) (() ) )+ =+ ∗+∗ ∗ + T
+kk k k kPP F x k P P F x k T Q                   (5) 
+    1
+1/ 1/(1 ) [ ] −
++++= ∗ ∗ + TT
+kk kkK kP H H P H R                      (6) 
+     11 / 1 /(1 )++ +=− + ∗ ∗kk k k kPP K k H P                                (7) 
+    ( 1) ( 1 / ) ( 1)( ( 1) ( 1 / ))+= + + + +−∗ +xk xk k Kk yk H xk k                     (8) 
+Among the formulas, K  is the Kalman gain, P is the state 
+error covariance matrix, Q and R are noise covariance matrix 
+whose initial value is artificially given. This article gets each 
+parameter by trial and error method under the premise of 
+ensuring the steady-state tracking and filtering divergence.  
+B. System Simulation Model Based On The EKF-DTC 
+System 
+When the simulation model is set up, the extended Kalman 
+filter is using of the S function. Figure 2 is the Simulink. 
+Simulation diagram with the EKF-DTC. 
+ 
+Figure 2. Simulink Simulation model based on EKF-DTC. 
+Induction motor simulation parameters:  
+rated power NP =1.1kw, stator winding resistances sR =5.793Ω, 
+rotor winding resistances rR =3.421Ω, stator cyclic 
+inductances sL =0.368H, rotor cyclic inductances 
+rL =0.368H,mutual cyclic inductance mL =0.363H,moment of  
+inertia J =0.0267Kg.m2,the number of pairs P =2.  
+Based on the EKF-DTC method and the traditional DTC 
+stator flux vector, electromagnetic torque and current 
+simulation waveform, we compare the simulation results.  
+the given speed is 30 r / s (the rated speed is 150 r/s),  and 
+the load torque is 3 N. m. 
+-2 -1 0 1 2-2
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+Startor Flux(Wb•
+Startor Flux(Wb  Wb
+ 
+ (a1) stator flux waveform of traditional DTC 
+377
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 06:58:12 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+ 
+ 
+-2 -1 0 1 2-2
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+Stator Flux Wb
+Stator Flux Wb
+ 
+ (a2) stator flux waveform of EKF-DTC 
+   
+0 0.5 1 1.5 2 2.5 3
+-20
+-10
+0
+10
+20
+30
+40
+50
+60
+Time s
+Torque N.m
+ 
+ (b1) Electromagnetic torque waveform of traditional DTC 
+0 0.5 1 1.5 2 2.5 3-40
+-30
+-20
+-10
+0
+10
+20
+30
+40
+time(s)
+torque(N.m)
+ 
+ (b2) Electromagnetic torque waveform of EKF-DTC 
+0 0.5 1 1.5 2 2.5 3-30
+-20
+-10
+0
+10
+20
+30
+Time s
+Current A
+ 
+ (c1) Current waveform of traditional DTC 
+0 0.1 0.2 0.3 0.4 0.5-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+time(s
+current A
+ 
+ (c2) Current waveform of EKF-DTC 
+0 0.5 1 1.5 2 2.5 329
+29.2
+29.4
+29.6
+29.8
+30
+30.2
+30.4
+30.6
+30.8
+31
+Time(S)
+Speed(rad/s)
+ 
+(d1) Given speed waveform 
+378
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 06:58:12 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+ 
+ 
+0 0.5 1 1.5 2 2.5 3-5
+0
+5
+10
+15
+20
+25
+30
+35
+time(s)
+speed(rad/s)
+ 
+ (d2) speed waveform of EKF-DTC 
+Figure 3   Comparative experiment waveforms 
+ 
+III. SIMULINK AND AMESIM SIMULATION REALIZATION 
+AND VALIDATION OF THE ALGORITH  
+A. The Structures Of The Joint Simulation Model 
+We use the motor model in AMESim to instead of the 
+induction motor model of control system in front. At the same 
+time its inverter drive section is also created in the software, to 
+verify the effect of this control algorithm designed. In 
+AMESim, the mathematical model of the induction motor takes 
+the relationship between the temperature and the parameters 
+into account, the system makes it closer to the actual motor 
+system environment, and makes the powerful validation of the 
+effectiveness of the proposed algorithm. In AMESim model, 
+the relationship between the temperature and the motor 
+parameters is as follows: 
+0
+0
+0
+0
+(1 ( ))
+(1 ( ))
+=+ −
+=+ −
+ss s
+rr
+R R alphaR Temp T
+tauR T alphaT Temp T  
+Co-simulation electronic control system and Simulink 
+single software simulation model are different. In the co-
+simulation electronic control system, we introduce the voltage, 
+current sensor signal and speed signal in AMESim into the 
+Simulink model. We can calculate the inverse change switch 
+signal by the computing in the Simulink model and then act on 
+the inverter device of AMESim model. As shown in Figure 4, 
+the S-function in the simulation model is corresponding to the 
+AMESim co-simulation interface in figure 5, to complete the 
+data reception and transmission. 
+ 
+Figure 4  AMESim simulation model of Co-simulation 
+ 
+ 
+Figure 5  Simulink simulation model of Co-simulation 
+B. The Simulation Experiment Of Algorithm Verification 
+Simulation: the motor parameters still choose the same 
+parameters as the previous ones.  
+The experimental setup: the reference temperature is 25 
+degrees Celsius. The given speed is 30rad / s. Observing the 
+stator flux and speed simulation waveform. 
+-2 -1 0 1 2-2
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+Stator flux Wb
+Stator flux Wb
+ 
+Figure 6. Stator flux waveform of Co-simulation 
+ 
+379
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 06:58:12 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+ 
+ 
+0 2 4 6 8 100
+5
+10
+15
+20
+25
+30
+35
+time(s)
+speed(rad/s)
+ 
+Figure 7. The waveform of the observables under Low-speed 
+IV. CONCLUSION 
+Analyzing figure 3: 
+1. It is visible from the comparison between Figure (a1) 
+and Figure (a2). When the motor is running at low speed 30rad 
+/ s, the stator flux trajectory is a hexagon in the Traditional 
+DTC method. The control effect is far from ideal. But the stator 
+flux trajectory is approximately circular in EKF-DTC method, 
+and the pulse also significantly reduces. 
+2. It is visible from the comparison between Figure (b1) 
+and Figure (b2). The electromagnetic torque ripple reduces to a 
+large extent based on the EKF-DTC method. 
+3. It is visible from the comparison between Figure (c1) 
+and Figure (c2). The current waveform pulse is obvious in 
+traditional DTC method. The current sine wave has been 
+significantly improved based on EKF-DTC method. 
+4. It is visible from the comparison between Figure (d1) 
+and Figure (d2). The value of a given speed is 30rad / s. The 
+EKF identification value is also about 30rad / s. That is to say 
+that we can achieve the speed recognition based on the EKF-
+DTC and the no speed sensor technology. 
+It can clearly be seen that the method reduce the stator flux, 
+electromagnetic torque, the current waveform pulsation to a 
+large extent and improve the steady-state performance of a 
+direct torque control system based on EKF-DTC. Analyzing 
+the reason is that the stator flux observer model is the UI model 
+in the traditional DTC, the accuracy declines seriously at a low 
+speed. However the EKF can remove the error caused by the 
+cumulative integral. The introduction of EFK is equivalent to 
+change the original open-loop stator flux model into a closed-
+loop control, and eliminate the error in the ring. At the same 
+time EKF achieve speed identification and the speed sensor 
+control, and also maintain the advantages of the DTC fast 
+dynamic response. 
+Analyzing Figure 6 and  Figure 7  
+The stator flux trajectory is almost circular, but the 
+trajectory is coarse, and it shows that the pulse is large. 
+However, the shape and thickness of the track can still 
+determine that it is limited within an acceptable range. The 
+given speed is 30rad / s. It can be seen from the experimental 
+results that the actual speed can track a given speed. Above all 
+we can conclude that the design algorithm of this paper is 
+effective.  
+R
+EFERENCES 
+[1] M. Depenbrock, “Direct self-control of inverter-fed machine”. IEEE 
+Trans. on PE, vol. 3, no. 4, pp. 420-429, 1988J. Clerk Maxwell, A 
+Treatise on Electricity and Magnetism, 3rd ed., vol. 2. Oxford: 
+Clarendon, 1892, pp.68–73. 
+[2] I. Takahashi, T. Noguchi, “A new quick-response and high-efficiency 
+control strategy of an induction motor”. IEEE Trans. on IA, vol. 22, no. 
+5, pp. 820-827, 1986. 
+[3] ANDERSON, B.O., and MOORE, J.B.: ‘Optimal filtering’ (Pren-tice-
+Hall,  1979). 
+[4] JAZINSKI,  A.H.: ‘Stochastic  processes  and  filtering  theory’ 
+(Academic Press, 1970). 
+[5] KIM, Y., SUL, S., and PARK, M.: ‘Speed sensor less vector con- troll of 
+induction motor  using  extended  Kalman  filter’,  IEEE Trans., 1994, 
+IA-30, (5), pp. 1225-1233. 
+[6] KUBOTA, H, and MATSUSE, K.: ‘Speed sensorless field-ori-ented 
+control of induction motor with rotor resistanc adapta- tion’, IEEE 
+Trans., 1994, IA-30, (5), pp. 1219-1224 
+[7] HENNEBERGER, G., BRUNSBACH, B.J., and KLEPSCH, T.: ‘Field-
+oriented control  of synchronous  and  asynchronous  drives without 
+mechanical sensors using a Kalman filter’. Proceedings of EPE, Firenze, 
+Italy, 1991, Vol. 3, pp. 664671 
+[8] Zaky, M.S, Khater, M.M, Shokralla, S.S, Yasin, H.A Wide-Speed-
+Range Estimation With Online Parameter Identification Schemes of 
+Sensorless Induction Motor Drives[J]. IEEE Transactions Industrial 
+Electronics, 2009, 56(5): 1699-1707. 
+[9] Brandstetter, P. Kuchar, M. Vinklarek, D.Estimation Techniques for 
+Sensorless Speed Control of Induction Motor Drive[J]. IEEE 
+International Symposium Industrial Electronics, 2006, 1(7) :154-159. 
+[10] Ziane, H., Retif, J.M., Rekioua, T., “Fixed-switching-frequency DTC 
+control for PM synchronous machine with minimum torque ripples”[J]. 
+Canadian Journal of Electrical and Computer Engineering, 2008, (33) 3: 
+183–189. 
+[11] Dong Zhe, You Zheng. Anovel extended Kalman filter for a class of 
+nonlinear systems[J]. Progress in Natural Science, 2006, 16(9) :912-918. 
+[12] Dong Zhe, You Zheng. Anovel extended Kalman filter for a class of 
+nonlinear systems[J]. Progress in Natural Science, 2006, 16(9) :912-918. 
+ 
+380
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 06:58:12 UTC from IEEE Xplore.  Restrictions apply. 

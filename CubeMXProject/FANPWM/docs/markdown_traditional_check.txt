@@ -1,0 +1,25 @@
+Markdown Traditional Chinese check
+==============================
+ ARCHITECTURE.md: (no common-simplified hits)
+ CLOSED_LOOP_CONTROL_METHOD.md: (no common-simplified hits)
+ CONTROL_CALCULATION_EXAMPLE.md: (no common-simplified hits)
+ DATA_CATALOG.md: (no common-simplified hits)
+ DATA_COLLECTION_PROTOCOL.md: (no common-simplified hits)
+ DOCUMENTATION_INDEX.md: (no common-simplified hits)
+ FIGURE_DATA_MAP.md: (no common-simplified hits)
+ GLOSSARY.md: (no common-simplified hits)
+ HANDBOOK.md: (no common-simplified hits)
+ HARDWARE_PINMAP.md: (no common-simplified hits)
+ PI_TUNING_STRATEGY.md: (no common-simplified hits)
+ PROJECT_PLAN.md: (no common-simplified hits)
+ PROJECT_REPORT_WITH_EVIDENCE.md: (no common-simplified hits)
+ PROJECT_SUMMARY.md: (no common-simplified hits)
+ PWM_RPM_WIND_RELATIONSHIP.md: (no common-simplified hits)
+ TEST_BASELINE_PLAN.md: (no common-simplified hits)
+ TEST_RESULTS.md: (no common-simplified hits)
+ TROUBLESHOOTING.md: (no common-simplified hits)
+ USER_COMMANDS.md: (no common-simplified hits)
+ way.md: (no common-simplified hits)
+ WHY_CLOSED_LOOP.md: (no common-simplified hits)
+
+Note: heuristic scan only. Manual proofread recommended.

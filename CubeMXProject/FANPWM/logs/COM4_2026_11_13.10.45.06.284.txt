@@ -1,0 +1,777 @@
+INA228 init FAILED (code 1)
+Welcome to STM32 world !
+INA228 init FAILED (code 1)
+I2C1 scan: none
+Welcome to STM32 world !
+INA228 init FAILED (code 1)
+I2C1 scan: none
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+Welcome to STM32 world !
+INA228 init FAILED (code 1)
+I2C1 scan: none
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+Welcome to STM32 world !
+INA228 init FAILED (code 1)
+I2C1 scan: none
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+Welcome to STM32 world !
+INA228 init FAILED (code 1)
+I2C1 scan: none
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+Welcome to STM32 world !
+INA228 init FAILED (code 1)
+I2C1 scan: none
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+INA228 init FAILED (code 1)
+Welcome to STM32 world !
+INA228 init OK (code 0)
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.000 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=-- mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.000 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.000 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.000 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.000 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.000 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.000 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.000 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.000 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.000 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.000 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.001 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW

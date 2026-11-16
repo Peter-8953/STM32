@@ -1,0 +1,559 @@
+
+===== PAGE 1 =====
+Design and Experimental Validation of an IoT 
+Enabled BLDC Based Compact Panel Fan with 
+Adaptive Thermal Control 
+ 
+1st Anil Kadu 
+Department of Instrumentation and 
+control Engineering 
+Vishwakarma Institute Of Technology 
+Pune, India 
+anil.kadu@vit.edu 
+2nd Shruti Saste 
+Department of Instrumentation and 
+control Engineering 
+Vishwakarma Institute Of Technology 
+Pune, India 
+shruti.saste23@vit.edu 
+3rd Rushikesh Sarawade 
+Department of Instrumentation and 
+control Engineering 
+Vishwakarma Institute Of Technology 
+Pune, India 
+rushikesh.sarawade23@vit.edu 
+ 
+4th Priya Shinde 
+Department of Instrumentation and 
+control Engineering 
+Vishwakarma Institute Of Technology 
+Pune, India 
+priya.shinde23@vit.edu 
+5th Sarthak Kamble 
+Department of Instrumentation and 
+control Engineering 
+Vishwakarma Institute Of Technology 
+Pune, India 
+sarthak.kamble23@vit.edu 
+ 
+Abstract-Thermal management is important on the 
+reliability of industrial control panels and electronic enclosures. 
+The traditional fixed -speed AC induction motor fans are on 
+demand and run continuously which is not necessary, thus 
+wastage of power and high levels of acoustic noise. In this paper, 
+the design and development of a small BLDC motor -driven 
+panel fan, which regulated the speed depending on the 
+temperature and could monitor itself using IoT technology, will 
+be presented. Electronic speed control is a form of speed control 
+of the fans in which the fan speed is automatically varied 
+depending on the changing thermal conditions and this lowers 
+the power consumption without compromising the efficiency of 
+the cooling. The results of the experiments prove high energy 
+efficiency, reduced noise, and more flexibility in the functioning 
+in comparison to conventional AC fans. The IoT integration 
+allows performance data logging, remote monitoring and 
+control. 
+Keywords—BLDC motor, panel cooling fan, adaptive thermal 
+control, PWM speed control, IoT -based monitoring, energy -
+efficient cooling 
+I. INTRODUCTION 
+One of the most important specifications in industrial 
+control, electronic enclosures and automated systems is 
+thermal management because as the complexity of a device 
+increases, the amount of heat produced increases and this heat 
+can negatively impact the reliability, performance and service 
+life of a system. The conventional axial cooling fans have been 
+widely employed because they are simple and cheap but 
+increasing demands of compactness and efficiency indicate 
+weakness of conventional cooling methods 
+The majority of panel cooling is based on constant-speed 
+single-phase AC induction motors, which are turned on and 
+off neither conditioned by the thermal load nor by any other 
+factors. They may be mechanically strong but have a low 
+energy efficiency and a high acoustic noise level, which 
+causes unreasonable power consumption and lack of 
+operational flexibility. 
+The Brushless DC (BLDC) motor technology has become 
+a viable substitute in cooling purposes as it is more efficient, 
+can be electronically controlled in speed, and has a longer 
+working life span. BLDC fans can operate in variable speed 
+with an electronic controller so that the speed of the fans can 
+be controlled according to the thermal needs which makes 
+them consume less energy and also produce less noise. 
+The new developments in Internet of Things (IoT) 
+technologies also make it possible to monitor, remotely 
+control, and make records of the parameters of cooling 
+systems in real time. Nevertheless, the current literature has 
+mostly concentrated on control algorithms and simulations but 
+little on practical experimentally proven, miniature-sized, and 
+adaptable thermoregulated and IoT-monitored, BLDC based 
+panel fans. The paper outlines the design and development of 
+a small BLDC motor driven panel fan with adaptive 
+temperature based speed control and IoT based for monitoring 
+and proves to be more energy efficient, low noise and 
+operation flexibility in industrial panel cooling 
+II. RESEARCH OBJECTIVES 
+The primary objectives of this research are: 
+1. To develop and manufacture a compact BLDC 
+driven panel fan suitable for cooling industrial 
+control panels and electronic enclosures. 
+2. To study a comparative evaluation of traditional 
+AC- induction-motor fans and BLDC -driven fans 
+with respect to energy consumption, acoustic 
+performance, and operational characteristics. 
+3. To implement temperature -based monitoring for 
+real- time evaluation of thermal conditions in the 
+cooling environment. 
+4. To devise an adaptive speed -control scheme that 
+automatically adjusts fan speed in response to 
+temperature changes, thereby saving energy while 
+maintaining effective cooling. 
+5. To incorporate IoT -based wireless connectivity 
+enabling remote monitoring, control, and data 
+logging of key system parameters. 
+6. To simulate the performance of the BLDC motor 
+with & without controller in MATLAB Simulink 
+III. LITERATURE REVIEW 
+The need to create high power density and energy 
+efficiency solutions in electronics and industry has hastened 
+the development of cooling solutions. Initial studies focused 
+on the use of traditional AC induction motor -driven fans 
+because it is easy to manage and is reliable. Comparative 
+2026 IEEE Guwahati Subsection Conference (GCON) | 979-8-3315-4679-3/26/$31.00 ©2026 IEEE | DOI: 10.1109/GCON69192.2026.11648908
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:02:56 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+analysis however revealed that the BLDC motors have better 
+efficiency, control and longevity benefits over the AC 
+induction motors in fans applications; specifically, variable -
+speed type ones [1]– [2]. 
+The techniques of electromagnetic design and motor drive 
+have a high impact on the efficiency of BLDC motors. 
+Permanent-magnet and axial -flux motors are the focus of 
+theoretical studies that mathematically derive the torque, 
+magnetic flux density and efficiency [3], [4] Later studies of 
+sensor- less and electronically commutated BLDC drives 
+underline the importance of electronics and control techniques 
+concerning drive efficiency and cooling [5], [6]. Although 
+these works do form an effective theoretical background, they 
+are limited to motor behaviour as opposed to ensuring the 
+integration of the cooling system. 
+The studies of thermal management also emphasize the 
+significance of airflow nature and fan shape to promote 
+successful cooling. The works of computational fluid 
+dynamics (CFD) are oriented to the analysis of the axial fan 
+performance based on the fluid flow equations, the heat -
+transfer equations or airflow  dynamics, airflow pressure and 
+cooling capacity equations [7], [8]. Such studies validate that 
+the design of fans, swirling behaviour and design patterns 
+contribute significantly to the cooling performance. However, 
+the majority of CFD-related research is simulation-based, and 
+does not involve real life experimentations in the industry. 
+Other researchers are focused on general thermal design of 
+electronic equipment with the focus on airflow, heat sources, 
+and enclosures [9], [10]. These sources emphasize the fact that 
+cooling systems are supposed to be responsive to varying 
+thermal loads and not be set up to operate at fixed settings so 
+that variable fan-speed control can be required to ensure less 
+energy is consumed but operating temperatures are kept 
+within safe limits. 
+The recent advances in the field are such activities as the 
+adoption of smart control and connectivity in coolers. Internet 
+of Things (IoT) offers real -time monitoring, control, and 
+optimisation operations on the basis of data [11]. These types 
+of systems have predictive maintenance capabilities, as well 
+as energy -aware capabilities, and are consistent with more 
+modern ideas on smart infrastructure and energy management 
+practices [12]. However, the present condition with the art of 
+the literature considers the integration aspect as being largely 
+software-driven, with minimisation of hardware, 
+electromagnetic optimisation, or testing. The reviewed 
+literature reveals that the application of the BLDC motor 
+technology, CFD to optimise the airflow  and IoT to monitor 
+the performance are a unique strategy of improved cooling 
+performance. There is a literature gap in the experimentally 
+tested panel-cooling designs optimised to the BLDC motors to 
+the adaptive speed control and the performance monitoring in 
+the form of IoT. That shortcoming has been discussed in this 
+paper. 
+IV. METHEDOLOGY 
+A. Project Development Approach 
+The project used a staged development approach which 
+incorporated the evolution of the project with increasingly 
+advanced features in five different releases. The incremental 
+approach allowed the systematic analysis of all technological 
+improvements and the determination of the best design 
+parameters. 
+• Study Phase: A thorough market research on leading 
+manufacturers such as Rexnord, EBM Papst, Hicool, Sunon, 
+Delta and ID Ideal to find out the industry standard and 
+performance levels. 
+• Reverse Engineering: The process of systematic 
+disassembly and analysis of a number of chosen fan models to 
+file techniques and material choices as well as the key design 
+factors. . 
+Even though this project is defined by five different 
+revisions of the design it is necessary to mention that 
+Revisions 2, 3, and 4 were created as separate functional 
+prototypes whereas Revisions 0 and 1 have been added just 
+with the aim to study and compare them. The combination of 
+temperature control, automatic speed control, and  IoT 
+capability with data logging into one unified prototype 
+requires a lot of firmware integration, multi -layered PCB 
+redesign, EMI prevention, and thermal optimization. Thus, it 
+is still in the research to physically integrate all features into a 
+single model. 
+B. Design Revisions and Evolution 
+1) Revision 0 AC Fan : Revision 0: AC Fan: The initial 
+setting used an AC induction motor of single phase with the 
+following characteristics: type of motor: single -phase AC 
+induction motor (shaded-pole) electrical, supply: 230 V AC / 
+50 Hz, speed regulation: manual control by use of an external 
+regulator, size: 12038 mm (38 mm) x 120120 mm (120 mm) 
+x 120 mm (120 mm), efficiency: 40–50 %, lifespan: 20 000–
+30 000 h. This design served to set the performance standard 
+by which future designs were  to be evaluated; its drawbacks 
+were relatively low efficiency, fixed speed operation, 
+mechanical wear and high levels of acoustic noise. 
+2) Revision 1  BLDC Fan: included the features like: 
+three phase BLDC motor using permanent -magnet rotor 
+(NdFeB grade N42), Hall effect sensors: built in rotor-position 
+feedback, Custom PCB: a MOSFET bridge driver circuit, 
+Electronic Commutation: Microcontroller-based 
+ATmega328P, Power supply: DC -230 V AC rectified. 
+Improvements in performance : increase in efficiency to 7085 
+00: 70 of 85 00: 70, silence, and control of PWM speed to the 
+nearest, a long service life of up to 40 000 70 000 h & weight 
+reduction 
+3) Revision 2  Temperature-Based BLDC Control: 
+sensor DHT11 digital temperature and humidity sensor 
+(accuracy + 2 o C), display: automatic temperature tracking, 
+control: value of speed by hand depending on temperature 
+indicators, features of response: speed settings controlled by 
+the user. This provided operators to be able to make informed 
+choices on the cooling needs based on the real time thermal 
+information. 
+4) Revision 3  Automatic Speed Control: Control 
+algorithm: proportional adjustment of the speed based on 
+temperature activities, response characteristics: slow speed 
+stepping up, Self -adjusting fan speed automatically, without 
+the user having to touch the speed control. 
+5) Revision 4  IoT Remote Control: Full connectivity 
+and data -management capabilities: Wi -Fi module: ESP32 
+microcontroller and inbuilt Wi -Fi, Cloud -based 
+communication using Blynk IoT platform with real time 
+dashboard integration, mobile application: personal 
+Android/iOS application & Remote control: on/off, adjusting 
+the speed, switching the mode 
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:02:56 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+C. Critical Design Parameters 
+a) Air Gap Optimization: The air gap between stator 
+and rotor is a critical electromagnetic parameter 
+𝛿𝑔𝑎𝑝 =  𝐷 
+1000 + 𝛿𝑏𝑒𝑎𝑟𝑖𝑛𝑔 
+(1) 
+where D is the rotor diameter in millimetres and  
+bearing accounts for bearing tolerance. This parameter 
+governs magnetic flux density, torque  production, 
+motor efficiency, and mechanical clearance. 
+ 
+b) Stack Height Selection: Lamination stack height 
+influences torque production 
+𝑇𝑝𝑒𝑎𝑘 ∝ 𝐿𝑠𝑡𝑎𝑐𝑘 × 𝐵𝑔𝑎𝑝 × 𝐴𝑤𝑖𝑛𝑑𝑖𝑛𝑔 (2) 
+ 
+c) Skew Angle Implementation: Stator lamination skew 
+is commonly used to reduce cogging torque & acoustic noise, 
+360° 
+𝜗𝑠𝑘𝑒𝑤 = 
+𝑠𝑙𝑜𝑡𝑠 
+× 𝑝 (3) Fig. 1. Complete BLDC Motor Driver and Control Circuit 
+ 
+V. HARDWARE IMPLEMENATION 
+A. Motor Construction 
+The BLDC motor assembly comprised: 
+• Stator Core: Laminated M19-grade electrical steel. 
+• Stator Windings: Enameled copper wire, 0.4 mm 
+diameter, three-phase Y-connection. 
+• Rotor Assembly: Four-pole NdFeB N42 permanent 
+mag- nets. 
+• Bearings: 6800ZZ ball bearings for extended service 
+life. 
+• Housing: Flame-retardant PBT (UL94 V-0) plastic. 
+B. Electronic Control System 
+The custom PCB integrated: 
+• Microcontroller: ATmega328P (Revisions 1–3) or 
+ESP32 (Revision 4). 
+• Power Stage: Six N-channel MOSFETs in a three-
+phase bridge. 
+• Gate Drivers: IR2101 bootstrap drivers. 
+• Hall Sensors: Three sensors spaced 120◦ electrically. 
+• Protection: Overcurrent (5 A), overvoltage (280 V), 
+thermal shutdown (125 ◦C). 
+• Temperature Sensor: DHT11 (Revisions 2–4). 
+• Power Supply: Isolated 12 V / 5 V buck converter. 
+ 
+C. Testing Infrastructure 
+Comprehensive testing utilized: 
+• Tachometer: Non-contact optical RPM (between 1 
+RPM) 
+• Airflow anemometer (±0.1 m/s): made of hot wire. 
+• An instrument like a Thermal Camera FLIR E6 to map 
+the temperature. 
+• Sound Level meter: Class 2 meter in compliance with 
+the IEC standard 61672. 
+• Oscilloscope 100 MHz bandwidth in the analysis of 
+the waveforms. 
+ 
+ 
+ 
+Fig. 2. AC to DC Rectifier and Filtering Circuit 
+ 
+Fig. 3. PCB Layout of AC-DC Conversion Board Using Tinker-Cad 
+ 
+ 
+Fig. 4. Complete PCB Layout of BLDC Motor Driver and Control Board 
+𝑁 
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:02:56 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+TABLE I.  PERFORMANCE COMPARISON ACROSS 
+DEVELOPMENT REVISIONS 
+ 
+Parameter R0 (AC) R1 (BLDC) R2–R4 
+Efficiency (%) 45 78 78–82 
+Power (W) 35 25 18–25 
+Airflow (CFM) 120 140 80–140 
+Noise (dBA) 52 42 38–42 
+Lifespan (h) 25,000 50,000 50,000+ 
+Control Manual Electronic Auto/IoT 
+Response Time N/A <100 ms. <500 ms. 
+Note: R0 and R1 values from manufacturer datasheets; R2–R4 from 
+prototype testing and theoretical estimation. 
+VI. RESULTS AND DISCUSSION 
+A. Performance Comparison 
+Table I summarizes key performance parameters across all 
+design revisions. 
+Performance results for Revisions 2 –4 correspond to 
+individual prototype tests conducted on separate hardware 
+units, each evaluated independently owing to distinct control 
+architectures and PCB layouts. The reported results therefore 
+represent optimal performance of each standalone 
+configuration 
+B. Temperature-Based Control Operation 
+Testing of Revision 2 demonstrated: 
+•Accurate temperature tracking with ±2◦C precision 
+(DHT11) 
+•Real-time temperature display for operator awareness 
+• Manual speed adjustment capability based on thermal data 
+•Foundation form automated control development 
+ 
+ 
+Fig. 5. Block Diagram of Temperature-Based BLDC Control 
+System(Revision 2 ) 
+ 
+ 
+Fig. 6. Variationof BLDC fan speed with respect to temperature shwing 
+proportional manual control behavior in Revision 2. 
+C. Automatic Speed Control Performance 
+Revision 3demonstrated by testing: Proper thermal control 
+keeping equipment within 5°C of set point. 
+•Less than 3 seconds to temperature change response Time 
+Response time in the field testing of a typical control panel 
+indicated that the automatic speed control turned the fan to 
+the low speed (30 -percent duty cycle) about 60 -percent of 
+operating time, 30% of full load with medium speed (50-70% 
+duty cycle) 30% of the time and full load with peak load only 
+(10% of time). 
+ 
+Fig. 7. Prototype Setup for Temperature-Based BLDC Control. 
+ 
+ 
+Fig. 8. Distribution of fan operating time across different speed levels. 
+ 
+D. Iot Performance 
+In revision 4, the following metrics were met: 
+• Wi-Fi connectivity: 99. 2 percent uptime, less than 2 percent 
+packet loss. 
+• Latency of control command: average 350-480ms. 
+• Data logging rate: 1 sample in every 5 seconds. 
+• Cloud platform response: Less than 1 second on dashboard 
+up-dates, Mobile app control: with the help of Blynk App 
+• Data storage: Past trends on performance analysis. 
+The MQTT was found to be effective to the IoT, 
+communication, and uses message sizes of 50 -100 bytes to 
+allow low bandwidth and low latency communication. The 
+data logging feature makes the predictive maintenance and 
+long term monitoring of performance possible. 
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:02:56 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+  
+Fig. 9. Block Diagram of IoT-Based Speed Control System (Revision 4). 
+ 
+ 
+Fig. 10. Command latency variation over time for Iot-based BLDC control 
+system 
+ 
+The system maintains latency within 350-480 ms, 
+demonstarting stable real-time communication performance. 
+E. Standard Compliance 
+Extensive Testing: Adherence to the appropriate 
+international standards: 
+• IEC 60335-2-80: Safety requirements for fans. 
+• ISO 5801: Industrial fan performance evaluation. 
+• IEC 61000-6-3: EMC emissions. 
+• IEC 61000-6-2: EMC immunity for industrial 
+environments. 
+• UL 507: Electric fan safety. 
+According to EMC testing, Conducted and radiated 
+emissions were substantially below Class B limits, 
+confirming suitability for household and lighter industrial 
+applications. 
+F. Simulation And Control Analysis 
+Extensive MATLAB / Simulink simulations were conducted 
+to justify the design of the control system and to determine 
+the various control strategies. These simulations offered 
+information about the motor behavior, control performance 
+and optimization of the system. 
+ 
+Fig. 11. BLDC Motor Simulation Model (Simulink). 
+Fig. 12. BLDC Motor Speed vs. Time (Simulation). 
+ 
+Fig. 13. BLDC Motor Angular Position vs. Time. 
+ 
+ 
+Fig. 14. Simulink Model of BLDC Motor Using PI Controller. 
+ 
+Fig. 15. BLDC Motor Measured Speed vs. Time (PI Controller) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 16. Time domain analysis of the proposed model 
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:02:56 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+• The Rise Time = 1.4888 s which is acceptable 
+(moderate response speed) 
+• Settling Time = 1.6936 s which is good (fast 
+stabilization) 
+• Overshoot = 0.6036 % is excellent (very low 
+overshoot) 
+• Peak = 905.17 vs final ≈ ~900 is consistent 
+• Undershoot ≈ 0 hence stable system 
+• Well-tuned PI controller with stable response & 
+minimal oscillations 
+ 
+ 
+VII. APPLICATIONS 
+The developed small smart fan system meets a set of 
+requirements: 
+• Industrial Control Panels: The main use is related to 
+the cooling of programmable logic controllers, 
+contactors, variable frequency drives and power 
+electronic apparatus in a control panel and 
+switchgear. The device is easily fitted into common 
+panel widths hence making the installation process 
+and performance to be smooth. 
+• Renewable Energy Systems: Thermal management is 
+attained to solar inverters, wind turbine converters, 
+battery management systems, and DC-to-AC power 
+conversion platforms which require long service 
+lives. The design of the fan system will be suitable 
+to the high level of reliability of the renewable 
+energy applications. 
+• Transportation Systems: It can be applied to electric 
+cars when it comes to battery heating, motor control 
+unit, on -board chargers, and heating, ventilation, 
+and air conditioners. 
+VIII. CONCLUSION 
+This work illustrates the gradual development of a small 
+panel fan, where the traditional technology of AC has 
+changed to an intelligent and IoT -enabled device, with 
+brushless DC (BLDC) motors and full data logging functions. 
+The sequential development model has assisted in assessing 
+and maximizing technological enhancement. 
+Major achievements have been: 
+1. Thermoregulation that allows smart decision-
+making. 
+2. Independent speed control, automated and lowers 
+the average power consumption by 40. 
+3. Effective IoT connectivity and command latency of 
+less than 500 00 ms. 
+4. Complete performance recording of performance. 
+5. Electromagnetic design optimization including air 
+gap, stack height and skew angle. 
+6. Screening by standardized testing processes and 
+adherence to standards. 
+The design strategy, optimization approaches and 
+performance measurement as discussed in this paper are 
+valuable to other development projects in the field of 
+thermal management and intelligent appliances. The 
+modular architecture of the system enables the adoption 
+of features at will, depending on the requirements of the 
+application. 
+Even though Revisions 2, 3 and 4 were individually 
+developed and validated separately, combining them into 
+one product is a future goal. The application of 
+temperature monitoring, automatic control, wireless IoT 
+connection, and logs in a single device implies a high 
+level of PCB integration. The prototype design carried 
+out on the basis of modularity allows conducting a full 
+assessment of every detail, which will help to make a 
+small smart fan available in the future. 
+ACKNOWLEDGMENT 
+The authors would like to acknowledge with lots of 
+gratitude that professor Anil Kadu, Department of 
+Instrumentation and Control Engineering, Vishwakarma 
+institute of technology, Pune, was of great help in terms of 
+providing the guidance and support along with the expertise 
+and mentorship during the research conduction. We also like 
+to thank Mr. Vaibhav Gore, the Chief Executive Officer of 
+Hira Automation, to his positive recommendations. 
+We also recognize the Department of Instrumentation & 
+Control Engineering, VIT Pune, as a source of laboratory 
+facilities which formed part of our pre preliminary 
+requirement in the experimental confirmation of our designs. 
+REFERENCES 
+ 
+[1] R. Krishnan, Permanent Magnet Synchronous and Brushless DC 
+Motor Drives, Boca Raton: CRC Press, 2010. 
+[2] S. B. Lee and T. G. Habetler, "An efficiency comparison of BLDC  
+and AC induction motors," IEEE Transactions on Industry  
+Applications, vol. 40, no. 2, p. 507–515, 2004. 
+[3] J. F. Gieras and M. Wing, Permanent Magnet Motor Technology, New 
+york: Marcel Dekker, 2002. 
+[4] M. Aydin, S. Huang and T. A. Lipo, "Axial flux permanent magnet  
+disc machines," IEEE Transactions on Energy Conversion, vol. 17, 
+no. 4, p. 456–463, 2002. 
+[5] Y. Chen and P. Pillay, "An improved sensorless BLDC motor drive  
+for HVAC applications," IEEE Transactions on Industry  
+Applications, vol. 42, no. 6, p. 1433–1441, 2006. 
+[6] A. Sinha and S. Chatterjee, "Energy -efficient BLDC motor drive for  
+fan applications," in IEEE International Conference on Power  
+Electronics, 2016. 
+[7] S. Liu and Z. Wang, "CFD-based performance analysis of axial 
+cooling fans," Applied Thermal Engineering, vol. 120, pp. 1-10, 2017. 
+[8] R. Liu, S. Xu, K. Sun, X. Ju, W. Zhang, W. Wang, X. Ma, Y. Pan, J.  
+Li and G. Ren, "CFD analysis and optimization of BLDC axial fans," 
+International Journal of Simulation and Multidisciplinary Design  
+Optimization, vol. 15, no. 11, p. 1–15, 2024. 
+[9] A. Bejan, "Heat transfer and thermal design of electronic equipment," 
+Journal of Heat Transfer, vol. 123, no. 4, p. 639–646, 2001. 
+[10] Y. Joshi, "Thermal management of electronic systems," Proceedings 
+of the IEEE, vol. 91, no. 10, p. 1532–1549, 2003. 
+[11] M. N. Hasan, M. R. Islam and S. Rahman, "IoT -based smart cooling 
+system for industrial applications," IEEE Internet of Things Journal,  
+vol. 7, no. 9, p. 8672–8681, 2020. 
+[12] P. Siano, "Demand response and smart energy systems," Renewable 
+and Sustainable Energy Reviews, vol. 30, p. 461–478, 2014. 
+ 
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 07:02:56 UTC from IEEE Xplore.  Restrictions apply. 

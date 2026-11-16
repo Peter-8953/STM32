@@ -1,0 +1,343 @@
+
+===== PAGE 1 =====
+Research on Field-weakening Control of Induction 
+Motor based on Torque Current Component of the 
+Voltage Closed-loop 
+ 
+Peng Xie 
+School of Electrical Engineering and Automation 
+Anhui University 
+Hefei China 
+jiangshuileng@163.com 
+ 
+Guoli Li, Fang Xie, Cungang Hu, Xing Qi 
+National Engineering Laboratory of Energy-Saving Motor & 
+Control Technology 
+Anhui University 
+Hefei China 
+370442797@qq.com
+ 
+ 
+Abstract—The paper is based on vector control research on 
+field-weakening control strategy of induction motor. In field-
+weakening induction motor torque output declines,in order to 
+improve dynamic performance,on the basis of the existing voltage 
+closed-loop field-weakening control strategy,the torque current 
+tracking error is handled on the calculation of the reference 
+excitation current in field-weakening region,so as to improve the 
+tracking ability of current and torque of the motor output 
+properties. Use MATLAB/SIMULINK simulation model of 
+induction motor field-weakening control system. System 
+simulation and experimental results will be proved the feasibility 
+and effectiveness of the method. 
+Keywords—vector control;torque current tracking error;field-
+weakening;voltage closed-loop;induction motor 
+I. INTRODUCTION 
+Existing induction motor field-weakening control strategy 
+can be summarized as follows: (1) The traditional method of 
+1/Ȧr is that reference rotor flux and above base speed is 
+inversely proportional to the actual speed of the rotor [1]. The 
+method for a given excitation current and without considering 
+the voltage influence current regulation, so it is difficult to 
+achieve optimal control field weakening area. (2) Based on 
+method of motor model is the excitation current of this control 
+strategy based on motor model and through calculation 
+analysis.This method is required to set up complex motor 
+model and has strong dependence on more sensitive to motor 
+parameters, so poor robustness
+[2-3]. (3) Based on voltage 
+closed-loop control method is that will feedback voltage and 
+maximum voltage form a closed-loop, the residual quantity 
+through the design of field-weakening controller into the 
+required excitation current
+[4-7]. The method is effective in 
+reducing the dependence on motor parameters, good robustness, 
+but there are strong coupling excitation current and torque 
+current, current regulator easily saturated state. 
+ This paper to improve the current tracking ability and the 
+ability of the motor torque output, combining the current 
+voltage closed-loop control strategy, this paper proposes a 
+consider torque current component of the voltage closed-loop 
+control strategy. By reducing the excitation current to improve 
+the system dynamic characteristic, make the system tracking 
+characteristic and torque output ability reached an ideal state. 
+This paper is that the torque current tracking error is handled 
+on the calculation of the reference excitation current in field-
+weakening region. On the basis of theoretical analysis to build 
+simulation model, and then on asynchronous motor driven 
+platform to write software realization algorithm, simulation 
+and experimental results verify the effectiveness of the 
+proposed method. 
+II. M
+ATHEMATICAL MODELS 
+A. Induction motor model 
+Induction motor in the rotor flux orientation of the voltage 
+equation for two phase rotating coordinate system and 
+electromagnetic torque
+[8]. 
+ 
+sqsesdssd iLiRu δω−=                           (1)
+sdsesqssq iLiRu ω+=                             (2) 
+r
+sqsdm
+pe
+L
+iiLnT
+2
+2
+3=                                (3) 
+Where usd,usq,isd,isq,Ȧe,Rs,Ls,į,Lm,Lr,Te,np denote d axis 
+component of the stator voltage, q axis component of the stator 
+voltage, d axis component of the stator current, q axis 
+component of the stator current, motor synchronous speed, 
+stator resistance, stator inductance, the leakage inductance of 
+the factor, mutual inductance, rotor inductance, 
+electromagnetic torque, number of pole pairs. 
+B.  Inverter voltage and current constraints 
+ Restricted by motor and inverter capacity, drive system to 
+follow the voltage and current under the constraint conditions. 
+2
+max
+22
+ssqsd uuu ≤+                               (4) 
+2
+max
+22
+ssqsd iii ≤+                                  (5) 
+3
+uu dc
+maxs =                                  (6) 
+1618978-1-4799-8389-6/15/$31.00 c⃝2015 IEEE
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 06:53:32 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+Where usmax,ismax,udc denote the rated current of the motor 
+and inverter threshold,the rated voltage of the motor and 
+inverter threshold,the dc voltage. This article uses the SVPWM 
+modulation strategies. 
+III. M
+ODIFIED FIELD-WEAKENING CONTROL ALGORITHM 
+So-called field-weakening control is that under the 
+condition of limited voltage, by reducing the magnetic field 
+intensity,  ensure enough torque current in order to improve the 
+speed and  torque output capacity. Field-weakening phase 
+using voltage closed-loop control strategy is implemented by 
+controlling the output to the motor stator voltage maximum 
+torque. Current and voltage limitation determines the 
+maximum output torque of the motor. Maximum torque mainly 
+depends on the current limitation and magnetic flux level,so 
+the reasonable distribution of current is the key to achieve 
+maximum torque increase. According to the d/q axis stator 
+current and torque is directly proportional to the product 
+principle of reasonable allocation of excitation current and 
+torque current. By the formula (3),the motor output torque is 
+proportional to the excitation current component 
+isd and torque 
+current component isq of the product. When motor running in 
+the region of the field-weakening torque output capacity 
+depends on the coordination control of  isd and isq
+[9]. While the 
+isd  and isq is determined by  u sq and usd, the torque output 
+capacity depends on the coordination control usq and usd. 
+According to the voltage equation, due to the usd and usq 
+coupling, the size of the current isd and isq is inevitably affected 
+and voltage should follow the constraint condition at the same 
+time. So we design a current regulator output using the same 
+limit value of voltage 
+usd and usq. According to the formula (1) 
+and (2),with the increase of motor speed, q axis voltage 
+component will increase rapidly which reduces the impact 
+torque feedback current component change of the effective 
+voltage component and makes the current q axis component 
+tracking characteristic variation. Mutual inductance effect d 
+axis component change, once d axis component into the 
+voltage limiting state, feedback excitation current component 
+has a poor dynamic performance and increase the induced 
+voltage of the q axis component further. The output torque of 
+motor performance is affected. This method is by changing the 
+given excitation current 
+isd
+* to balance the distribution of  the 
+voltage d axis and q axis component. We introduce the change 
+of q axis current tracking error to the d axis current and revise 
+by
+ isd
+* makes even in usq in limiting state isq can rapidly track 
+isq
+*. Not only further improves the tracking characteristic of isd 
+but also improves the motor torque output characteristic and 
+makes dynamic response speed faster. The stator excitation 
+current component as a controlled object,the q axis of the 
+torque current tracking error ǻ
+isq as input signals via function 
+calculation and then feedback to the excitation current 
+component. The system structure diagram of modified voltage 
+closed-loop field-weakening control method is shown in Fig. 1. 
+ 
+*
+rω
+22
+max sds ii −
+sdi
+rω
+refsqi .
+refsdi .
+sdu
+squ
+αu
+βu
+dcu
+ai
+bi
+ci
+αi
+βi
+rω
+sdi
+sqi
+maxsu
+θ
+sqifΔ
+sdi
+maxsdi
+0sdi
+maxsqi
+maxsqi−
+22
+sqsd uu +
+Fig. 1 System structure diagram of modified voltage closed-loop field-weakening control method 
+The reference excitation current and the torque current 
+tracking variation are calculated via formula (7) and (8). 
+sqisdref.sd fii Δ+=                                (7) 
+sq
+*
+sqsq iii −=Δ                                     (8) 
+Where isd.ref,ǻisq,isd
+*,isq
+*,fǻisq denote the reference excitation 
+current,the torque current tracking variation,the given 
+excitation current,the reference torque current,q axis torque 
+current tracking error function.  
+IV. SIMULATION  RESULTS 
+ In order to verify the correctness of the theoretical 
+analysis, We set up  the simulation model of modified voltage 
+closed-loop field-weakening control. Control system 
+simulation model is simulated in MATLAB and the simulation 
+parameters are set up as follows. 
+2015 IEEE 10th Conference on Industrial Electronics and Applications (ICIEA) 1619
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 06:53:32 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+The induction motor has the following ratings: rated power 
+PN=1.1KW,rated voltage U N=380V,rated current I N=5A,rated 
+frequency fN=50Hz,rated speed n N=1440r/min,number of pole 
+pairs n p=2,stator resistance R s=5.32ȍ,rotor resistance 
+Rr=5.49ȍ,mutual inductance L m=0.361H,stator inductance 
+Ls=0.387H,rotor inductance Lr=0.387H.The modulation period 
+was fixed to 20 us.  
+ The traditional voltage closed-loop field-weakening 
+control method and modified voltage closed-loop field-
+weakening control method respectively drive motor with 
+10N · m load, up from 0 to 300 rad/s. The simulation results 
+are shown in Fig. 2. Fig. 2 includes speed,excitation current  
+and torque. 
+ 
+ 
+(a) speed waveform comparison 
+ 
+ 
+(b) excitation current waveform comparison 
+ 
+ 
+(c) torque waveform comparison 
+Fig. 2 The traditional voltage closed-loop field-weakening method and 
+modified method waveform comparison 
+In this paper modified field-weakening control strategy is 
+simulated,comparison with the traditional voltage closed-loop 
+control strategy. From three field-weakening control key data, 
+two kinds of control method can satisfy the requirement of 
+stability and fast response and can be used as  field-weakening 
+control induction motor. From Fig. 2(a) shows that the field-
+weakening control method of this paper, the time required to 
+achieve the same speed is less than the traditional control 
+method and the speed to follow and accelerate is superior to the 
+traditional control method.From the simulation results, the 
+traditional voltage closed-loop control method in torque 
+10N · m, to achieve a given 300 rad/s need time for 1.02s, and 
+the modified method need only 0.92s. From Fig. 2(b), the 
+excitation current is realized by using the field-weakening 
+control method into steady state quickly, dynamic process 
+smooth and current tracking performance improvement. From 
+Fig. 2(c), after entering field-weakening area torque to reduce 
+gradually, the electromagnetic torque generated by the 
+proposed approach is bigger than using the traditional control 
+method of amplitude. In this paper torque is about 
+6.5N · m ,but the traditional method is about 5.6N · m,increase 
+about 20%,after the speed is constant and stable. Simulation 
+results show that under the same load conditions, the modified 
+voltage closed-loop field-weakening control method compared 
+with traditional voltage closed-loop field-weakening control 
+method, the motor speed tracking faster, smoother startup 
+torque current, smaller excitation current. 
+V. C
+ONCLUSIONS 
+ On the basis of traditional voltage closed-loop field-
+weakening control method in this paper,by the track change of 
+the torque current component as compensation,superposition to 
+the excitation current component,can effectively control the 
+operation of high-speed induction motor and improve the 
+induction motor in the region of the field-weakening torque 
+1620 2015 IEEE 10th Conference on Industrial Electronics and Applications (ICIEA)
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 06:53:32 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+output capacity and current tracking features. The simulation 
+results show that the torque performance is more superior than 
+the traditional voltage closed-loop method. At the same time of 
+high speed still can guarantee a large output torque, at the same 
+time with constant torque area into field-weakening control 
+area  process smoothly. The simulation results demonstrate the 
+effectiveness of the method. This method is no complex 
+algorithm, convenient for application in engineering. 
+A
+CKNOWLEDGMENT 
+This work is supported by the national science and 
+technology support project of china (2013BAF01B01, 
+2013BAF01B02),the national natural science foundation of 
+china (51307002),the youth foundation of Anhui university 
+(No.02303305(33050064)) and 2014 Education Department of 
+Anhui province key project (No.KJ2014A019),graduate 
+student academic innovation research project of Anhui 
+university (yqh100300). 
+R
+EFERENCES 
+[1] Xu X Y, Novotny D W. Selection of the Flux Reference for Induction 
+Machine Drives in the Field Weakening Region [J]. IEEE Transactions 
+on Industrial Applications, 1992, 28(6): 1353-1358. 
+[2] Lin Ping-Yi, Lai Yen-Shin. Novel Voltage Trajectory Control for Field 
+Weakening Operation of Induction Motor Drives[C]Energy Conversion 
+Congress and Exposition, IEEE,San Jose,CA:2009:1540-1546. 
+[3] Kim S H, Sul S K. Maximum torque control of an induction machine in 
+the field weakening region[J]. Industry Applications, IEEE Transactions 
+on, 1995, 31(4): 787-794.  
+[4] Abu-Rub H, Holtz J. Rotor Oriented Nonlinear Control System of 
+Induction Motors Operating at Field Weakening [J]. IEEE Trans. on 
+Industrial Electronics Society,2007, 5(8):1085-1090. 
+[5] Kim S H, Sul S K. Voltage Control Strategy for Maximum Torque 
+Operation of an Induction Machine in the Field- weakening Region[J]. 
+IEEE Trans. on Industrial Elec- tronics,1997, 44(4):512-518. 
+[6] Grotstollen H, Bunte A. Control of Induction Motor with Orientation on 
+Rotor Flux or on Stator Flux in a Very Wide Field Weakening Region-
+experimental Results[J]. IEEE Trans. on Industrial,1996, 2(4):911-916. 
+[7] Krishnan R. Review of flux-weakening in high performance vector 
+controlled induction motor drives [J]. Proceedings of the IEEE 
+International Symposium on Industrial Electronics,1998 (2): 917-922. 
+[8] Holtz J. The Representation of AC Machine Dynamics by Complex 
+Signal Flow Graphs[J]. IEEE Trans. on Industrial Electronics,1995, 
+42(3): 263-271. 
+[9] LI Y, LEI L. Research on Flux Weakening Control for the Rotor Flux 
+Oriented Control of an Induction Motor[J]. Power Electronics, 2007, 5: 
+012. 
+ 
+2015 IEEE 10th Conference on Industrial Electronics and Applications (ICIEA) 1621
+Authorized licensed use limited to: National Changhua Univ. of Education. Downloaded on October 20,2026 at 06:53:32 UTC from IEEE Xplore.  Restrictions apply. 

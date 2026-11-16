@@ -1,0 +1,47 @@
+0.782 V  0 mA  1 mW  E=0.0000 Wh  avg=-- mW
+0.781 V  0 mA  1 mW  E=0.0000 Wh  avg=-- mW
+0.781 V  0 mA  1 mW  E=0.0000 Wh  avg=-- mW
+0.781 V  0 mA  1 mW  E=0.0000 Wh  avg=-- mW
+0.781 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.780 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.780 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.779 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.779 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.779 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.779 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.778 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.778 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.778 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.778 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.777 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.777 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.777 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.776 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.775 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.775 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.775 V  0 mA  0 mW  E=0.0000 Wh  avg=0 mW
+0.773 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.774 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.774 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.774 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.773 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.774 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.772 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.772 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.772 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.773 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.772 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.771 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.771 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.771 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+0.771 V  0 mA  1 mW  E=0.0000 Wh  avg=0 mW
+Welcome to STM32 world !
+INA228 init OK (code 0)
+0.770 V  0 mA  1 mW  E=0.0000 Wh  avg=-- mW
+0.769 V  0 mA  1 mW  E=0.0000 Wh  avg=-- mW
+0.770 V  0 mA  1 mW  E=0.0000 Wh  avg=-- mW
+0.770 V  0 mA  1 mW  E=0.0000 Wh  avg=-- mW
+Welcome to STM32 world !
+INA228 init OK (code 0)
+0.768 V  0 mA  1 mW  E=0.0000 Wh  avg=-- mW
+0.768 V  0 mA  1 mW  E=0.0000 Wh  avg=-- mW

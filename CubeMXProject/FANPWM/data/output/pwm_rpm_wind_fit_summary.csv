@@ -1,0 +1,4 @@
+relation,x,y,degree,coeffs_high_to_low,R2
+RPM = f(duty) poly3,duty_pct,rpm,3,"-0.0001124418107,-0.1900578396,63.8891159,-82.72584305",0.9971818832397319
+wind = a*RPM + b (recommended),rpm,wind_mps,1,"0.00185269488,0.208025725",0.9988511812050649
+wind = a*duty^2 + b*duty + c,duty_pct,wind_mps,2,"-0.0004369590261,0.1248241334,-0.0292919018",0.997910507736916
